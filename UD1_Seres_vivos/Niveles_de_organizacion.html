@@ -171,10 +171,41 @@
             cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s ease; }
         .phase-btn:hover:not(:disabled) { background:var(--orange-700); transform:scale(1.1); }
         .phase-btn:disabled { background:#ccc; cursor:not-allowed; opacity:.5; }
-        .check-btn { width:100%; max-width:300px; margin-top:1.5rem; }
+        .check-btn { width:100%; max-width:300px; margin:1.5rem auto 0; align-self:center; }
         .phase-card.correct .phase-text { color:var(--green); font-weight:900; }
         .phase-card.incorrect .phase-text { color:var(--red); font-weight:900; }
         .phase-card.shake { animation:shakeAnim .4s ease; }
+
+        /* Pantalla Juego 3: Señalar partes (hotspots) */
+        .hotspot-board { display:flex; flex-direction:column; gap:.8rem; align-items:center; flex:1; padding:.3rem 0 1rem; }
+        .hotspot-panel { background:#f8fbff; border:2px solid #d3e2ff; border-radius:12px; padding:.7rem .9rem;
+            display:flex; align-items:center; justify-content:center; gap:.6rem; width:100%; max-width:700px; }
+        .hotspot-word-display { font-size:clamp(1.2rem,4.5vw,1.8rem); font-weight:900; color:var(--blue-700); text-align:center; }
+        .btn-play-word { background:var(--blue-600); color:#fff; border:none; border-radius:50%; width:36px; height:36px;
+            display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background-color .2s; flex-shrink:0; }
+        .btn-play-word:hover { background:var(--blue-700); }
+        .btn-play-word svg { width:20px; height:20px; }
+        .hotspot-stage { background:#fff; border-radius:12px; border:2px solid #e6f2ff; padding:.6rem;
+            box-shadow:inset 0 0 0 1px #f3f7ff; position:relative; width:100%; max-width:640px; }
+        .hotspot-img-wrap { position:relative; width:100%; margin:0 auto; user-select:none; -webkit-user-select:none; }
+        .hotspot-img-wrap img { display:block; width:100%; height:auto; border-radius:10px; user-select:none; -webkit-user-drag:none; }
+        .hotspot-img-wrap.shake { animation:shakeAnim .4s ease-in-out; }
+        .hotspot-marker { position:absolute; background:transparent; border:none; cursor:pointer; pointer-events:auto; z-index:10; }
+        .hotspot-marker.circle-shape { border-radius:50%; transform:translate(-50%,-50%); }
+        .hotspot-marker.rect-shape { border-radius:10px; }
+        .hotspot-marker.flash-green { animation:hotspotFlashGreen .3s ease-in-out; }
+        .hotspot-marker.flash-red { animation:hotspotFlashRed .3s ease-in-out; }
+        @keyframes hotspotFlashGreen {
+            0% { box-shadow:0 0 0 0 rgba(46,204,113,0); }
+            50% { box-shadow:0 0 0 10px rgba(46,204,113,.6); background-color:rgba(46,204,113,.3); }
+            100% { box-shadow:0 0 0 0 rgba(46,204,113,0); background-color:transparent; }
+        }
+        @keyframes hotspotFlashRed {
+            0% { box-shadow:0 0 0 0 rgba(231,76,60,0); }
+            25% { box-shadow:0 0 0 10px rgba(231,76,60,.6); background-color:rgba(231,76,60,.3); }
+            75% { box-shadow:0 0 0 10px rgba(231,76,60,.6); background-color:rgba(231,76,60,.3); }
+            100% { box-shadow:0 0 0 0 rgba(231,76,60,0); background-color:transparent; }
+        }
 
         /* Pantalla Final */
         .results { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:1.2rem; padding:1rem; }
@@ -296,17 +327,31 @@
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 3: EMPAREJAR CON LA VIVIENDA ===== -->
-    <section class="screen" id="game3Screen">
+    <!-- ===== PANTALLA JUEGO 3: SEÑALAR PARTES (INGLÉS, TTS) ===== -->
+    <section class="screen" id="game3Screen" lang="en" translate="no">
         <header>
-            <h1 id="game3Title">Niveles de organización y la vivienda</h1>
-            <div class="subtitle" id="game3Subtitle">Empareja cada nivel con su comparación</div>
+            <h1>Levels of Organisation</h1>
+            <div class="subtitle">Listen and tap the correct level on the image</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay3">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
         </div>
-        <div class="match-container" id="game3Container"></div>
+        <div class="hotspot-board">
+            <div class="hotspot-panel">
+                <div class="hotspot-word-display" id="hotspotWordDisplay">Cell</div>
+                <button class="btn-play-word" id="btnPlayHotspotWord" title="Play audio" aria-label="Play audio">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hotspot-stage">
+                <div class="hotspot-img-wrap" id="hotspotImgWrap">
+                    <img id="hotspotImg" src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/Niveles.png" alt="Levels of organisation diagram">
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- ===== PANTALLA JUEGO 4: ORDENAR LOS NIVELES ===== -->
@@ -425,25 +470,20 @@ const game2Data = {
 };
 
 /* ====================================================
-   DATOS: JUEGO 3 - EMPAREJAR CON LA VIVIENDA
+   DATOS: JUEGO 3 - SEÑALAR PARTES (INGLÉS FIJO, CON TTS)
+   Coordenadas en píxeles de la imagen original (1134x850, 4:3).
+   Los 5 elementos son círculos (cx,cy,r).
 ===================================================== */
-const game3Data = {
-    es: [
-        { id:0, term:'Célula', def:'Ladrillo' },
-        { id:1, term:'Tejidos', def:'Paredes' },
-        { id:2, term:'Órganos', def:'Habitaciones' },
-        { id:3, term:'Sistema', def:'Vivienda' },
-        { id:4, term:'Organismo', def:'Bloque de viviendas' }
-    ],
-    en: [
-        { id:0, term:'Cell', def:'Brick' },
-        { id:1, term:'Tissues', def:'Walls' },
-        { id:2, term:'Organs', def:'Rooms' },
-        { id:3, term:'System', def:'House' },
-        { id:4, term:'Organism', def:'Block of houses' }
-    ]
-};
-const game3TotalPairs = 5;
+const HOTSPOT_IMG_W = 1134;
+const HOTSPOT_IMG_H = 850;
+const hotspotData = [
+    { word:'Cell', shape:'circle', cx:125, cy:143, r:120 },
+    { word:'Tissue', shape:'circle', cx:550, cy:173, r:168 },
+    { word:'Organ', shape:'circle', cx:933, cy:190, r:172 },
+    { word:'System', shape:'circle', cx:819, cy:610, r:220 },
+    { word:'Organism', shape:'circle', cx:245, cy:577, r:290 }
+];
+const game3TotalPairs = hotspotData.length;
 
 /* ====================================================
    DATOS: JUEGO 4 - ORDENAR LOS NIVELES
@@ -470,8 +510,6 @@ const i18n = {
         game1Subtitle: 'Empareja cada nivel con su definición',
         game2Title: 'Completa el texto',
         game2Subtitle: 'Arrastra o toca las palabras para rellenar los huecos',
-        game3Title: 'Niveles de organización y la vivienda',
-        game3Subtitle: 'Empareja cada nivel con su comparación',
         game4Title: 'Ordena los niveles de organización',
         game4Subtitle: 'De más pequeño a más grande',
         checkBtn: 'Comprobar',
@@ -505,8 +543,6 @@ const i18n = {
         game1Subtitle: 'Match each level with its definition',
         game2Title: 'Complete the text',
         game2Subtitle: 'Drag or tap the words to fill in the blanks',
-        game3Title: 'Levels of Organisation and the House',
-        game3Subtitle: 'Match each level with its comparison',
         game4Title: 'Order the levels of organisation',
         game4Subtitle: 'From smallest to largest',
         checkBtn: 'Check',
@@ -540,7 +576,7 @@ let totalErrors = 0; // Cada error resta 100/21 puntos
 let currentScreen = 'start';
 let isHofLoading = false;
 let lastElapsedSeconds = 0;
-const TOTAL_INTERACTIONS = 21; // 5 (juego1) + 6 (juego2) + 5 (juego3) + 5 (juego4)
+const TOTAL_INTERACTIONS = 21; // 5 (juego1) + 6 (juego2) + 5 (juego3: señalar partes) + 5 (juego4)
 
 // Juego 1
 let game1Matches = 0;
@@ -551,9 +587,12 @@ let game2CorrectCount = 0;
 let game2Checked = false;
 let selectedWordBankItem = null;
 
-// Juego 3
-let game3Matches = 0;
-let game3SelectedCard = null;
+// Juego 3 (señalar partes)
+let game3AnsweredCount = 0;
+let game3Markers = [];
+let game3PlayOrder = [];
+let game3PlayIndex = 0;
+let pendingSpeakTimeout = null;
 
 // Juego 4
 let game4Shuffled = [];
@@ -578,6 +617,52 @@ function playAudio(url) {
     if (isMuted) return;
     const audio = new Audio(url);
     audio.play().catch(e => console.log('Audio error:', e));
+}
+
+/* ====================================================
+   TTS (Web Speech API) - Juego 3 (inglés fijo)
+===================================================== */
+function safeCancelSpeech() {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+}
+
+function forceInitTTS() {
+    try {
+        const u = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(u);
+        safeCancelSpeech();
+    } catch(e) {}
+}
+
+function getBestVoice(lang) {
+    try {
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices.length) return null;
+        const prefer = lang === 'es' ? ['Google español', 'Natural', 'Microsoft'] : ['Google UK', 'Natural', 'Microsoft'];
+        for (let p of prefer) {
+            for (let v of voices) {
+                if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
+            }
+        }
+        return voices.find(v => v.lang.startsWith(lang)) || null;
+    } catch(e) { return null; }
+}
+
+try {
+    window.speechSynthesis.onvoiceschanged = () => {};
+} catch(e) {}
+
+function speakText(text, lang) {
+    if (pendingSpeakTimeout) { clearTimeout(pendingSpeakTimeout); pendingSpeakTimeout = null; }
+    safeCancelSpeech();
+    if (isMuted) return;
+    try {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.voice = getBestVoice(lang);
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+    } catch(e) {}
 }
 
 const sounds = {
@@ -607,6 +692,7 @@ document.querySelectorAll('.lang-flag-btn').forEach(btn => {
 });
 
 function applyLanguage(lang) {
+    safeCancelSpeech();
     const t = i18n[lang];
     document.getElementById('startTitle').innerHTML = t.startTitle;
     document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
@@ -620,8 +706,6 @@ function applyLanguage(lang) {
     document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
     document.getElementById('checkGame2Btn').innerHTML = t.checkBtn;
     document.getElementById('continueGame2Btn').innerHTML = t.continueGameBtn;
-    document.getElementById('game3Title').innerHTML = t.game3Title;
-    document.getElementById('game3Subtitle').innerHTML = t.game3Subtitle;
     document.getElementById('game4Title').innerHTML = t.game4Title;
     document.getElementById('game4Subtitle').innerHTML = t.game4Subtitle;
     document.getElementById('checkPhasesBtn').innerHTML = t.checkBtn;
@@ -648,8 +732,6 @@ function applyLanguage(lang) {
         rebuildGame1Language();
     } else if (currentScreen === 'game2') {
         rebuildGame2Language();
-    } else if (currentScreen === 'game3') {
-        rebuildGame3Language();
     } else if (currentScreen === 'game4') {
         rebuildGame4Language();
     }
@@ -662,6 +744,7 @@ document.getElementById('muteBtn').addEventListener('click', () => {
     isMuted = !isMuted;
     const btn = document.getElementById('muteBtn');
     if (isMuted) {
+        safeCancelSpeech();
         btn.classList.add('muted');
         btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
     } else {
@@ -677,6 +760,7 @@ document.getElementById('muteBtn').addEventListener('click', () => {
 document.getElementById('playBtn').addEventListener('click', () => {
     playSound('tap');
     unlockAudioContext();
+    forceInitTTS();
     showScreen('summary');
     startTimer();
 });
@@ -987,103 +1071,122 @@ document.getElementById('continueGame2Btn').addEventListener('click', () => {
 });
 
 /* ====================================================
-   JUEGO 3: EMPAREJAR CON LA VIVIENDA
+   JUEGO 3: SEÑALAR PARTES (INGLÉS FIJO, CON TTS)
 ===================================================== */
 function initGame3() {
-    game3Matches = 0;
-    game3SelectedCard = null;
+    game3AnsweredCount = 0;
+    game3PlayOrder = shuffleArray([...Array(hotspotData.length).keys()]);
+    game3PlayIndex = 0;
     document.getElementById('timerDisplay3').textContent = formatTime(Date.now() - startTime);
     updateProgress();
-    buildMatchCards3();
+    buildHotspotMarkers();
+    showHotspotWord();
 }
 
-function buildMatchCards3() {
-    const container = document.getElementById('game3Container');
-    container.innerHTML = '';
-    const data = game3Data[currentLang];
-    const indices = Array.from({ length: data.length }, (_, i) => i);
-    const termOrder = shuffleArray(indices);
-    const defOrder = shuffleArray(indices);
-    for (let row = 0; row < data.length; row++) {
-        container.appendChild(createMatchCard3(termOrder[row], 'term'));
-        container.appendChild(createMatchCard3(defOrder[row], 'def'));
-    }
-    container.onclick = handleMatchCard3Click;
-}
+function buildHotspotMarkers() {
+    const wrap = document.getElementById('hotspotImgWrap');
+    game3Markers.forEach(m => m.remove());
+    game3Markers = [];
 
-function createMatchCard3(origIndex, type) {
-    const card = document.createElement('div');
-    card.className = 'memory-card';
-    card.dataset.origIndex = origIndex;
-    card.dataset.type = type;
-    const item = game3Data[currentLang][origIndex];
-    card.textContent = type === 'term' ? item.term : item.def;
-    return card;
-}
-
-function rebuildGame3Language() {
-    // Solo se reconstruye si aún no se ha emparejado ninguna tarjeta,
-    // para no perder el progreso visual de las parejas ya acertadas.
-    if (game3Matches > 0 || game3Matches >= game3TotalPairs) return;
-    buildMatchCards3();
-}
-
-function handleMatchCard3Click(e) {
-    const target = e.target.closest('.memory-card');
-    if (!target || target.classList.contains('matched')) return;
-
-    if (!game3SelectedCard) {
-        playSound('tap');
-        game3SelectedCard = target;
-        game3SelectedCard.classList.add('selected');
+    const img = document.getElementById('hotspotImg');
+    const rect = img.getBoundingClientRect();
+    if (rect.width === 0) {
+        setTimeout(buildHotspotMarkers, 200);
         return;
     }
-    if (target === game3SelectedCard) {
-        game3SelectedCard.classList.remove('selected');
-        game3SelectedCard = null;
-        return;
-    }
-    if (target.dataset.type === game3SelectedCard.dataset.type) {
-        game3SelectedCard.classList.remove('selected');
-        playSound('tap');
-        game3SelectedCard = target;
-        game3SelectedCard.classList.add('selected');
-        return;
-    }
+    const scaleX = rect.width / HOTSPOT_IMG_W;
+    const scaleY = rect.height / HOTSPOT_IMG_H;
 
-    const prevCard = game3SelectedCard;
-    const idA = prevCard.dataset.origIndex;
-    const idB = target.dataset.origIndex;
+    hotspotData.forEach((p, idx) => {
+        const div = document.createElement('div');
+        div.dataset.idx = idx;
+        if (p.shape === 'circle') {
+            div.className = 'hotspot-marker circle-shape';
+            const cx = p.cx * scaleX;
+            const cy = p.cy * scaleY;
+            const r = p.r * scaleX;
+            div.style.left = cx + 'px';
+            div.style.top = cy + 'px';
+            div.style.width = (r * 2) + 'px';
+            div.style.height = (r * 2) + 'px';
+        } else {
+            div.className = 'hotspot-marker rect-shape';
+            div.style.left = (p.x1 * scaleX) + 'px';
+            div.style.top = (p.y1 * scaleY) + 'px';
+            div.style.width = ((p.x2 - p.x1) * scaleX) + 'px';
+            div.style.height = ((p.y2 - p.y1) * scaleY) + 'px';
+        }
+        div.tabIndex = 0;
+        div.setAttribute('role', 'button');
+        div.addEventListener('click', onHotspotMarkerClick);
+        wrap.appendChild(div);
+        game3Markers.push(div);
+    });
+}
 
-    if (idA === idB) {
+let game3ResizeDebounceTimer = null;
+window.addEventListener('resize', () => {
+    clearTimeout(game3ResizeDebounceTimer);
+    game3ResizeDebounceTimer = setTimeout(() => {
+        if (currentScreen === 'game3') buildHotspotMarkers();
+    }, 200);
+});
+
+function showHotspotWord() {
+    if (game3PlayIndex >= game3PlayOrder.length) return;
+    const idx = game3PlayOrder[game3PlayIndex];
+    const word = hotspotData[idx].word;
+    document.getElementById('hotspotWordDisplay').textContent = word;
+    pendingSpeakTimeout = setTimeout(() => speakText(word, 'en'), 300);
+}
+
+function onHotspotMarkerClick(e) {
+    if (currentScreen !== 'game3' || game3PlayIndex >= game3PlayOrder.length) return;
+    safeCancelSpeech();
+    if (pendingSpeakTimeout) { clearTimeout(pendingSpeakTimeout); pendingSpeakTimeout = null; }
+
+    const idxClicked = +this.dataset.idx;
+    const currentIdx = game3PlayOrder[game3PlayIndex];
+    const marker = this;
+
+    if (idxClicked === currentIdx) {
+        marker.classList.add('flash-green');
         playSound('correcto');
-        prevCard.classList.remove('selected');
-        prevCard.classList.add('matched');
-        target.classList.add('matched');
-        game3SelectedCard = null;
-        game3Matches++;
+        setTimeout(() => marker.classList.remove('flash-green'), 300);
+
+        game3AnsweredCount++;
         updateProgress();
-        if (game3Matches === game3TotalPairs) {
+        game3PlayIndex++;
+
+        if (game3PlayIndex >= game3PlayOrder.length) {
             setTimeout(() => {
                 playSound('completado');
                 setTimeout(() => endGame3(), 1000);
-            }, 500);
+            }, 400);
+        } else {
+            setTimeout(() => showHotspotWord(), 500);
         }
     } else {
         totalErrors++;
+        marker.classList.add('flash-red');
         playSound('error');
-        prevCard.classList.remove('selected');
-        prevCard.classList.add('flash-error');
-        target.classList.add('flash-error');
-        game3SelectedCard = null;
-        setTimeout(() => {
-            prevCard.classList.remove('flash-error');
-            target.classList.remove('flash-error');
-        }, 400);
+        const wrap = document.getElementById('hotspotImgWrap');
+        wrap.classList.remove('shake');
+        void wrap.offsetWidth;
+        wrap.classList.add('shake');
+        setTimeout(() => marker.classList.remove('flash-red'), 300);
+        setTimeout(() => wrap.classList.remove('shake'), 400);
     }
 }
 
+document.getElementById('btnPlayHotspotWord').addEventListener('click', () => {
+    if (currentScreen !== 'game3' || game3PlayIndex >= game3PlayOrder.length) return;
+    const idx = game3PlayOrder[game3PlayIndex];
+    speakText(hotspotData[idx].word, 'en');
+});
+
 function endGame3() {
+    safeCancelSpeech();
     setTimeout(() => {
         showScreen('game4');
         initGame4();
@@ -1188,6 +1291,7 @@ document.getElementById('checkPhasesBtn').addEventListener('click', () => {
    FUNCIONES DE NAVEGACIÓN
 ===================================================== */
 function showScreen(screen) {
+    safeCancelSpeech();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     currentScreen = screen;
     if (screen === 'start') {
@@ -1248,7 +1352,7 @@ function getElapsedSeconds() {
 ===================================================== */
 function updateProgress() {
     const game4Done = game4CorrectDone ? 5 : 0;
-    const completed = game1Matches + game2CorrectCount + game3Matches + game4Done;
+    const completed = game1Matches + game2CorrectCount + game3AnsweredCount + game4Done;
     const percent = Math.min(100, (completed / TOTAL_INTERACTIONS) * 100);
     ['progressFill1','progressFill2','progressFill3','progressFill4'].forEach(id => {
         const el = document.getElementById(id);
@@ -1458,12 +1562,35 @@ function shuffleArray(arr) {
 }
 
 /* ====================================================
+   PRECARGA DE IMÁGENES
+===================================================== */
+function preloadHotspotImage() {
+    const url = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/Niveles.png';
+    const img = new Image();
+    img.src = url;
+}
+
+(function setupHotspotImageRetry() {
+    const imgEl = document.getElementById('hotspotImg');
+    if (!imgEl) return;
+    let retried = false;
+    imgEl.addEventListener('error', () => {
+        if (retried) return;
+        retried = true;
+        setTimeout(() => {
+            imgEl.src = imgEl.src.split('?')[0] + '?retry=' + Date.now();
+        }, 800);
+    });
+})();
+
+/* ====================================================
    INICIALIZACIÓN
 ===================================================== */
 window.addEventListener('load', () => {
     applyLanguage(currentLang);
     buildSummary();
     loadHallOfFame();
+    preloadHotspotImage();
 });
 </script>
 </body>
