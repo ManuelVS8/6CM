@@ -960,7 +960,19 @@ function buildGame2() {
         dz.addEventListener('drop', handleDrop2);
         dz.addEventListener('click', handleDropzone2Click);
         dz.addEventListener('touchend', e => {
-            e.preventDefault(); // Evita que el navegador dispare también un 'click' sintético
+            // Si el hueco está vacío (vamos a COLOCAR), evitamos que el navegador
+            // sintetice un 'click' retrasado para este toque: si ese click llegase
+            // tarde (después de que el alumno ya haya seleccionado la SIGUIENTE
+            // palabra del banco), handleDropzone2Click lo interpretaría como un
+            // intento de colocar esa nueva palabra aquí, y aunque el hueco ya esté
+            // lleno y no la coloque, SÍ limpiaría la selección igualmente, dejando
+            // la siguiente palabra sin poder colocarse. Si el hueco YA tiene una
+            // ficha (vamos a QUITAR), no se previene nada: esa acción depende del
+            // clic sintético en la propia ficha (con stopPropagation), no de este
+            // listener del contenedor.
+            if (!dz.hasChildNodes()) {
+                e.preventDefault();
+            }
             handleDropzone2Click.call(dz);
         });
     });
