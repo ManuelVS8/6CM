@@ -939,17 +939,12 @@ function buildGame2() {
     let html = '';
     let allBlanks = [];
     data.forEach((para, pIdx) => {
-        let posInPara = 0;
-        // Reemplazo por regex global: sustituye CADA aparición de {texto} por su
-        // posición real en la cadena, no por coincidencia de texto. Así, si alguna
-        // vez dos huecos comparten la misma palabra, ambos se convierten en dropzone
-        // igualmente (String.replace con un string literal solo sustituiría el primero).
-        const paraHtml = para.text.replace(/\{([^}]+)\}/g, (match, bw) => {
+        let paraHtml = para.text;
+        para.blanks.forEach((bw, posInPara) => {
             const dzId = `dz_${pIdx}_${posInPara}`;
             const minW = Math.max(100, bw.length * 9 + 24);
-            posInPara++;
+            paraHtml = paraHtml.replace(`{${bw}}`, `<span class="dropzone" id="${dzId}" data-answer="${bw}" style="min-width:${minW}px;"></span>`);
             allBlanks.push(bw);
-            return `<span class="dropzone" id="${dzId}" data-answer="${bw}" style="min-width:${minW}px;"></span>`;
         });
         html += `<p class="text-paragraph">${paraHtml}</p>`;
     });
@@ -959,22 +954,7 @@ function buildGame2() {
         dz.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
         dz.addEventListener('drop', handleDrop2);
         dz.addEventListener('click', handleDropzone2Click);
-        dz.addEventListener('touchend', e => {
-            // Si el hueco está vacío (vamos a COLOCAR), evitamos que el navegador
-            // sintetice un 'click' retrasado para este toque: si ese click llegase
-            // tarde (después de que el alumno ya haya seleccionado la SIGUIENTE
-            // palabra del banco), handleDropzone2Click lo interpretaría como un
-            // intento de colocar esa nueva palabra aquí, y aunque el hueco ya esté
-            // lleno y no la coloque, SÍ limpiaría la selección igualmente, dejando
-            // la siguiente palabra sin poder colocarse. Si el hueco YA tiene una
-            // ficha (vamos a QUITAR), no se previene nada: esa acción depende del
-            // clic sintético en la propia ficha (con stopPropagation), no de este
-            // listener del contenedor.
-            if (!dz.hasChildNodes()) {
-                e.preventDefault();
-            }
-            handleDropzone2Click.call(dz);
-        });
+        dz.addEventListener('touchend', handleDropzone2Click);
     });
 
     const bankWords = shuffleArray(allBlanks);
