@@ -737,9 +737,7 @@ function buildSummary() {
         let result = text;
         keywords.forEach(kw => {
             const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-            // Se conserva el texto original tal y como aparece (mayúsculas al inicio de frase incluidas),
-            // en vez de sustituirlo siempre por la keyword en minúscula.
-            result = result.replace(regex, (match) => `<span class="keyword">${match}</span>`);
+            result = result.replace(regex, `<span class="keyword">${kw}</span>`);
         });
         return result;
     };
