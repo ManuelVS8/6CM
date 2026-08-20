@@ -280,7 +280,7 @@
                 </button>
             </div>
             <div class="sn-image-wrapper" id="snImageWrapper2">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/SN2.png" alt="Sistema nervioso">
                 <div id="hotspotsContainer2" class="hotspots-container"></div>
             </div>
         </div>
@@ -303,7 +303,7 @@
                 </button>
             </div>
             <div class="sn-image-wrapper" id="snImageWrapper3">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/SN2.png" alt="Sistema nervioso">
                 <div id="hotspotsContainer3" class="hotspots-container"></div>
             </div>
         </div>
@@ -737,7 +737,9 @@ function buildSummary() {
         let result = text;
         keywords.forEach(kw => {
             const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-            result = result.replace(regex, `<span class="keyword">${kw}</span>`);
+            // Se conserva el texto original tal y como aparece (mayúsculas al inicio de frase incluidas),
+            // en vez de sustituirlo siempre por la keyword en minúscula.
+            result = result.replace(regex, (match) => `<span class="keyword">${match}</span>`);
         });
         return result;
     };
@@ -1283,7 +1285,7 @@ window.addEventListener('load', () => {
 function preloadImages() {
     return Promise.race([
         Promise.all([
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png'; }),
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/SN2.png'; }),
             new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png'; })
         ]),
         new Promise(resolve => setTimeout(resolve, 5000))
