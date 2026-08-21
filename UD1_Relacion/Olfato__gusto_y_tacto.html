@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="es" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title>Olfato, gusto y tacto</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root {
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --green-700:#219150;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+            --pastel-blue:#e3f2fd;
+            --pastel-orange:#ffe0b2;
+            --pastel-green:#e1f5ea;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
+            padding:20px 12px; color:#333;
+        }
+        .game-container {
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column; margin-bottom:2rem;
+        }
+        header { text-align:center; margin-bottom:.4rem; margin-top:3.2rem; }
+        h1 { color:var(--blue-dark); font-size:clamp(1.6rem,4.5vw,2.6rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle { color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
+        .highlight-keyword { color:var(--orange); font-weight:800; }
+
+        /* Buttons */
+        .btn { color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
+        .btn:hover { transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active { transform:translateY(0) scale(.97); }
+        .btn-primary { background:var(--orange); }
+        .btn-primary:hover { background:var(--orange-700); }
+        .btn-blue { background:var(--blue-600); }
+        .btn-blue:hover { filter:brightness(.9); }
+        .btn-ghost { background:#e6f2ff; color:var(--blue-700); }
+        .btn-continue { background:var(--blue-600); display:none; }
+        .btn-continue.show { display:inline-flex; }
+
+        .screen { display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active { display:flex; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+        .game-info { display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.3rem 0 .8rem; flex-wrap:wrap; }
+        .timer { font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar { flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+
+        /* Top controls */
+        .top-controls { position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
+        .lang-pill { display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        .mute-btn { background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff;
+            width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            z-index:20; transition:transform .2s, box-shadow .2s; }
+        .mute-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
+        .mute-btn.muted { background:linear-gradient(135deg,#999,#777); }
+        .mute-btn svg { width:20px; height:20px; pointer-events:none; }
+
+        /* Pantalla Inicio */
+        .start-content { display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box { background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image { max-width:300px; width:100%; margin:0 auto; }
+
+        @keyframes shakeAnim {
+            0%,100%{transform:translateX(0);}
+            20%{transform:translateX(-5px);}
+            40%{transform:translateX(5px);}
+            60%{transform:translateX(-5px);}
+            80%{transform:translateX(5px);}
+        }
+
+        /* Pantalla Resumen */
+        .summary-wrapper { padding:.4rem 0 1rem; width:100%; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:.9rem; }
+        .change-block { border-radius:15px; padding:1.1rem 1.2rem; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+        .change-block.block-olfato { background:var(--pastel-blue); border:2px solid var(--blue-600); }
+        .change-block.block-gusto { background:var(--pastel-orange); border:2px solid var(--orange); }
+        .change-block.block-tacto { background:var(--pastel-green); border:2px solid var(--green-700); }
+        .block-title { font-size:1.2rem; font-weight:800; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+        .block-olfato .block-title { color:var(--blue-700); }
+        .block-gusto .block-title { color:var(--orange-700); }
+        .block-tacto .block-title { color:var(--green-700); }
+        .block-desc { font-size:.95rem; margin-bottom:6px; color:#444; }
+        .block-desc strong { color:var(--blue-dark); }
+        .example-text { color:#555; font-size:.9rem; }
+        .play-btn-container { text-align:center; margin-top:.6rem; padding-top:.4rem; }
+
+        /* Pantallas Juegos 1-3: sentidos con hotspots */
+        .sense-game-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.2rem 0 1rem; }
+        .sense-word-display { display:flex; align-items:center; justify-content:center; gap:.8rem; }
+        .sense-word-text { font-size:clamp(1.3rem,4vw,2rem); font-weight:900; color:var(--blue-dark); background:var(--panel);
+            padding:.55rem 1.5rem; border-radius:14px; box-shadow:0 3px 8px rgba(0,0,0,.08); min-width:170px; text-align:center; }
+        .btn-play-word { width:46px; height:46px; border-radius:50%; background:var(--blue-600); border:2px solid #fff; color:#fff;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(37,79,186,.35);
+            transition:transform .15s, box-shadow .15s; flex-shrink:0; }
+        .btn-play-word:hover { transform:scale(1.08); box-shadow:0 5px 12px rgba(37,79,186,.5); }
+        .btn-play-word:active { transform:scale(.94); }
+        .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
+
+        .sense-image-wrapper { position:relative; width:100%; max-width:520px; aspect-ratio:1134/850; margin:0 auto;
+            border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
+        .sense-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill;
+            user-select:none; -webkit-user-drag:none; pointer-events:none; }
+        .sense-image-wrapper.img-error::after {
+            content:'Imagen no disponible'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+            text-align:center; padding:1rem; color:var(--blue-700); font-weight:700; background:#eef2f9;
+        }
+        .sense-hotspot { position:absolute; border:2.5px solid #111; background:#ffffff; cursor:pointer;
+            border-radius:8px; transition:background-color .1s ease, border-color .1s ease; touch-action:manipulation;
+            box-shadow:0 2px 5px rgba(0,0,0,.25); }
+        .sense-hotspot.flash-correct { background:var(--green); border-color:var(--green-700); }
+        .sense-hotspot.flash-incorrect { background:var(--red); border-color:#c0392b; animation:shakeAnim .3s ease-in-out; }
+
+        /* Pantalla Juego 4: clasificación */
+        .game1-layout { display:flex; flex-direction:column; height:100%; gap:.8rem; padding-bottom:.5rem; }
+        .bank-area { background:#fdfdfd; background-image:radial-gradient(#cbd5e1 1px, transparent 1px); background-size:15px 15px;
+            padding:10px; border-radius:12px; min-height:60px; display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+            gap:8px; border:2px dashed #b0bec5; }
+
+        .draggable-item { background:#ffffff; border:1px solid #e0e0e0; color:#455a64; padding:8px 14px; border-radius:25px;
+            cursor:pointer; font-weight:600; font-size:.88rem; box-shadow:0 3px 5px rgba(0,0,0,.05); transition:all .2s;
+            user-select:none; text-align:center; }
+        .draggable-item:hover { background:#f8f9fa; transform:translateY(-2px); border-color:var(--blue-700); }
+        .draggable-item.selected { background:var(--orange); color:white; border:none; transform:translateY(-2px) scale(1.05); }
+
+        .draggable-item.correct {
+            background:rgba(46,204,113,.35) !important; color:var(--green-700) !important; border:2px solid var(--green) !important;
+            box-shadow:0 4px 10px rgba(46,204,113,.25) !important;
+        }
+        .draggable-item.correct::before { content:'✓ '; font-weight:bold; }
+
+        .draggable-item.wrong {
+            background:rgba(231,76,60,.35) !important; color:#c0392b !important; border:2px solid var(--red) !important;
+            box-shadow:0 4px 10px rgba(231,76,60,.25) !important;
+            animation:shakeAnim .5s ease-in-out;
+        }
+        .draggable-item.wrong::before { content:'✕ '; font-weight:bold; }
+
+        .sorting-area { flex:1; display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; }
+        @media (max-width:700px) { .sorting-area { grid-template-columns:1fr; } }
+
+        .sort-box { border-radius:10px; padding:8px; display:flex; flex-direction:column; min-height:110px; border:2px solid; }
+        .box-olfato { background:var(--pastel-blue); border-color:var(--blue-600); }
+        .box-gusto { background:var(--pastel-orange); border-color:var(--orange); }
+        .box-tacto { background:var(--pastel-green); border-color:var(--green-700); }
+
+        .sort-box-header { font-weight:800; text-align:center; margin-bottom:6px; padding-bottom:4px;
+            border-bottom:2px solid rgba(0,0,0,.08); font-size:.95rem; display:flex; align-items:center; justify-content:center; gap:6px; }
+        .box-olfato .sort-box-header { color:var(--blue-700); }
+        .box-gusto .sort-box-header { color:var(--orange-700); }
+        .box-tacto .sort-box-header { color:var(--green-700); }
+        .sort-content { flex:1; display:flex; flex-wrap:wrap; gap:6px; justify-content:center; align-content:flex-start; min-height:40px; }
+        .sort-content .draggable-item { background:rgba(255,255,255,.95); font-size:.82rem; padding:6px 10px; }
+        .sort-box.disabled { pointer-events:none; }
+
+        /* Pantalla Final */
+        .results { display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center; }
+        .final-title { color:var(--blue-dark); font-weight:900; }
+        .big-score { font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title { font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time { color:var(--blue-700); }
+        #trophyBox { display:none; font-size:clamp(4rem,10vw,7rem); margin:.5rem 0; text-align:center;
+            align-self:center; animation:bounce 1s ease infinite; color:var(--orange); line-height:1; }
+        @keyframes bounce { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-15px) scale(1.1);} }
+        .credit { color:var(--blue-700); margin-top:1rem; }
+        #finalMsg { font-size:clamp(1.2rem,4.2vw,1.8rem); font-weight:800; color:var(--blue-700); margin-top:.6rem; }
+        .school-logo { display:block; width:160px; max-width:28%; height:auto; margin-top:.8rem; border-radius:8px; object-fit:contain; }
+        @media (max-width:899px) { .school-logo { width:140px; max-width:160px; } }
+        @media (max-width:420px) { .school-logo { width:110px; max-width:40%; margin-top:.6rem; } }
+
+        /* Hall of Fame */
+        .hall-of-fame { background:var(--panel); border-radius:12px; padding:1rem; margin-top:1.5rem; width:100%; max-width:600px; }
+        .hall-of-fame-title { color:var(--blue-700); font-weight:800; font-size:1.2rem; text-align:center; margin-bottom:.8rem; }
+        .hall-of-fame-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+        .hall-of-fame-table th { background:var(--blue-600); color:white; padding:.5rem; text-align:left; }
+        .hall-of-fame-table td { padding:.4rem .5rem; border-bottom:1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom:none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color:rgba(255,255,255,0.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding:1rem; text-align:center; color:var(--blue-700); font-style:italic; }
+        .hall-of-fame-error { color:var(--red); }
+
+        /* Modal */
+        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
+            display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+
+        /* Confeti */
+        .confetti { position:fixed; width:10px; height:10px; border-radius:50%; animation:confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall { 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
+
+        .hidden { display:none !important; }
+
+        @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
+    </style>
+</head>
+<body>
+<div class="game-container">
+
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <div class="lang-pill">
+            <button id="btnLangEs" class="active-lang" title="Español" onclick="applyLanguage('es')">🇪🇸</button>
+            <button id="btnLangEn" title="English" onclick="applyLanguage('en')">🇬🇧</button>
+        </div>
+        <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido" onclick="toggleSound()">
+            <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ===== PANTALLA INICIO ===== -->
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1 id="startTitle">Olfato, gusto y tacto</h1>
+            <div class="subtitle" id="startSubtitle">Identifica los órganos que intervienen en estos sentidos</div>
+        </header>
+        <div class="start-content">
+            <div class="advice-box" id="startAdvice">
+                Repasa y aprende las partes principales del sentido del <span class="highlight-keyword">olfato</span>, <span class="highlight-keyword">gusto</span> y <span class="highlight-keyword">tacto</span>.
+                <strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+            </div>
+            <button class="btn btn-primary" id="playBtn">Comenzar</button>
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
+            <div class="hall-of-fame" id="hallOfFame">
+                <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
+                <table class="hall-of-fame-table">
+                    <thead>
+                        <tr>
+                            <th id="hofPos">Posición</th>
+                            <th id="hofName">Nombre</th>
+                            <th id="hofPoints">Puntos</th>
+                            <th id="hofTime">Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA RESUMEN ===== -->
+    <section class="screen" id="summaryScreen">
+        <header>
+            <h1 id="summaryTitle">Olfato, gusto y tacto</h1>
+        </header>
+        <div class="summary-wrapper">
+            <div class="change-block block-olfato">
+                <div class="block-title">👃 <span id="sumOlfatoTitle">Olfato</span></div>
+                <p class="block-desc" id="sumOlfatoP1">Percibe las sustancias aromáticas que hay en el aire.</p>
+                <p class="block-desc"><strong id="sumOlfatoOrganLabel">Órgano:</strong> <span id="sumOlfatoOrgan">El órgano del olfato es la nariz.</span></p>
+                <p class="example-text" id="sumOlfatoP3">El aire entra por las fosas nasales y llega a la pituitaria. La pituitaria envía la información al cerebro a través de los nervios olfativos.</p>
+            </div>
+            <div class="change-block block-gusto">
+                <div class="block-title">👅 <span id="sumGustoTitle">Gusto</span></div>
+                <p class="block-desc" id="sumGustoP1">Percibe los sabores de los alimentos: dulce, salado, amargo, ácido y umami.</p>
+                <p class="block-desc"><strong id="sumGustoOrganLabel">Órgano:</strong> <span id="sumGustoOrgan">El órgano principal es la lengua, donde están las papilas gustativas.</span></p>
+                <p class="example-text" id="sumGustoP3">Las papilas gustativas reciben los sabores y los envían al cerebro a través de los nervios gustativos.</p>
+            </div>
+            <div class="change-block block-tacto">
+                <div class="block-title">✋ <span id="sumTactoTitle">Tacto</span></div>
+                <p class="block-desc" id="sumTactoP1">Percibe sensaciones como temperatura, texturas, formas o dureza. También percibe el dolor.</p>
+                <p class="block-desc"><strong id="sumTactoOrganLabel">Órgano:</strong> <span id="sumTactoOrgan">El órgano del tacto es la piel, que está cubierta de nervios del tacto.</span></p>
+                <p class="example-text" id="sumTactoP3">Estos nervios envían información al cerebro.</p>
+            </div>
+            <div class="play-btn-container">
+                <button class="btn btn-primary" id="startGameBtn">Comenzar juego</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 1: OLFATO ===== -->
+    <section class="screen" id="game1Screen">
+        <header>
+            <h1 id="game1Title">Identifica las partes del sentido del olfato</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill1"></div></div>
+        </div>
+        <div class="sense-game-wrapper">
+            <div class="sense-word-display">
+                <span class="sense-word-text" id="word1">-</span>
+                <button class="btn-play-word" id="playWord1" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="sense-image-wrapper" id="imgWrap1">
+                <img id="img1" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Olfato3.png" alt="Olfato">
+                <div id="hotspots1"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 2: GUSTO ===== -->
+    <section class="screen" id="game2Screen">
+        <header>
+            <h1 id="game2Title">Identifica las partes del sentido del gusto</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
+        </div>
+        <div class="sense-game-wrapper">
+            <div class="sense-word-display">
+                <span class="sense-word-text" id="word2">-</span>
+                <button class="btn-play-word" id="playWord2" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="sense-image-wrapper" id="imgWrap2">
+                <img id="img2" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Lengua3.png" alt="Gusto">
+                <div id="hotspots2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 3: TACTO ===== -->
+    <section class="screen" id="game3Screen">
+        <header>
+            <h1 id="game3Title">Identifica las partes del sentido del tacto</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay3">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
+        </div>
+        <div class="sense-game-wrapper">
+            <div class="sense-word-display">
+                <span class="sense-word-text" id="word3">-</span>
+                <button class="btn-play-word" id="playWord3" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="sense-image-wrapper" id="imgWrap3">
+                <img id="img3" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Piel2.png" alt="Tacto">
+                <div id="hotspots3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 4: CLASIFICAR ===== -->
+    <section class="screen" id="game4Screen">
+        <header>
+            <h1 id="game4Title">Clasifica los elementos según el sentido correspondiente</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay4">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill4"></div></div>
+        </div>
+        <div class="game1-layout">
+            <div class="bank-area" id="g4Bank"></div>
+            <div class="sorting-area">
+                <div class="sort-box box-olfato" data-type="olfato">
+                    <div class="sort-box-header">👃 <span id="boxOlfatoTitle">Olfato</span></div>
+                    <div class="sort-content"></div>
+                </div>
+                <div class="sort-box box-gusto" data-type="gusto">
+                    <div class="sort-box-header">👅 <span id="boxGustoTitle">Gusto</span></div>
+                    <div class="sort-content"></div>
+                </div>
+                <div class="sort-box box-tacto" data-type="tacto">
+                    <div class="sort-box-header">✋ <span id="boxTactoTitle">Tacto</span></div>
+                    <div class="sort-content"></div>
+                </div>
+            </div>
+            <div style="text-align:center;">
+                <button class="btn btn-primary" id="checkBtnGame4">Comprobar</button>
+                <button class="btn btn-continue" id="continueBtnGame4">Continuar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA FINAL ===== -->
+    <section class="screen" id="finalScreen">
+        <header>
+            <h1 class="final-title" id="finalTitle">Olfato, gusto y tacto</h1>
+        </header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            <div class="score-title" id="scoreLabel">Puntuación:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time" id="finalTimeLabel">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo del colegio" />
+        </div>
+    </section>
+
+</div><!-- .game-container -->
+
+<!-- Modal HOF -->
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 id="modalTitle">¡Juego Terminado!</h3>
+        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
+            <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ====================================================
+   CONFIGURACIÓN GLOBAL
+===================================================== */
+const SHEET_NAME = "UD1_Olfato_gusto_tacto";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+const OLFATO_IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Olfato3.png";
+const GUSTO_IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Lengua3.png";
+const TACTO_IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Piel2.png";
+const IMG_W = 1134;
+const IMG_H = 850;
+const TOTAL_ITEMS_GLOBAL = 20; // 3 + 3 + 4 + 10
+
+let currentLang = 'es';
+let soundEnabled = true;
+let isMuted = false;
+let audioCtxRef = null;
+let startTime = 0;
+let timerInterval = null;
+let elapsed = 0;
+let timerStopped = false;
+let finalTimeVal = 0;
+let finalScoreVal = 0;
+let isHofLoading = false;
+let activeGame = null;
+let totalCorrectGlobal = 0;
+let gameImagesPreloadPromise = null;
+
+/* ====================================================
+   DATOS DE LOS SENTIDOS (posiciones fijas + i18n)
+===================================================== */
+const olfatoCoords = [
+    { x1:48,  y1:614, x2:216,  y2:776 },  // Fosas nasales
+    { x1:89,  y1:91,  x2:257,  y2:253 },  // Pituitaria
+    { x1:869, y1:19,  x2:1038, y2:182 }   // Nervio olfativo
+];
+const gustoCoords = [
+    { x1:110, y1:659, x2:273, y2:811 },  // Lengua
+    { x1:735, y1:153, x2:898, y2:304 },  // Papilas gustativas
+    { x1:586, y1:660, x2:748, y2:810 }   // Nervio gustativo
+];
+const tactoCoords = [
+    { x1:116, y1:600, x2:264,  y2:749 },  // Nervios del tacto
+    { x1:554, y1:664, x2:702,  y2:813 },  // Glándula sudorípara
+    { x1:954, y1:96,  x2:1102, y2:247 },  // Epidermis
+    { x1:953, y1:286, x2:1101, y2:435 }   // Dermis
+];
+
+const gameDataI18n = {
+    es: {
+        olfato: [ { text:"Fosas nasales" }, { text:"Pituitaria" }, { text:"Nervio olfativo" } ],
+        gusto:  [ { text:"Lengua" }, { text:"Papilas gustativas" }, { text:"Nervio gustativo" } ],
+        tacto:  [ { text:"Nervios del tacto" }, { text:"Glándula sudorípara" }, { text:"Epidermis" }, { text:"Dermis" } ],
+        clasificacion: [
+            { text:"Fosas nasales", type:"olfato" },
+            { text:"Pituitaria", type:"olfato" },
+            { text:"Nervio olfativo", type:"olfato" },
+            { text:"Lengua", type:"gusto" },
+            { text:"Papilas gustativas", type:"gusto" },
+            { text:"Nervio gustativo", type:"gusto" },
+            { text:"Nervios del tacto", type:"tacto" },
+            { text:"Glándula sudorípara", type:"tacto" },
+            { text:"Epidermis", type:"tacto" },
+            { text:"Dermis", type:"tacto" }
+        ]
+    },
+    en: {
+        olfato: [ { text:"Nostrils" }, { text:"Pituitary membrane" }, { text:"Olfactory nerves" } ],
+        gusto:  [ { text:"Tongue" }, { text:"Taste buds" }, { text:"Gustatory nerves" } ],
+        tacto:  [ { text:"Tactile nerves" }, { text:"Sweat gland" }, { text:"Epidermis" }, { text:"Dermis" } ],
+        clasificacion: [
+            { text:"Nostrils", type:"olfato" },
+            { text:"Pituitary membrane", type:"olfato" },
+            { text:"Olfactory nerves", type:"olfato" },
+            { text:"Tongue", type:"gusto" },
+            { text:"Taste buds", type:"gusto" },
+            { text:"Gustatory nerves", type:"gusto" },
+            { text:"Tactile nerves", type:"tacto" },
+            { text:"Sweat gland", type:"tacto" },
+            { text:"Epidermis", type:"tacto" },
+            { text:"Dermis", type:"tacto" }
+        ]
+    }
+};
+
+/* ====================================================
+   i18n TEXTOS DE INTERFAZ
+===================================================== */
+const i18n = {
+    es: {
+        startTitle: 'Olfato, gusto y tacto',
+        startSubtitle: 'Identifica los órganos que intervienen en estos sentidos',
+        startAdvice: 'Repasa y aprende las partes principales del sentido del <span class="highlight-keyword">olfato</span>, <span class="highlight-keyword">gusto</span> y <span class="highlight-keyword">tacto</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startBtn: 'Comenzar',
+        hofTitle: 'Mejores puntuaciones',
+        hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
+        summaryTitle: 'Olfato, gusto y tacto',
+        sumOlfatoTitle: 'Olfato', sumGustoTitle: 'Gusto', sumTactoTitle: 'Tacto',
+        sumOlfatoP1: 'Percibe las sustancias aromáticas que hay en el aire.',
+        sumOlfatoOrganLabel: 'Órgano:', sumOlfatoOrgan: 'El órgano del olfato es la nariz.',
+        sumOlfatoP3: 'El aire entra por las fosas nasales y llega a la pituitaria. La pituitaria envía la información al cerebro a través de los nervios olfativos.',
+        sumGustoP1: 'Percibe los sabores de los alimentos: dulce, salado, amargo, ácido y umami.',
+        sumGustoOrganLabel: 'Órgano:', sumGustoOrgan: 'El órgano principal es la lengua, donde están las papilas gustativas.',
+        sumGustoP3: 'Las papilas gustativas reciben los sabores y los envían al cerebro a través de los nervios gustativos.',
+        sumTactoP1: 'Percibe sensaciones como temperatura, texturas, formas o dureza. También percibe el dolor.',
+        sumTactoOrganLabel: 'Órgano:', sumTactoOrgan: 'El órgano del tacto es la piel, que está cubierta de nervios del tacto.',
+        sumTactoP3: 'Estos nervios envían información al cerebro.',
+        startGameBtn: 'Comenzar juego',
+        game1Title: 'Identifica las partes del sentido del olfato',
+        game2Title: 'Identifica las partes del sentido del gusto',
+        game3Title: 'Identifica las partes del sentido del tacto',
+        game4Title: 'Clasifica los elementos según el sentido correspondiente',
+        boxOlfatoTitle: 'Olfato', boxGustoTitle: 'Gusto', boxTactoTitle: 'Tacto',
+        checkBtn: 'Comprobar', continueBtn: 'Continuar',
+        finalTitle: 'Olfato, gusto y tacto',
+        scoreLabel: 'Puntuación:',
+        timeLabel: 'Tiempo:',
+        backBtn: 'Volver al menú',
+        modalTitle: '¡Juego Terminado!',
+        modalTimeLabel: 'Tu tiempo:',
+        modalSave: 'Guardar',
+        modalCancel: 'Cancelar',
+        namePlaceholder: 'Nombre',
+        surnamePlaceholder: 'Apellido',
+        msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
+        msg80: 'Casi lo logras. ¡Sigue practicando!',
+        msg50: 'Esto no está listo; aún puedes hacerlo mejor',
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+    },
+    en: {
+        startTitle: 'Smell, taste and touch',
+        startSubtitle: 'Identify the organs involved in these senses',
+        startAdvice: 'Review and learn the main parts of the senses of <span class="highlight-keyword">smell</span>, <span class="highlight-keyword">taste</span> and <span class="highlight-keyword">touch</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startBtn: 'Start',
+        hofTitle: 'Best scores',
+        hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+        summaryTitle: 'Smell, taste and touch',
+        sumOlfatoTitle: 'Smell', sumGustoTitle: 'Taste', sumTactoTitle: 'Touch',
+        sumOlfatoP1: 'Receives aromatic substances in the air.',
+        sumOlfatoOrganLabel: 'Organ:', sumOlfatoOrgan: 'The organ of smell is the nose.',
+        sumOlfatoP3: 'Air enters through the nostrils and reaches the olfactory epithelium. The epithelium sends the information to the brain through the olfactory nerves.',
+        sumGustoP1: 'Taste receives the flavours of food: sweet, salty, bitter, sour, and umami.',
+        sumGustoOrganLabel: 'Organ:', sumGustoOrgan: 'The main organ is the tongue, where the taste buds are located.',
+        sumGustoP3: 'The taste buds receive the flavours and send them to the brain through the gustatory nerves.',
+        sumTactoP1: 'Receives sensations such as temperature, textures, shapes, and hardness. It also perceives pain.',
+        sumTactoOrganLabel: 'Organ:', sumTactoOrgan: 'The organ of touch is the skin, which is covered with tactile nerves.',
+        sumTactoP3: 'The tactile nerves send information to the brain.',
+        startGameBtn: 'Start game',
+        game1Title: 'Identify the parts of the sense of smell',
+        game2Title: 'Identify the parts of the sense of taste',
+        game3Title: 'Identify the parts of the sense of touch',
+        game4Title: 'Classify the elements according to the corresponding sense',
+        boxOlfatoTitle: 'Smell', boxGustoTitle: 'Taste', boxTactoTitle: 'Touch',
+        checkBtn: 'Check', continueBtn: 'Continue',
+        finalTitle: 'Smell, taste and touch',
+        scoreLabel: 'Score:',
+        timeLabel: 'Time:',
+        backBtn: 'Back to menu',
+        modalTitle: 'Game Over!',
+        modalTimeLabel: 'Your time:',
+        modalSave: 'Save',
+        modalCancel: 'Cancel',
+        namePlaceholder: 'Name',
+        surnamePlaceholder: 'Surname',
+        msgPerfect: 'Fan-tas-tic! Perfect score!',
+        msg80: 'Almost there. Keep practising!',
+        msg50: 'Not quite ready; you can still do better',
+        msg0: 'What a disaster... Did you really study?'
+    }
+};
+
+/* ====================================================
+   SONIDOS
+===================================================== */
+const audioUrls = {
+    correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+    error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+    tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+    victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+    completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+};
+const audioObjects = {};
+Object.keys(audioUrls).forEach(key => {
+    const a = new Audio();
+    a.src = audioUrls[key];
+    a.preload = 'auto';
+    audioObjects[key] = a;
+});
+
+function playSoundClone(key) {
+    if (!soundEnabled || isMuted) return;
+    const base = audioObjects[key];
+    if (!base) return;
+    try {
+        const clone = base.cloneNode(true);
+        clone.play().catch(() => {});
+    } catch (e) {
+        try { base.currentTime = 0; base.play(); } catch (e2) {}
+    }
+}
+function reproducirSonidoCorrecto() { playSoundClone('correct'); }
+function reproducirSonidoError() { playSoundClone('error'); }
+function reproducirSonidoVictoria() { playSoundClone('victory'); }
+function reproducirSonidoCompletado() { playSoundClone('completed'); }
+function reproducirSonidoTap() { playSoundClone('tap'); }
+
+/* ====================================================
+   DESBLOQUEO DE AUDIO Y VOZ (Chromebooks compatibles)
+===================================================== */
+function unlockAudioContext() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') { ctx.resume(); }
+        const buffer = ctx.createBuffer(1, 1, 22050);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start();
+        audioCtxRef = ctx;
+    } catch (e) {}
+}
+
+let ttsForced = false;
+function forceInitTTS() {
+    if (ttsForced) return;
+    if (!window.speechSynthesis) return;
+    if (window.speechSynthesis.getVoices().length > 0) { ttsForced = true; return; }
+    const u = new SpeechSynthesisUtterance('');
+    u.volume = 0;
+    window.speechSynthesis.speak(u);
+    ttsForced = true;
+}
+if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () { ttsForced = true; };
+}
+
+function getBestVoice(lang) {
+    const voices = window.speechSynthesis.getVoices();
+    if (lang === 'es') {
+        let v = voices.find(voice => voice.name === 'Google español');
+        if (v) return v;
+        v = voices.find(voice => voice.lang.startsWith('es') && (voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'es-ES' || voice.lang.startsWith('es'));
+        if (v) return v;
+        return null;
+    } else {
+        let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en'));
+        if (v) return v;
+        v = voices.find(voice => voice.lang.startsWith('en') && (voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'en-GB' || voice.lang.startsWith('en'));
+        if (v) return v;
+        return null;
+    }
+}
+
+function speakText(text, lang) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang === 'en' ? 'en-GB' : 'es-ES';
+    const voice = getBestVoice(lang === 'en' ? 'en' : 'es');
+    if (voice) u.voice = voice;
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+}
+
+/* ====================================================
+   IDIOMA
+===================================================== */
+function applyLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    const t = i18n[lang];
+
+    document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
+    document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
+
+    document.getElementById('startTitle').textContent = t.startTitle;
+    document.getElementById('startSubtitle').textContent = t.startSubtitle;
+    document.getElementById('startAdvice').innerHTML = t.startAdvice;
+    document.getElementById('playBtn').textContent = t.startBtn;
+    document.title = t.startTitle;
+
+    document.getElementById('hofTitle').textContent = t.hofTitle;
+    document.getElementById('hofPos').textContent = t.hofPos;
+    document.getElementById('hofName').textContent = t.hofName;
+    document.getElementById('hofPoints').textContent = t.hofPoints;
+    document.getElementById('hofTime').textContent = t.hofTime;
+
+    document.getElementById('summaryTitle').textContent = t.summaryTitle;
+    document.getElementById('sumOlfatoTitle').textContent = t.sumOlfatoTitle;
+    document.getElementById('sumGustoTitle').textContent = t.sumGustoTitle;
+    document.getElementById('sumTactoTitle').textContent = t.sumTactoTitle;
+    document.getElementById('sumOlfatoP1').textContent = t.sumOlfatoP1;
+    document.getElementById('sumOlfatoOrganLabel').textContent = t.sumOlfatoOrganLabel;
+    document.getElementById('sumOlfatoOrgan').textContent = t.sumOlfatoOrgan;
+    document.getElementById('sumOlfatoP3').textContent = t.sumOlfatoP3;
+    document.getElementById('sumGustoP1').textContent = t.sumGustoP1;
+    document.getElementById('sumGustoOrganLabel').textContent = t.sumGustoOrganLabel;
+    document.getElementById('sumGustoOrgan').textContent = t.sumGustoOrgan;
+    document.getElementById('sumGustoP3').textContent = t.sumGustoP3;
+    document.getElementById('sumTactoP1').textContent = t.sumTactoP1;
+    document.getElementById('sumTactoOrganLabel').textContent = t.sumTactoOrganLabel;
+    document.getElementById('sumTactoOrgan').textContent = t.sumTactoOrgan;
+    document.getElementById('sumTactoP3').textContent = t.sumTactoP3;
+    document.getElementById('startGameBtn').textContent = t.startGameBtn;
+
+    document.getElementById('game1Title').textContent = t.game1Title;
+    document.getElementById('game2Title').textContent = t.game2Title;
+    document.getElementById('game3Title').textContent = t.game3Title;
+    document.getElementById('game4Title').textContent = t.game4Title;
+    document.getElementById('boxOlfatoTitle').textContent = t.boxOlfatoTitle;
+    document.getElementById('boxGustoTitle').textContent = t.boxGustoTitle;
+    document.getElementById('boxTactoTitle').textContent = t.boxTactoTitle;
+    document.getElementById('checkBtnGame4').textContent = t.checkBtn;
+    document.getElementById('continueBtnGame4').textContent = t.continueBtn;
+
+    document.getElementById('finalTitle').textContent = t.finalTitle;
+    document.getElementById('scoreLabel').textContent = t.scoreLabel;
+    document.getElementById('finalTimeLabel').innerHTML = t.timeLabel + ' <span id="finalTime">' + (document.getElementById('finalTime') ? document.getElementById('finalTime').textContent : '00:00.0') + '</span>';
+    document.getElementById('backToMenuBtn').textContent = t.backBtn;
+
+    document.getElementById('modalTitle').textContent = t.modalTitle;
+    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + (document.getElementById('modalTime') ? document.getElementById('modalTime').textContent : '00:00.0') + '</span>';
+    document.getElementById('submitScoreBtn').textContent = t.modalSave;
+    document.getElementById('discardScoreBtn').textContent = t.modalCancel;
+    document.getElementById('playerName').placeholder = t.namePlaceholder;
+    document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+
+    // Elemento dinámico activo: la palabra mostrada en los juegos 1, 2 y 3
+    if (activeGame === 'game1' || activeGame === 'game2' || activeGame === 'game3') {
+        const n = parseInt(activeGame.replace('game', ''));
+        const cfg = senseConfig[n];
+        const st = gState[n];
+        if (st.current !== null && st.current !== undefined && gameDataI18n[lang][cfg.key][st.current]) {
+            const newWord = gameDataI18n[lang][cfg.key][st.current].text;
+            document.getElementById(cfg.wordId).textContent = newWord;
+            window.speechSynthesis.cancel();
+            speakText(newWord, lang);
+        }
+    } else if (activeGame === 'game4') {
+        document.querySelectorAll('#game4Screen [data-orig-index]').forEach(el => {
+            const idx = parseInt(el.getAttribute('data-orig-index'));
+            if (gameDataI18n[lang].clasificacion[idx]) {
+                el.textContent = gameDataI18n[lang].clasificacion[idx].text;
+            }
+        });
+    }
+}
+
+document.getElementById('btnLangEs').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
+document.getElementById('btnLangEn').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+
+/* ====================================================
+   SONIDO ON/OFF
+===================================================== */
+const svgSoundOn = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+const svgSoundOff = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+
+function toggleSound() {
+    const muteBtn = document.getElementById('muteBtn');
+    const svg = document.getElementById('muteSvg');
+    if (isMuted) {
+        isMuted = false; soundEnabled = true;
+        svg.innerHTML = svgSoundOn;
+        muteBtn.classList.remove('muted');
+        reproducirSonidoTap();
+    } else {
+        isMuted = true; soundEnabled = false;
+        svg.innerHTML = svgSoundOff;
+        muteBtn.classList.add('muted');
+    }
+}
+
+/* ====================================================
+   PANTALLAS
+===================================================== */
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+/* ====================================================
+   TEMPORIZADOR
+===================================================== */
+function startGlobalTimer() {
+    if (timerInterval) return;
+    startTime = Date.now();
+    elapsed = 0;
+    timerStopped = false;
+    timerInterval = setInterval(() => {
+        const delta = (Date.now() - startTime) / 1000;
+        elapsed = delta;
+        updateTimerDisplay(elapsed);
+    }, 100);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerStopped = true;
+    }
+}
+
+function updateTimerDisplay(sec) {
+    const txt = formatTime(sec);
+    ['timerDisplay1', 'timerDisplay2', 'timerDisplay3', 'timerDisplay4'].forEach(id => {
+        document.getElementById(id).textContent = txt;
+    });
+}
+
+function formatTime(sec) {
+    const m = Math.floor(sec / 60).toString().padStart(2, '0');
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    const ms = Math.round((sec % 1) * 10);
+    return `${m}:${s}.${ms}`;
+}
+
+function updateGlobalProgress() {
+    const pct = Math.min(100, (totalCorrectGlobal / TOTAL_ITEMS_GLOBAL) * 100);
+    ['progressFill1', 'progressFill2', 'progressFill3', 'progressFill4'].forEach(id => {
+        document.getElementById(id).style.width = pct + '%';
+    });
+}
+
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
+/* ====================================================
+   PUNTUACIÓN FINAL
+===================================================== */
+function calcularPuntuacionFinal() {
+    const p1 = Math.min(100, Math.max(0, Math.round(100 - ((gState[1].attempts - senseConfig[1].min) * (100 / senseConfig[1].min)))));
+    const p2 = Math.min(100, Math.max(0, Math.round(100 - ((gState[2].attempts - senseConfig[2].min) * (100 / senseConfig[2].min)))));
+    const p3 = Math.min(100, Math.max(0, Math.round(100 - ((gState[3].attempts - senseConfig[3].min) * (100 / senseConfig[3].min)))));
+    const puntJuegos123 = Math.round((p1 + p2 + p3) / 3);
+    const puntJuego4 = Math.round((game4Correct / 10) * 100);
+    const final = Math.round((puntJuegos123 + puntJuego4) / 2);
+    return Math.min(100, Math.max(0, final));
+}
+
+/* ====================================================
+   PRECARGA DE IMÁGENES (anti-bloqueo)
+===================================================== */
+function preloadWithTimeout(urls, timeoutMs) {
+    const promises = urls.map(url => new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve({ url, ok: true });
+        img.onerror = () => resolve({ url, ok: false });
+        img.src = url;
+    }));
+    const allDone = Promise.all(promises);
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), timeoutMs));
+    return Promise.race([allDone, timeoutPromise]);
+}
+
+/* ====================================================
+   JUEGOS 1-3: SEÑALAR PARTES DE LOS SENTIDOS
+===================================================== */
+const senseConfig = {
+    1: { key:'olfato', coords: olfatoCoords, min:3, wordId:'word1', hotspotsId:'hotspots1', playBtnId:'playWord1' },
+    2: { key:'gusto',  coords: gustoCoords,  min:3, wordId:'word2', hotspotsId:'hotspots2', playBtnId:'playWord2' },
+    3: { key:'tacto',  coords: tactoCoords,  min:4, wordId:'word3', hotspotsId:'hotspots3', playBtnId:'playWord3' }
+};
+
+const gState = {
+    1: { queue:[], pos:0, current:null, correct:0, attempts:0, built:false },
+    2: { queue:[], pos:0, current:null, correct:0, attempts:0, built:false },
+    3: { queue:[], pos:0, current:null, correct:0, attempts:0, built:false }
+};
+
+function buildHotspotsFor(n) {
+    const cfg = senseConfig[n];
+    const st = gState[n];
+    if (st.built) return;
+    const container = document.getElementById(cfg.hotspotsId);
+    container.innerHTML = '';
+    cfg.coords.forEach((c, idx) => {
+        const div = document.createElement('div');
+        div.className = 'sense-hotspot';
+        div.setAttribute('data-orig-index', idx);
+        div.style.left = (c.x1 / IMG_W * 100) + '%';
+        div.style.top = (c.y1 / IMG_H * 100) + '%';
+        div.style.width = ((c.x2 - c.x1) / IMG_W * 100) + '%';
+        div.style.height = ((c.y2 - c.y1) / IMG_H * 100) + '%';
+        div.addEventListener('click', () => handleHotspotClick(n, idx, div));
+        container.appendChild(div);
+    });
+    st.built = true;
+}
+
+function initSenseGame(n) {
+    activeGame = 'game' + n;
+    const cfg = senseConfig[n];
+    const st = gState[n];
+    st.attempts = 0;
+    st.correct = 0;
+    st.pos = 0;
+    st.queue = shuffle(Array.from({ length: cfg.coords.length }, (_, i) => i));
+    buildHotspotsFor(n);
+    loadCurrentWord(n);
+}
+
+function loadCurrentWord(n) {
+    const cfg = senseConfig[n];
+    const st = gState[n];
+    st.current = st.queue[st.pos];
+    const word = gameDataI18n[currentLang][cfg.key][st.current].text;
+    document.getElementById(cfg.wordId).textContent = word;
+    setTimeout(() => { speakText(word, currentLang); }, 300);
+}
+
+function handleHotspotClick(n, idx, el) {
+    if (activeGame !== 'game' + n) return;
+    const cfg = senseConfig[n];
+    const st = gState[n];
+    st.attempts++;
+    window.speechSynthesis.cancel();
+
+    if (idx === st.current) {
+        reproducirSonidoCorrecto();
+        el.classList.add('flash-correct');
+        setTimeout(() => el.classList.remove('flash-correct'), 200);
+        st.correct++;
+        totalCorrectGlobal++;
+        updateGlobalProgress();
+        st.pos++;
+        if (st.pos < cfg.coords.length) {
+            setTimeout(() => loadCurrentWord(n), 260);
+        } else {
+            setTimeout(() => finishSenseGame(n), 300);
+        }
+    } else {
+        reproducirSonidoError();
+        el.classList.add('flash-incorrect');
+        setTimeout(() => el.classList.remove('flash-incorrect'), 200);
+    }
+}
+
+[1, 2, 3].forEach(n => {
+    const cfg = senseConfig[n];
+    document.getElementById(cfg.playBtnId).onclick = () => {
+        const st = gState[n];
+        if (st.current === null || st.current === undefined) return;
+        speakText(gameDataI18n[currentLang][cfg.key][st.current].text, currentLang);
+    };
+    document.getElementById('imgWrap' + n).querySelector('img').onerror = () => {
+        document.getElementById('imgWrap' + n).classList.add('img-error');
+    };
+});
+
+/* Transición entre sub-juegos encadenados (1 -> 2 -> 3 -> 4) */
+function finishSenseGame(n) {
+    window.speechSynthesis.cancel();
+    activeGame = null;
+    reproducirSonidoCompletado();
+    setTimeout(() => {
+        if (n === 1) {
+            initSenseGame(2);
+            showScreen('game2Screen');
+        } else if (n === 2) {
+            initSenseGame(3);
+            showScreen('game3Screen');
+        } else if (n === 3) {
+            initGame4();
+            showScreen('game4Screen');
+        }
+    }, 1000);
+}
+
+/* ====================================================
+   JUEGO 4: CLASIFICAR EN CAJAS (tap-tap + drag&drop)
+===================================================== */
+let game4Selected = null;
+let game4Locked = false;
+let game4Correct = 0;
+
+function initGame4() {
+    activeGame = 'game4';
+    game4Locked = false;
+    game4Selected = null;
+    game4Correct = 0;
+    document.getElementById('checkBtnGame4').style.display = 'inline-flex';
+    document.getElementById('continueBtnGame4').classList.remove('show');
+    document.querySelectorAll('#game4Screen .sort-box').forEach(b => b.classList.remove('disabled'));
+    document.querySelectorAll('#game4Screen .sort-content').forEach(c => c.innerHTML = '');
+
+    const bank = document.getElementById('g4Bank');
+    bank.innerHTML = '';
+    const order = shuffle(Array.from({ length: 10 }, (_, i) => i));
+    order.forEach(origIdx => {
+        const item = gameDataI18n[currentLang].clasificacion[origIdx];
+        bank.appendChild(createG4Card(item, origIdx));
+    });
+}
+
+function createG4Card(item, origIdx) {
+    const el = document.createElement('div');
+    el.className = 'draggable-item';
+    el.textContent = item.text;
+    el.dataset.type = item.type;
+    el.setAttribute('data-orig-index', origIdx);
+    el.draggable = true;
+    el.addEventListener('click', () => selectG4Item(el, false));
+    el.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', String(origIdx));
+        e.dataTransfer.effectAllowed = 'move';
+        selectG4Item(el, true);
+    });
+    return el;
+}
+
+function selectG4Item(el, fromDrag) {
+    if (game4Locked) return;
+    if (game4Selected === el) { el.classList.remove('selected'); game4Selected = null; return; }
+    if (game4Selected) game4Selected.classList.remove('selected');
+    game4Selected = el;
+    el.classList.add('selected');
+    if (!fromDrag) reproducirSonidoTap();
+}
+
+// Al pulsar un elemento ya colocado en una categoría, vuelve al banco
+document.addEventListener('click', e => {
+    if (activeGame !== 'game4' || game4Locked) return;
+    const item = e.target.closest('#game4Screen .sort-content .draggable-item');
+    if (item && !item.classList.contains('correct') && !item.classList.contains('wrong')) {
+        document.getElementById('g4Bank').appendChild(item);
+        item.classList.remove('selected');
+        if (game4Selected === item) game4Selected = null;
+        reproducirSonidoTap();
+    }
+});
+
+document.querySelectorAll('#game4Screen .sort-box').forEach(box => {
+    const content = box.querySelector('.sort-content');
+
+    box.addEventListener('click', () => {
+        if (activeGame !== 'game4' || game4Locked) return;
+        if (game4Selected && game4Selected.parentElement !== content) {
+            content.appendChild(game4Selected);
+            game4Selected.classList.remove('selected');
+            game4Selected = null;
+            reproducirSonidoTap();
+        }
+    });
+
+    box.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+    box.addEventListener('drop', e => {
+        e.preventDefault();
+        if (activeGame !== 'game4' || game4Locked) return;
+        let card = game4Selected;
+        if (!card) {
+            const idx = e.dataTransfer.getData('text/plain');
+            card = document.querySelector('#game4Screen [data-orig-index="' + idx + '"]');
+        }
+        if (card) {
+            content.appendChild(card);
+            card.classList.remove('selected');
+            game4Selected = null;
+            reproducirSonidoTap();
+        }
+    });
+});
+
+const g4BankEl = document.getElementById('g4Bank');
+g4BankEl.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+g4BankEl.addEventListener('drop', e => {
+    e.preventDefault();
+    if (activeGame !== 'game4' || game4Locked) return;
+    let card = game4Selected;
+    if (!card) {
+        const idx = e.dataTransfer.getData('text/plain');
+        card = document.querySelector('#game4Screen [data-orig-index="' + idx + '"]');
+    }
+    if (card) {
+        g4BankEl.appendChild(card);
+        card.classList.remove('selected');
+        game4Selected = null;
+        reproducirSonidoTap();
+    }
+});
+
+function checkGame4() {
+    if (activeGame !== 'game4' || game4Locked) return;
+
+    let correct = 0;
+    document.querySelectorAll('#game4Screen .sort-box').forEach(box => {
+        const boxType = box.dataset.type;
+        box.querySelectorAll('.draggable-item').forEach(item => {
+            item.classList.remove('correct', 'wrong');
+            if (item.dataset.type === boxType) {
+                item.classList.add('correct');
+                correct++;
+            } else {
+                item.classList.add('wrong');
+            }
+        });
+    });
+    // Los elementos que no se colocaron en ninguna caja cuentan como incorrectos
+    document.querySelectorAll('#g4Bank .draggable-item').forEach(item => {
+        item.classList.add('wrong');
+    });
+
+    game4Correct = correct;
+    game4Locked = true;
+    window.speechSynthesis.cancel();
+    document.querySelectorAll('#game4Screen .sort-box').forEach(b => b.classList.add('disabled'));
+    document.getElementById('checkBtnGame4').style.display = 'none';
+    document.getElementById('continueBtnGame4').classList.add('show');
+
+    totalCorrectGlobal += correct;
+    updateGlobalProgress();
+
+    if (correct === 10) {
+        reproducirSonidoCompletado();
+    } else {
+        reproducirSonidoError();
+    }
+}
+
+document.getElementById('checkBtnGame4').onclick = checkGame4;
+document.getElementById('continueBtnGame4').onclick = () => { reproducirSonidoTap(); finishGame(); };
+
+/* ====================================================
+   FINAL DEL JUEGO
+===================================================== */
+function finishGame() {
+    window.speechSynthesis.cancel();
+    activeGame = null;
+    stopTimer();
+    finalTimeVal = elapsed;
+    finalScoreVal = calcularPuntuacionFinal();
+    document.getElementById('finalScore').textContent = finalScoreVal;
+    document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+
+    const trophyBox = document.getElementById('trophyBox');
+    const msg = document.getElementById('finalMsg');
+    const t = i18n[currentLang];
+
+    if (finalScoreVal === 100) {
+        trophyBox.style.display = 'block';
+        msg.textContent = t.msgPerfect;
+        reproducirSonidoVictoria();
+        createConfetti();
+    } else if (finalScoreVal >= 80) {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg80;
+        reproducirSonidoCompletado();
+    } else if (finalScoreVal >= 50) {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg50;
+        reproducirSonidoCompletado();
+    } else {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg0;
+        reproducirSonidoCompletado();
+    }
+
+    showScreen('finalScreen');
+    showSubmitModal(finalTimeVal, finalScoreVal);
+}
+
+function createConfetti() {
+    for (let i = 0; i < 100; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            const x = Math.random() * window.innerWidth;
+            const tx = (Math.random() - 0.5) * 200;
+            c.style.left = x + 'px'; c.style.top = '-10px';
+            c.style.backgroundColor = ['#ff595e', '#1982c4', '#6a4c93', '#ffca3a', '#8ac926'][Math.floor(Math.random() * 5)];
+            c.style.setProperty('--tx', tx + 'px');
+            c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3000);
+        }, i * 20);
+    }
+}
+
+/* ====================================================
+   HALL OF FAME
+===================================================== */
+function loadHallOfFame() {
+    if (isHofLoading) return;
+    isHofLoading = true;
+    const tbody = document.getElementById('hofTableBody');
+    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+    const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+    const timeoutId = setTimeout(() => {
+        if (isHofLoading) {
+            tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>';
+            isHofLoading = false;
+        }
+    }, 8000);
+
+    fetch(url)
+        .then(r => { clearTimeout(timeoutId); if (!r.ok) throw new Error("Network response was not ok"); return r.json(); })
+        .then(data => {
+            if (data.status === 'success' && data.data) {
+                const processedData = data.data.map(row => {
+                    const getVal = keys => {
+                        for (let key of keys) {
+                            if (row[key] !== undefined && row[key] !== "") return row[key];
+                        }
+                        return null;
+                    };
+                    return {
+                        Nombre: getVal(["Nombre", "nombre", "name"]),
+                        Apellidos: getVal(["Apellidos", "apellidos", "surname"]),
+                        Puntuación: getVal(["Puntuación", "puntuación", "score"]),
+                        Tiempo: getVal(["Tiempo", "tiempo", "time"])
+                    };
+                });
+
+                const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+
+                if (validData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${currentLang === 'es' ? '¡Sé el primero en guardar tu puntuación!' : 'Be the first to save your score!'}</td></tr>`;
+                } else {
+                    validData.sort((a, b) => {
+                        const sA = parseFloat(a.Puntuación) || 0;
+                        const sB = parseFloat(b.Puntuación) || 0;
+                        if (sB !== sA) return sB - sA;
+                        return (parseFloat(a.Tiempo) || 9999) - (parseFloat(b.Tiempo) || 9999);
+                    });
+                    tbody.innerHTML = '';
+                    validData.slice(0, 10).forEach((item, i) => {
+                        const tr = document.createElement('tr');
+                        const displayName = `${item.Nombre || ''} ${item.Apellidos || ''}`.trim();
+                        let timeStr = item.Tiempo;
+                        if (!isNaN(parseFloat(item.Tiempo))) {
+                            timeStr = formatTime(parseFloat(item.Tiempo));
+                        }
+                        tr.innerHTML = `<td>${i + 1}º</td><td>${displayName}</td><td>${item.Puntuación || 0}</td><td>${timeStr}</td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } else {
+                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>';
+            }
+        })
+        .catch(e => {
+            clearTimeout(timeoutId);
+            console.error("Error HoF:", e);
+            tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión o timeout.</td></tr>';
+        })
+        .finally(() => { isHofLoading = false; });
+}
+
+function showSubmitModal(time, score) {
+    const mt = document.getElementById('modalTime');
+    if (mt) mt.textContent = formatTime(time);
+    document.getElementById('playerName').value = '';
+    document.getElementById('playerSurname').value = '';
+    document.getElementById('submitModal').style.display = 'flex';
+    const btn = document.getElementById('submitScoreBtn');
+    btn.textContent = i18n[currentLang].modalSave;
+    btn.disabled = false;
+}
+
+function submitScore() {
+    const btn = document.getElementById('submitScoreBtn');
+    const name = document.getElementById('playerName').value.trim().substring(0, 15);
+    const surname = document.getElementById('playerSurname').value.trim().substring(0, 15);
+
+    if (!name || !surname) {
+        alert(currentLang === 'es' ? "Por favor, rellena nombre y apellido" : "Please fill in name and surname");
+        return;
+    }
+
+    const payload = { score: finalScoreVal, time: finalTimeVal, name, surname };
+    const originalText = btn.textContent;
+    btn.textContent = "Enviando...";
+    btn.disabled = true;
+
+    function closeAfterSend() {
+        document.getElementById('submitModal').style.display = 'none';
+        btn.textContent = originalText;
+        btn.disabled = false;
+        setTimeout(loadHallOfFame, 1500);
+    }
+
+    fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
+    })
+    .then(() => { setTimeout(closeAfterSend, 1000); })
+    .catch(() => { setTimeout(closeAfterSend, 1000); });
+}
+
+/* ====================================================
+   EVENTOS
+===================================================== */
+document.getElementById('playBtn').onclick = () => {
+    reproducirSonidoTap();
+    unlockAudioContext();
+    forceInitTTS();
+    gameImagesPreloadPromise = preloadWithTimeout([OLFATO_IMG_URL, GUSTO_IMG_URL, TACTO_IMG_URL], 4500);
+    showScreen('summaryScreen');
+};
+
+document.getElementById('startGameBtn').onclick = () => {
+    reproducirSonidoTap();
+    const proceed = () => {
+        timerStopped = false;
+        elapsed = 0;
+        timerInterval = null;
+        totalCorrectGlobal = 0;
+        updateGlobalProgress();
+        initSenseGame(1);
+        showScreen('game1Screen');
+        startGlobalTimer();
+    };
+    if (gameImagesPreloadPromise) {
+        gameImagesPreloadPromise.then(proceed);
+    } else {
+        preloadWithTimeout([OLFATO_IMG_URL, GUSTO_IMG_URL, TACTO_IMG_URL], 4500).then(proceed);
+    }
+};
+
+document.getElementById('backToMenuBtn').onclick = () => {
+    reproducirSonidoTap();
+    location.reload();
+};
+
+document.getElementById('submitScoreBtn').onclick = () => {
+    reproducirSonidoTap();
+    submitScore();
+};
+
+document.getElementById('discardScoreBtn').onclick = () => {
+    reproducirSonidoTap();
+    document.getElementById('submitModal').style.display = 'none';
+};
+
+document.getElementById('playerSurname').addEventListener('keypress', e => {
+    if (e.key === 'Enter') document.getElementById('submitScoreBtn').click();
+});
+document.getElementById('playerName').addEventListener('keypress', e => {
+    if (e.key === 'Enter') document.getElementById('playerSurname').focus();
+});
+
+/* ====================================================
+   INIT
+===================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    loadHallOfFame();
+    applyLanguage('es');
+});
+</script>
+</body>
+</html>

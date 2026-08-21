@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title>El ojo humano</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root {
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
+            padding:20px 12px; color:#333;
+        }
+        .game-container {
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column; margin-bottom:2rem;
+        }
+        header { text-align:center; margin-bottom:.4rem; margin-top:3.2rem; }
+        h1 { color:var(--blue-dark); font-size:clamp(1.6rem,4.5vw,2.6rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle { color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
+        .highlight-keyword { color:var(--orange); font-weight:800; }
+
+        /* Buttons */
+        .btn { color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
+        .btn:hover { transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active { transform:translateY(0) scale(.97); }
+        .btn-primary { background:var(--orange); }
+        .btn-primary:hover { background:var(--orange-700); }
+        .btn-blue { background:var(--blue-600); }
+        .btn-blue:hover { filter:brightness(.9); }
+        .btn-ghost { background:#e6f2ff; color:var(--blue-700); }
+
+        .screen { display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active { display:flex; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+        .game-info { display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.3rem 0 .8rem; flex-wrap:wrap; }
+        .timer { font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar { flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+
+        /* Top controls */
+        .top-controls { position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
+        .lang-pill { display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        .mute-btn { background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff;
+            width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            z-index:20; transition:transform .2s, box-shadow .2s; }
+        .mute-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
+        .mute-btn.muted { background:linear-gradient(135deg,#999,#777); }
+        .mute-btn svg { width:20px; height:20px; pointer-events:none; }
+
+        /* Pantalla Inicio */
+        .start-content { display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box { background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image { max-width:300px; width:100%; margin:0 auto; }
+
+        @keyframes shakeAnim {
+            0%,100%{transform:translateX(0);}
+            20%{transform:translateX(-5px);}
+            40%{transform:translateX(5px);}
+            60%{transform:translateX(-5px);}
+            80%{transform:translateX(5px);}
+        }
+
+        /* Pantalla Resumen */
+        .summary-wrapper { padding:.4rem 0 1rem; width:100%; flex:1; overflow-y:auto; }
+        .theory-box {
+            background-color:#f8f9fa; padding:25px; border-radius:15px; margin:10px 0;
+            box-shadow:0 5px 15px rgba(0,0,0,0.08); border-left:6px solid var(--blue);
+            color:#333; font-size:1.05rem; line-height:1.6;
+        }
+        .theory-title { color:var(--blue-dark); font-weight:800; font-size:1.3rem; margin-bottom:10px; display:block; }
+        .theory-highlight { color:var(--orange); font-weight:700; }
+        .theory-list { padding-left:1.2rem; margin-top:6px; }
+        .theory-list li { margin-bottom:8px; }
+        .theory-list li strong { color:var(--blue-700); }
+
+        /* Pantalla Juego: El ojo (casillas sobre imagen) */
+        .eye-game-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.2rem 0 1rem; }
+        .eye-word-display { display:flex; align-items:center; justify-content:center; gap:.8rem; max-width:100%; }
+        #eyeWordText { font-size:clamp(1.05rem,3.1vw,1.7rem); font-weight:900; color:var(--blue-dark); background:var(--panel);
+            padding:.55rem 1.3rem; border-radius:14px; box-shadow:0 3px 8px rgba(0,0,0,.08); min-width:150px; max-width:600px;
+            text-align:center; line-height:1.25; }
+        .btn-play-word { width:46px; height:46px; border-radius:50%; background:var(--blue-600); border:2px solid #fff; color:#fff;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(37,79,186,.35);
+            transition:transform .15s, box-shadow .15s; flex-shrink:0; }
+        .btn-play-word:hover { transform:scale(1.08); box-shadow:0 5px 12px rgba(37,79,186,.5); }
+        .btn-play-word:active { transform:scale(.94); }
+        .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
+
+        .eye-image-wrapper { position:relative; width:100%; max-width:640px; aspect-ratio:1134/850; margin:0 auto;
+            border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
+        .eye-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill;
+            user-select:none; -webkit-user-drag:none; pointer-events:none; }
+        .eye-image-wrapper.img-error::after {
+            content:'Imagen no disponible'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+            text-align:center; padding:1rem; color:var(--blue-700); font-weight:700; background:#eef2f9;
+        }
+        .eye-hotspot { position:absolute; border:2px solid #000; background:#ffffff; cursor:pointer;
+            border-radius:10px; transition:background-color .1s ease, border-color .1s ease; touch-action:manipulation;
+            box-shadow:0 2px 6px rgba(0,0,0,.18); }
+        .eye-hotspot:hover { transform:scale(1.03); }
+        .eye-hotspot.flash-correct { background:var(--green); border-color:var(--green); }
+        .eye-hotspot.flash-incorrect { background:var(--red); border-color:var(--red); animation:shakeAnim .3s ease-in-out; }
+
+        /* Pantalla Final */
+        .results { display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center; }
+        .final-title { color:var(--blue-dark); font-weight:900; }
+        .big-score { font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title { font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time { color:var(--blue-700); }
+        #trophyBox { display:none; font-size:clamp(4rem,10vw,7rem); margin:.5rem 0; text-align:center;
+            align-self:center; animation:bounce 1s ease infinite; color:var(--orange); line-height:1; }
+        @keyframes bounce { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-15px) scale(1.1);} }
+        .credit { color:var(--blue-700); margin-top:1rem; }
+        #finalMsg { font-size:clamp(1.2rem,4.2vw,1.8rem); font-weight:800; color:var(--blue-700); margin-top:.6rem; }
+        .school-logo { display:block; width:160px; max-width:28%; height:auto; margin-top:.8rem; border-radius:8px; object-fit:contain; }
+        @media (max-width:899px) { .school-logo { width:140px; max-width:160px; } }
+        @media (max-width:420px) { .school-logo { width:110px; max-width:40%; margin-top:.6rem; } }
+
+        /* Hall of Fame */
+        .hall-of-fame { background:var(--panel); border-radius:12px; padding:1rem; margin-top:1.5rem; width:100%; max-width:600px; }
+        .hall-of-fame-title { color:var(--blue-700); font-weight:800; font-size:1.2rem; text-align:center; margin-bottom:.8rem; }
+        .hall-of-fame-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+        .hall-of-fame-table th { background:var(--blue-600); color:white; padding:.5rem; text-align:left; }
+        .hall-of-fame-table td { padding:.4rem .5rem; border-bottom:1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom:none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color:rgba(255,255,255,0.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding:1rem; text-align:center; color:var(--blue-700); font-style:italic; }
+        .hall-of-fame-error { color:var(--red); }
+
+        /* Modal */
+        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
+            display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+
+        /* Confeti */
+        .confetti { position:fixed; width:10px; height:10px; border-radius:50%; animation:confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall { 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
+
+        .hidden { display:none !important; }
+
+        @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
+    </style>
+</head>
+<body>
+<div class="game-container">
+
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <div class="lang-pill">
+            <button id="btnLangEs" class="active-lang" title="Español" onclick="applyLanguage('es')">🇪🇸</button>
+            <button id="btnLangEn" title="English" onclick="applyLanguage('en')">🇬🇧</button>
+        </div>
+        <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido" onclick="toggleSound()">
+            <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ===== PANTALLA INICIO ===== -->
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1 id="startTitle">El ojo humano</h1>
+            <div class="subtitle" id="startSubtitle">Parte exterior e interior del ojo humano</div>
+        </header>
+        <div class="start-content">
+            <div class="advice-box" id="startAdvice"></div>
+            <button class="btn btn-primary" id="playBtn">Comenzar</button>
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
+            <div class="hall-of-fame" id="hallOfFame">
+                <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
+                <table class="hall-of-fame-table">
+                    <thead>
+                        <tr>
+                            <th id="hofPos">Posición</th>
+                            <th id="hofName">Nombre</th>
+                            <th id="hofPoints">Puntos</th>
+                            <th id="hofTime">Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA RESUMEN 1 (OJO EXTERNO) ===== -->
+    <section class="screen" id="summary1Screen">
+        <header><h1 id="summary1Header">Ojo externo</h1></header>
+        <div class="summary-wrapper"><div class="theory-box" id="summary1Body"></div></div>
+        <div style="text-align:center;padding:0 0 1rem;">
+            <button class="btn btn-primary" id="continue1Btn">Continuar</button>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO (reutilizada por los 4 juegos) ===== -->
+    <section class="screen" id="gameScreen">
+        <header>
+            <h1 id="gameTitle">Identifica las partes del ojo externo</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div class="eye-game-wrapper">
+            <div class="eye-word-display">
+                <span id="eyeWordText"></span>
+                <button class="btn-play-word" id="btnPlayWord" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="eye-image-wrapper" id="eyeImageWrapper">
+                <img id="eyeImg" src="" alt="El ojo humano">
+                <div id="eyeHotspots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA RESUMEN 2 (OJO INTERNO) ===== -->
+    <section class="screen" id="summary2Screen">
+        <header><h1 id="summary2Header">Ojo interno</h1></header>
+        <div class="summary-wrapper"><div class="theory-box" id="summary2Body"></div></div>
+        <div style="text-align:center;padding:0 0 1rem;">
+            <button class="btn btn-primary" id="continue2Btn">Continuar</button>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA FINAL ===== -->
+    <section class="screen" id="finalScreen">
+        <header>
+            <h1 class="final-title" id="finalTitle">Sentido de la vista</h1>
+        </header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            <div class="score-title" id="scoreLabel">Puntuación:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time" id="finalTimeLabel">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo del colegio" />
+        </div>
+    </section>
+
+</div><!-- .game-container -->
+
+<!-- Modal HOF -->
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 id="modalTitle">¡Juego Terminado!</h3>
+        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="15">
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
+            <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ====================================================
+   CONFIGURACIÓN GLOBAL
+===================================================== */
+const SHEET_NAME = "UD1_Vista";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+const EXT_IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/ojo4.png";
+const INT_IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Relacion/Ojo6.png";
+const IMG_W = 1134;
+const IMG_H = 850;
+const MIN_ATTEMPTS = 26;   // 7 + 7 + 6 + 6
+const TOTAL_ITEMS  = 26;
+
+let currentLang = 'es';
+let soundEnabled = true;
+let isMuted = false;
+let audioCtxRef = null;
+let startTime = 0;
+let timerInterval = null;
+let elapsed = 0;
+let timerStopped = false;
+let finalTimeVal = 0;
+let finalScoreVal = 0;
+let totalAttempts = 0;
+let correctCountGlobal = 0;
+let isHofLoading = false;
+let activeGame = null;
+
+/* ====================================================
+   COORDENADAS DE LAS CASILLAS (posiciones fijas)
+===================================================== */
+// Ojo externo (juegos 1a y 1b) — imagen 1134 x 850
+const extCoords = [
+    { x1:7,   y1:625, x2:175,  y2:783 },  // 0 Lagrimal
+    { x1:193, y1:625, x2:362,  y2:783 },  // 1 Iris
+    { x1:423, y1:658, x2:591,  y2:813 },  // 2 Pupila
+    { x1:810, y1:449, x2:978,  y2:606 },  // 3 Pestaña
+    { x1:817, y1:233, x2:984,  y2:388 },  // 4 Párpado
+    { x1:789, y1:33,  x2:958,  y2:190 },  // 5 Ceja
+    { x1:659, y1:621, x2:827,  y2:776 }   // 6 Esclerótica
+];
+// Ojo interno (juegos 2a y 2b) — imagen 1134 x 850
+const intCoords = [
+    { x1:78,  y1:22,  x2:261,  y2:195 },  // 0 Córnea
+    { x1:40,  y1:295, x2:223,  y2:467 },  // 1 Iris
+    { x1:88,  y1:533, x2:269,  y2:705 },  // 2 Pupila
+    { x1:381, y1:616, x2:563,  y2:789 },  // 3 Cristalino
+    { x1:897, y1:45,  x2:1078, y2:218 },  // 4 Retina
+    { x1:801, y1:599, x2:980,  y2:770 }   // 5 Nervio óptico
+];
+
+/* ====================================================
+   DATOS I18N (mismo nº de elementos y mismo orden en ambos idiomas)
+===================================================== */
+const gameDataI18n = {
+    es: {
+        ext1: [
+            { text:"Lagrimal" }, { text:"Iris" }, { text:"Pupila" }, { text:"Pestaña" },
+            { text:"Párpado" }, { text:"Ceja" }, { text:"Esclerótica" }
+        ],
+        ext2: [
+            { text:"Producen lágrimas para humedecer el ojo" },
+            { text:"Parte coloreada del ojo" },
+            { text:"Hueco por donde entra la luz" },
+            { text:"Protegen el ojo de polvo y pequeñas partículas" },
+            { text:"Se cierran para proteger el ojo y extender las lágrimas" },
+            { text:"Evitan que el sudor de la frente entre en el ojo" },
+            { text:"Parte blanca del ojo" }
+        ],
+        int1: [
+            { text:"Córnea" }, { text:"Iris" }, { text:"Pupila" },
+            { text:"Cristalino" }, { text:"Retina" }, { text:"Nervio óptico" }
+        ],
+        int2: [
+            { text:"Capa protectora del ojo" },
+            { text:"Se abre y se cierra para dejar pasar la luz" },
+            { text:"Hueco por donde entra la luz" },
+            { text:"Lente que enfoca la luz en la retina" },
+            { text:"Recibe la información y la envía al nervio óptico" },
+            { text:"Envía la información al cerebro" }
+        ]
+    },
+    en: {
+        ext1: [
+            { text:"Tear duct" }, { text:"Iris" }, { text:"Pupil" }, { text:"Eyelashes" },
+            { text:"Eyelids" }, { text:"Eyebrows" }, { text:"Sclera" }
+        ],
+        ext2: [
+            { text:"Produces tears to humidify the eye" },
+            { text:"The coloured part of the eye" },
+            { text:"The hole where light enters" },
+            { text:"Protect the eye from dust and small particles" },
+            { text:"Close to protect the eye and spread tears" },
+            { text:"Prevent sweat from entering the eye" },
+            { text:"The white part of the eye" }
+        ],
+        int1: [
+            { text:"Cornea" }, { text:"Iris" }, { text:"Pupil" },
+            { text:"Crystalline lens" }, { text:"Retina" }, { text:"Optic nerve" }
+        ],
+        int2: [
+            { text:"The protective layer of the eye" },
+            { text:"Opens and closes to let the light pass" },
+            { text:"The hole where light enters" },
+            { text:"The lens that focuses light on the retina" },
+            { text:"Receives the information and sends it to the optic nerve" },
+            { text:"Sends the information to the brain" }
+        ]
+    }
+};
+
+/* Configuración de cada uno de los 4 juegos */
+const GAMES = {
+    game1a: { img: EXT_IMG_URL, coords: extCoords, dataKey: 'ext1', count: 7 },
+    game1b: { img: EXT_IMG_URL, coords: extCoords, dataKey: 'ext2', count: 7 },
+    game2a: { img: INT_IMG_URL, coords: intCoords, dataKey: 'int1', count: 6 },
+    game2b: { img: INT_IMG_URL, coords: intCoords, dataKey: 'int2', count: 6 }
+};
+
+/* ====================================================
+   i18n TEXTOS DE INTERFAZ
+===================================================== */
+const i18n = {
+    es: {
+        startTitle: 'El ojo humano',
+        startSubtitle: 'Parte exterior e interior del ojo humano',
+        startAdvice: 'Repasa y aprende las partes principales del <span class="highlight-keyword">ojo externo</span> (cejas, pestañas, párpados, lagrimal, esclerótica, iris, pupila) y del <span class="highlight-keyword">ojo interno</span> (córnea, iris, pupila, cristalino, retina y nervio óptico).<strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startBtn: 'Comenzar',
+        hofTitle: 'Mejores puntuaciones',
+        hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
+        summary1Header: 'Ojo externo',
+        summary2Header: 'Ojo interno',
+        continueBtn: 'Continuar',
+        summary1HTML: '<span class="theory-title">Partes del ojo externo</span><ul class="theory-list">'
+            + '<li><strong>Cejas:</strong> Evitan que el sudor de la frente entre en el ojo.</li>'
+            + '<li><strong>Pestañas:</strong> Protegen el ojo de polvo y pequeñas partículas.</li>'
+            + '<li><strong>Lagrimal:</strong> Producen lágrimas para humedecer el ojo.</li>'
+            + '<li><strong>Párpados:</strong> Se cierran para proteger el ojo y extender las lágrimas.</li>'
+            + '<li><strong>Esclerótica:</strong> Parte blanca del ojo.</li>'
+            + '<li><strong>Iris:</strong> Parte coloreada del ojo.</li>'
+            + '<li><strong>Pupila:</strong> Hueco por donde entra la luz.</li>'
+            + '</ul>',
+        summary2HTML: '<span class="theory-title">Partes del ojo interno</span><ul class="theory-list">'
+            + '<li><strong>Córnea:</strong> Capa protectora del ojo.</li>'
+            + '<li><strong>Iris:</strong> Se abre y se cierra para dejar pasar la luz.</li>'
+            + '<li><strong>Pupila:</strong> Hueco por donde entra la luz.</li>'
+            + '<li><strong>Cristalino:</strong> Lente que enfoca la luz en la retina.</li>'
+            + '<li><strong>Retina:</strong> Envía la información al nervio óptico.</li>'
+            + '<li><strong>Nervio óptico:</strong> Envía la información al cerebro.</li>'
+            + '</ul>',
+        game1aTitle: 'Identifica las partes del ojo externo',
+        game1bTitle: 'Identifica las partes del ojo externo',
+        game2aTitle: 'Señala las partes del ojo interno',
+        game2bTitle: 'Identifica las partes del ojo',
+        finalTitle: 'Sentido de la vista',
+        scoreLabel: 'Puntuación:',
+        timeLabel: 'Tiempo:',
+        backBtn: 'Volver al menú',
+        modalTitle: '¡Juego Terminado!',
+        modalTimeLabel: 'Tu tiempo:',
+        modalSave: 'Guardar',
+        modalCancel: 'Cancelar',
+        namePlaceholder: 'Nombre',
+        surnamePlaceholder: 'Apellido',
+        msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
+        msg80: 'Casi lo logras. ¡Sigue practicando!',
+        msg50: 'Esto no está listo; aún puedes hacerlo mejor',
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+    },
+    en: {
+        startTitle: 'The human eye',
+        startSubtitle: 'Outer and inner parts of the human eye',
+        startAdvice: 'Review and learn the main parts of the <span class="highlight-keyword">outer eye</span> (eyebrows, eyelashes, eyelids, tear duct, sclera, iris, pupil) and the <span class="highlight-keyword">inner eye</span> (cornea, iris, pupil, crystalline lens, retina and optic nerve).<strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startBtn: 'Start',
+        hofTitle: 'Best scores',
+        hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+        summary1Header: 'Outer eye',
+        summary2Header: 'Inner eye',
+        continueBtn: 'Continue',
+        summary1HTML: '<span class="theory-title">External Parts of the Eye</span><ul class="theory-list">'
+            + '<li><strong>Eyebrows:</strong> Prevent sweat from entering the eye.</li>'
+            + '<li><strong>Eyelashes:</strong> Protect the eye from dust and small particles.</li>'
+            + '<li><strong>Tear duct:</strong> Produces tears to humidify the eye.</li>'
+            + '<li><strong>Eyelids:</strong> Close to protect the eye and spread tears.</li>'
+            + '<li><strong>Sclera:</strong> The white part of the eye.</li>'
+            + '<li><strong>Iris:</strong> The coloured part of the eye.</li>'
+            + '<li><strong>Pupil:</strong> The hole where light enters.</li>'
+            + '</ul>',
+        summary2HTML: '<span class="theory-title">Internal Parts of the Eye</span><ul class="theory-list">'
+            + '<li><strong>Cornea:</strong> The protective layer of the eye.</li>'
+            + '<li><strong>Iris:</strong> Opens and closes to let the light pass.</li>'
+            + '<li><strong>Pupil:</strong> The hole where light enters.</li>'
+            + '<li><strong>Crystalline lens:</strong> The lens that focuses light on the retina.</li>'
+            + '<li><strong>Retina:</strong> Sends the information to the optic nerve.</li>'
+            + '<li><strong>Optic nerve:</strong> Sends the information to the brain.</li>'
+            + '</ul>',
+        game1aTitle: 'Identify the external parts of the eye',
+        game1bTitle: 'Identify the external parts of the eye',
+        game2aTitle: 'Point out the internal parts of the eye',
+        game2bTitle: 'Identify the parts of the eye',
+        finalTitle: 'Sense of sight',
+        scoreLabel: 'Score:',
+        timeLabel: 'Time:',
+        backBtn: 'Back to menu',
+        modalTitle: 'Game Over!',
+        modalTimeLabel: 'Your time:',
+        modalSave: 'Save',
+        modalCancel: 'Cancel',
+        namePlaceholder: 'Name',
+        surnamePlaceholder: 'Surname',
+        msgPerfect: 'Fan-tas-tic! Perfect score!',
+        msg80: 'Almost there. Keep practising!',
+        msg50: 'Not quite ready; you can still do better',
+        msg0: 'What a disaster... Did you really study?'
+    }
+};
+
+/* ====================================================
+   SONIDOS
+===================================================== */
+const audioUrls = {
+    correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+    error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+    tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+    victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+    completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+};
+const audioObjects = {};
+Object.keys(audioUrls).forEach(key => {
+    const a = new Audio();
+    a.src = audioUrls[key];
+    a.preload = 'auto';
+    audioObjects[key] = a;
+});
+
+function playSoundClone(key) {
+    if (!soundEnabled || isMuted) return;
+    const base = audioObjects[key];
+    if (!base) return;
+    try {
+        const clone = base.cloneNode(true);
+        clone.play().catch(() => {});
+    } catch (e) {
+        try { base.currentTime = 0; base.play(); } catch (e2) {}
+    }
+}
+function reproducirSonidoCorrecto() { playSoundClone('correct'); }
+function reproducirSonidoError() { playSoundClone('error'); }
+function reproducirSonidoVictoria() { playSoundClone('victory'); }
+function reproducirSonidoCompletado() { playSoundClone('completed'); }
+function reproducirSonidoTap() { playSoundClone('tap'); }
+
+/* ====================================================
+   DESBLOQUEO DE AUDIO Y VOZ (Chromebooks compatibles)
+===================================================== */
+function unlockAudioContext() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') { ctx.resume(); }
+        const buffer = ctx.createBuffer(1, 1, 22050);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start();
+        audioCtxRef = ctx;
+    } catch (e) {}
+}
+
+let ttsForced = false;
+function forceInitTTS() {
+    if (ttsForced) return;
+    if (!window.speechSynthesis) return;
+    if (window.speechSynthesis.getVoices().length > 0) { ttsForced = true; return; }
+    const u = new SpeechSynthesisUtterance('');
+    u.volume = 0;
+    window.speechSynthesis.speak(u);
+    ttsForced = true;
+}
+if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () { ttsForced = true; };
+}
+
+function getBestVoice(lang) {
+    const voices = window.speechSynthesis.getVoices();
+    if (lang === 'es') {
+        let v = voices.find(voice => voice.name === 'Google español');
+        if (v) return v;
+        v = voices.find(voice => voice.lang.startsWith('es') && (voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'es-ES' || voice.lang.startsWith('es'));
+        if (v) return v;
+        return null;
+    } else {
+        let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en'));
+        if (v) return v;
+        v = voices.find(voice => voice.lang.startsWith('en') && (voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'en-GB' || voice.lang.startsWith('en'));
+        if (v) return v;
+        return null;
+    }
+}
+
+function speakText(text, lang) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang === 'en' ? 'en-GB' : 'es-ES';
+    const voice = getBestVoice(lang === 'en' ? 'en' : 'es');
+    if (voice) u.voice = voice;
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+}
+
+/* ====================================================
+   IDIOMA
+===================================================== */
+function applyLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    const t = i18n[lang];
+
+    document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
+    document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
+
+    document.getElementById('startTitle').textContent = t.startTitle;
+    document.getElementById('startSubtitle').textContent = t.startSubtitle;
+    document.getElementById('startAdvice').innerHTML = t.startAdvice;
+    document.getElementById('playBtn').textContent = t.startBtn;
+    document.title = t.startTitle;
+
+    document.getElementById('hofTitle').textContent = t.hofTitle;
+    document.getElementById('hofPos').textContent = t.hofPos;
+    document.getElementById('hofName').textContent = t.hofName;
+    document.getElementById('hofPoints').textContent = t.hofPoints;
+    document.getElementById('hofTime').textContent = t.hofTime;
+
+    document.getElementById('summary1Header').textContent = t.summary1Header;
+    document.getElementById('summary2Header').textContent = t.summary2Header;
+    document.getElementById('summary1Body').innerHTML = t.summary1HTML;
+    document.getElementById('summary2Body').innerHTML = t.summary2HTML;
+    document.getElementById('continue1Btn').textContent = t.continueBtn;
+    document.getElementById('continue2Btn').textContent = t.continueBtn;
+
+    document.getElementById('finalTitle').textContent = t.finalTitle;
+    document.getElementById('scoreLabel').textContent = t.scoreLabel;
+    document.getElementById('finalTimeLabel').innerHTML = t.timeLabel + ' <span id="finalTime">' + (document.getElementById('finalTime') ? document.getElementById('finalTime').textContent : '00:00.0') + '</span>';
+    document.getElementById('backToMenuBtn').textContent = t.backBtn;
+
+    document.getElementById('modalTitle').textContent = t.modalTitle;
+    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + (document.getElementById('modalTime') ? document.getElementById('modalTime').textContent : '00:00.0') + '</span>';
+    document.getElementById('submitScoreBtn').textContent = t.modalSave;
+    document.getElementById('discardScoreBtn').textContent = t.modalCancel;
+    document.getElementById('playerName').placeholder = t.namePlaceholder;
+    document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+
+    // Título y palabra dinámica del juego activo
+    if (activeGame && GAMES[activeGame]) {
+        document.getElementById('gameTitle').textContent = t[activeGame + 'Title'];
+        const cfg = GAMES[activeGame];
+        const arr = gameDataI18n[lang][cfg.dataKey];
+        if (currentTargetIndex !== null && currentTargetIndex !== undefined && arr && arr[currentTargetIndex]) {
+            const newWord = arr[currentTargetIndex].text;
+            document.getElementById('eyeWordText').textContent = newWord;
+            // Cambio de idioma a mitad de partida: cancela lo que suene y relee en el nuevo idioma
+            window.speechSynthesis.cancel();
+            speakText(newWord, lang);
+        }
+    }
+}
+
+document.getElementById('btnLangEs').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
+document.getElementById('btnLangEn').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+
+/* ====================================================
+   SONIDO ON/OFF
+===================================================== */
+const svgSoundOn = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+const svgSoundOff = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+
+function toggleSound() {
+    const muteBtn = document.getElementById('muteBtn');
+    const svg = document.getElementById('muteSvg');
+    if (isMuted) {
+        isMuted = false; soundEnabled = true;
+        svg.innerHTML = svgSoundOn;
+        muteBtn.classList.remove('muted');
+        reproducirSonidoTap();
+    } else {
+        isMuted = true; soundEnabled = false;
+        svg.innerHTML = svgSoundOff;
+        muteBtn.classList.add('muted');
+    }
+}
+
+/* ====================================================
+   PANTALLAS
+===================================================== */
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+/* ====================================================
+   TEMPORIZADOR
+===================================================== */
+function startGlobalTimer() {
+    if (timerInterval) return;
+    startTime = Date.now();
+    elapsed = 0;
+    timerStopped = false;
+    timerInterval = setInterval(() => {
+        const delta = (Date.now() - startTime) / 1000;
+        elapsed = delta;
+        updateTimerDisplay(elapsed);
+    }, 100);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerStopped = true;
+    }
+}
+
+function updateTimerDisplay(sec) {
+    document.getElementById('timerDisplay').textContent = formatTime(sec);
+}
+
+function formatTime(sec) {
+    const m = Math.floor(sec / 60).toString().padStart(2, '0');
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    const ms = Math.round((sec % 1) * 10);
+    return `${m}:${s}.${ms}`;
+}
+
+function updateProgress(pct) {
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
+function calcularPuntuacionFinal() {
+    const score = 100 - ((totalAttempts - MIN_ATTEMPTS) * (100 / MIN_ATTEMPTS));
+    return Math.max(0, Math.round(score));
+}
+
+/* ====================================================
+   PRECARGA DE IMÁGENES (anti-bloqueo)
+===================================================== */
+function preloadWithTimeout(urls, timeoutMs) {
+    const promises = urls.map(url => new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve({ url, ok: true });
+        img.onerror = () => resolve({ url, ok: false });
+        img.src = url;
+    }));
+    const allDone = Promise.all(promises);
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), timeoutMs));
+    return Promise.race([allDone, timeoutPromise]);
+}
+
+/* ====================================================
+   JUEGO: EL OJO (4 juegos encadenados sobre la misma pantalla)
+===================================================== */
+let gameQueue = [];
+let queuePos = 0;
+let currentTargetIndex = null;
+
+function buildHotspots(coords) {
+    const container = document.getElementById('eyeHotspots');
+    container.innerHTML = '';
+    coords.forEach((c, idx) => {
+        const div = document.createElement('div');
+        div.className = 'eye-hotspot';
+        div.setAttribute('data-orig-index', idx);
+        div.style.left = (c.x1 / IMG_W * 100) + '%';
+        div.style.top = (c.y1 / IMG_H * 100) + '%';
+        div.style.width = ((c.x2 - c.x1) / IMG_W * 100) + '%';
+        div.style.height = ((c.y2 - c.y1) / IMG_H * 100) + '%';
+        div.addEventListener('click', () => handleHotspotClick(idx, div));
+        container.appendChild(div);
+    });
+}
+
+function startGame(key) {
+    activeGame = key;
+    const cfg = GAMES[key];
+
+    document.getElementById('gameTitle').textContent = i18n[currentLang][key + 'Title'];
+
+    const img = document.getElementById('eyeImg');
+    document.getElementById('eyeImageWrapper').classList.remove('img-error');
+    if (img.getAttribute('src') !== cfg.img) img.setAttribute('src', cfg.img);
+
+    buildHotspots(cfg.coords);
+
+    gameQueue = shuffle(Array.from({ length: cfg.count }, (_, i) => i));
+    queuePos = 0;
+
+    showScreen('gameScreen');
+    loadCurrentWord();
+}
+
+function loadCurrentWord() {
+    const cfg = GAMES[activeGame];
+    currentTargetIndex = gameQueue[queuePos];
+    const word = gameDataI18n[currentLang][cfg.dataKey][currentTargetIndex].text;
+    document.getElementById('eyeWordText').textContent = word;
+    setTimeout(() => { speakText(word, currentLang); }, 300);
+}
+
+function handleHotspotClick(idx, el) {
+    if (!activeGame) return;
+    totalAttempts++;
+    window.speechSynthesis.cancel();
+
+    if (idx === currentTargetIndex) {
+        reproducirSonidoCorrecto();
+        el.classList.add('flash-correct');
+        setTimeout(() => el.classList.remove('flash-correct'), 200);
+        correctCountGlobal++;
+        updateProgress((correctCountGlobal / TOTAL_ITEMS) * 100);
+        queuePos++;
+        const cfg = GAMES[activeGame];
+        if (queuePos < cfg.count) {
+            setTimeout(loadCurrentWord, 260);
+        } else {
+            setTimeout(advanceAfterGame, 300);
+        }
+    } else {
+        reproducirSonidoError();
+        el.classList.add('flash-incorrect');
+        setTimeout(() => el.classList.remove('flash-incorrect'), 200);
+    }
+}
+
+function advanceAfterGame() {
+    const finished = activeGame;
+    if (finished === 'game1a') {
+        activeGame = null;
+        reproducirSonidoCompletado();
+        setTimeout(() => startGame('game1b'), 1000);
+    } else if (finished === 'game1b') {
+        activeGame = null;
+        window.speechSynthesis.cancel();
+        showScreen('summary2Screen');
+    } else if (finished === 'game2a') {
+        activeGame = null;
+        reproducirSonidoCompletado();
+        setTimeout(() => startGame('game2b'), 1000);
+    } else if (finished === 'game2b') {
+        finishGame();
+    }
+}
+
+document.getElementById('btnPlayWord').onclick = () => {
+    if (!activeGame || currentTargetIndex === null) return;
+    const cfg = GAMES[activeGame];
+    speakText(gameDataI18n[currentLang][cfg.dataKey][currentTargetIndex].text, currentLang);
+};
+
+document.getElementById('eyeImg').onerror = () => {
+    document.getElementById('eyeImageWrapper').classList.add('img-error');
+};
+
+/* ====================================================
+   FINAL DEL JUEGO
+===================================================== */
+function finishGame() {
+    window.speechSynthesis.cancel();
+    activeGame = null;
+    stopTimer();
+    finalTimeVal = elapsed;
+    finalScoreVal = calcularPuntuacionFinal();
+    document.getElementById('finalScore').textContent = finalScoreVal;
+    document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+
+    const trophyBox = document.getElementById('trophyBox');
+    const msg = document.getElementById('finalMsg');
+    const t = i18n[currentLang];
+
+    if (finalScoreVal === 100) {
+        trophyBox.style.display = 'block';
+        msg.textContent = t.msgPerfect;
+        reproducirSonidoVictoria();
+        createConfetti();
+    } else if (finalScoreVal >= 80) {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg80;
+        reproducirSonidoCompletado();
+    } else if (finalScoreVal >= 50) {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg50;
+        reproducirSonidoCompletado();
+    } else {
+        trophyBox.style.display = 'none';
+        msg.textContent = t.msg0;
+        reproducirSonidoCompletado();
+    }
+
+    showScreen('finalScreen');
+    showSubmitModal(finalTimeVal, finalScoreVal);
+}
+
+function createConfetti() {
+    for (let i = 0; i < 100; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            const x = Math.random() * window.innerWidth;
+            const tx = (Math.random() - 0.5) * 200;
+            c.style.left = x + 'px'; c.style.top = '-10px';
+            c.style.backgroundColor = ['#ff595e', '#1982c4', '#6a4c93', '#ffca3a', '#8ac926'][Math.floor(Math.random() * 5)];
+            c.style.setProperty('--tx', tx + 'px');
+            c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3000);
+        }, i * 20);
+    }
+}
+
+/* ====================================================
+   HALL OF FAME
+===================================================== */
+function loadHallOfFame() {
+    if (isHofLoading) return;
+    isHofLoading = true;
+    const tbody = document.getElementById('hofTableBody');
+    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+    const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+    const timeoutId = setTimeout(() => {
+        if (isHofLoading) {
+            tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>';
+            isHofLoading = false;
+        }
+    }, 8000);
+
+    fetch(url)
+        .then(r => { clearTimeout(timeoutId); if (!r.ok) throw new Error("Network response was not ok"); return r.json(); })
+        .then(data => {
+            if (data.status === 'success' && data.data) {
+                const processedData = data.data.map(row => {
+                    const getVal = keys => {
+                        for (let key of keys) {
+                            if (row[key] !== undefined && row[key] !== "") return row[key];
+                        }
+                        return null;
+                    };
+                    return {
+                        Nombre: getVal(["Nombre", "nombre", "name"]),
+                        Apellidos: getVal(["Apellidos", "apellidos", "surname"]),
+                        Puntuación: getVal(["Puntuación", "puntuación", "score"]),
+                        Tiempo: getVal(["Tiempo", "tiempo", "time"])
+                    };
+                });
+
+                const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+
+                if (validData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${currentLang === 'es' ? '¡Sé el primero en guardar tu puntuación!' : 'Be the first to save your score!'}</td></tr>`;
+                } else {
+                    validData.sort((a, b) => {
+                        const sA = parseFloat(a.Puntuación) || 0;
+                        const sB = parseFloat(b.Puntuación) || 0;
+                        if (sB !== sA) return sB - sA;
+                        return (parseFloat(a.Tiempo) || 9999) - (parseFloat(b.Tiempo) || 9999);
+                    });
+                    tbody.innerHTML = '';
+                    validData.slice(0, 10).forEach((item, i) => {
+                        const tr = document.createElement('tr');
+                        const displayName = `${item.Nombre || ''} ${item.Apellidos || ''}`.trim();
+                        let timeStr = item.Tiempo;
+                        if (!isNaN(parseFloat(item.Tiempo))) {
+                            timeStr = formatTime(parseFloat(item.Tiempo));
+                        }
+                        tr.innerHTML = `<td>${i + 1}º</td><td>${displayName}</td><td>${item.Puntuación || 0}</td><td>${timeStr}</td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } else {
+                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>';
+            }
+        })
+        .catch(e => {
+            clearTimeout(timeoutId);
+            console.error("Error HoF:", e);
+            tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión o timeout.</td></tr>';
+        })
+        .finally(() => { isHofLoading = false; });
+}
+
+function showSubmitModal(time, score) {
+    const mt = document.getElementById('modalTime');
+    if (mt) mt.textContent = formatTime(time);
+    document.getElementById('playerName').value = '';
+    document.getElementById('playerSurname').value = '';
+    document.getElementById('submitModal').style.display = 'flex';
+    const btn = document.getElementById('submitScoreBtn');
+    btn.textContent = i18n[currentLang].modalSave;
+    btn.disabled = false;
+}
+
+function submitScore() {
+    const btn = document.getElementById('submitScoreBtn');
+    const name = document.getElementById('playerName').value.trim().substring(0, 15);
+    const surname = document.getElementById('playerSurname').value.trim().substring(0, 15);
+
+    if (!name || !surname) {
+        alert(currentLang === 'es' ? "Por favor, rellena nombre y apellido" : "Please fill in name and surname");
+        return;
+    }
+
+    const payload = { score: finalScoreVal, time: finalTimeVal, name, surname };
+    const originalText = btn.textContent;
+    btn.textContent = "Enviando...";
+    btn.disabled = true;
+
+    function closeAfterSend() {
+        document.getElementById('submitModal').style.display = 'none';
+        btn.textContent = originalText;
+        btn.disabled = false;
+        setTimeout(loadHallOfFame, 1500);
+    }
+
+    fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
+    })
+    .then(() => { setTimeout(closeAfterSend, 1000); })
+    .catch(() => { setTimeout(closeAfterSend, 1000); });
+}
+
+/* ====================================================
+   EVENTOS
+===================================================== */
+document.getElementById('playBtn').onclick = () => {
+    reproducirSonidoTap();
+    unlockAudioContext();
+    forceInitTTS();
+    preloadWithTimeout([EXT_IMG_URL, INT_IMG_URL], 4500).then(() => {
+        showScreen('summary1Screen');
+    });
+};
+
+document.getElementById('continue1Btn').onclick = () => {
+    reproducirSonidoTap();
+    timerStopped = false;
+    elapsed = 0;
+    timerInterval = null;
+    totalAttempts = 0;
+    correctCountGlobal = 0;
+    updateProgress(0);
+    startGlobalTimer();
+    startGame('game1a');
+};
+
+document.getElementById('continue2Btn').onclick = () => {
+    reproducirSonidoTap();
+    startGame('game2a');
+};
+
+document.getElementById('backToMenuBtn').onclick = () => {
+    reproducirSonidoTap();
+    location.reload();
+};
+
+document.getElementById('submitScoreBtn').onclick = () => {
+    reproducirSonidoTap();
+    submitScore();
+};
+
+document.getElementById('discardScoreBtn').onclick = () => {
+    reproducirSonidoTap();
+    document.getElementById('submitModal').style.display = 'none';
+};
+
+document.getElementById('playerSurname').addEventListener('keypress', e => {
+    if (e.key === 'Enter') document.getElementById('submitScoreBtn').click();
+});
+document.getElementById('playerName').addEventListener('keypress', e => {
+    if (e.key === 'Enter') document.getElementById('playerSurname').focus();
+});
+
+/* ====================================================
+   INIT
+===================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    loadHallOfFame();
+    applyLanguage('es');
+});
+</script>
+</body>
+</html>

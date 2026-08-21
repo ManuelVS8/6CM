@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>El sistema nervioso</title>
+    <title>Las neuronas</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -124,7 +124,7 @@
         .btn-play-word:hover { transform:scale(1.12); }
         .btn-play-word:active { transform:scale(.95); }
         .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
-        .sn-image-wrapper { position:relative; width:100%; max-width:400px; aspect-ratio:1084/1230; margin:0 auto;
+        .sn-image-wrapper { position:relative; width:100%; max-width:440px; aspect-ratio:1536/1152; margin:0 auto;
             border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
         .sn-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; user-select:none; -webkit-user-drag:none; }
         .hotspots-container { position:absolute; inset:0; width:100%; height:100%; }
@@ -214,12 +214,12 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">El sistema nervioso</h1>
-            <div class="subtitle" id="startSubtitle">Sistema nervioso central y periférico</div>
+            <h1 id="startTitle">Las neuronas</h1>
+            <div class="subtitle" id="startSubtitle">Las neuronas, transmisoras de impulsos nerviosos</div>
         </header>
         <div class="start-content">
             <div class="advice-box" id="startAdvice">
-                El sistema nervioso está compuesto por el sistema nervioso central (SNC): <span class="highlight-keyword">encéfalo</span> y <span class="highlight-keyword">médula espinal</span>; y el sistema nervioso periférico (SNP): <span class="highlight-keyword">nervios sensitivos</span> y <span class="highlight-keyword">nervios motores</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+                Las neuronas son las células encargadas de transmitir impulsos nerviosos y conectan los <span class="highlight-keyword">sentidos</span>, el <span class="highlight-keyword">sistema nervioso central</span> y el <span class="highlight-keyword">aparato locomotor</span>. Sus partes son las <span class="highlight-keyword">dendritas</span>, <span class="highlight-keyword">el axón</span> y los <span class="highlight-keyword">botones del axón</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
             </div>
             <button class="btn btn-primary" id="playBtn">Comenzar</button>
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
@@ -243,7 +243,7 @@
     <!-- ===== PANTALLA RESUMEN ===== -->
     <section class="screen" id="summaryScreen">
         <header>
-            <h1 id="summaryTitle">El sistema nervioso</h1>
+            <h1 id="summaryTitle">Las neuronas</h1>
         </header>
         <div class="summary-wrapper">
             <div class="summary-container" id="accordionContainer"></div>
@@ -254,7 +254,7 @@
     <!-- ===== PANTALLA JUEGO 1: EMPAREJAR (sin TTS) ===== -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1 id="game1Title">¿Qué función realiza cada parte del sistema nervioso?</h1>
+            <h1 id="game1Title">La neurona y sus partes</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay">00:00.00</div>
@@ -266,7 +266,7 @@
     <!-- ===== PANTALLA JUEGO 2: SEÑALAR PARTES (nombres, con TTS) ===== -->
     <section class="screen" id="game2Screen">
         <header>
-            <h1 id="game2Title">Señala las partes del sistema nervioso.</h1>
+            <h1 id="game2Title">Partes de la neurona</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay2">00:00.00</div>
@@ -280,7 +280,7 @@
                 </button>
             </div>
             <div class="sn-image-wrapper" id="snImageWrapper2">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Neurona.png" alt="Neurona">
                 <div id="hotspotsContainer2" class="hotspots-container"></div>
             </div>
         </div>
@@ -289,7 +289,7 @@
     <!-- ===== PANTALLA JUEGO 3: SEÑALAR PARTES (funciones, con TTS) ===== -->
     <section class="screen" id="game3Screen">
         <header>
-            <h1 id="game3Title">¿Qué función realiza cada parte del sistema nervioso?</h1>
+            <h1 id="game3Title">Función de las partes de la célula</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay3">00:00.00</div>
@@ -303,7 +303,7 @@
                 </button>
             </div>
             <div class="sn-image-wrapper" id="snImageWrapper3">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Neurona.png" alt="Neurona">
                 <div id="hotspotsContainer3" class="hotspots-container"></div>
             </div>
         </div>
@@ -312,7 +312,7 @@
     <!-- ===== PANTALLA FINAL ===== -->
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title" id="finalTitle">El sistema nervioso</h1>
+            <h1 class="final-title" id="finalTitle">Las neuronas</h1>
         </header>
         <div class="results">
             <div id="trophyDiv" class="trophy hidden">🏆</div>
@@ -344,66 +344,56 @@
 /* ====================================================
    CONFIGURACIÓN GLOBAL
 ===================================================== */
-const SHEET_NAME = "UD1_Sistema_nervioso";
+const SHEET_NAME = "UD1_Neuronas";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
-const IMG_W = 1084;
-const IMG_H = 1230;
-const TOTAL_INTERACTIONS = 19; // 5 (emparejar) + 5 (partes por nombre) + 9 (partes por función)
+const IMG_W = 1536;
+const IMG_H = 1152;
+const TOTAL_INTERACTIONS = 10; // 4 (emparejar) + 3 (partes por nombre) + 3 (partes por función)
 
 /* ====================================================
    DATOS: ÁREAS DE LA IMAGEN (comunes a juego 2 y 3)
 ===================================================== */
 const BOX_DEFS = {
-    cerebelo: [854,152,1057,349],
-    cerebro:  [68,47,274,241],
-    tronco:   [854,442,1059,639],
-    medula:   [848,721,1049,918],
-    nervios:  [57,569,256,764]
+    botones:   [1228,91,1413,267],
+    axon:      [843,276,1027,453],
+    dendritas: [698,917,884,1094]
 };
-const BOX_ORDER = ['cerebelo', 'cerebro', 'tronco', 'medula', 'nervios'];
+const BOX_ORDER = ['botones', 'axon', 'dendritas'];
 
 /* ====================================================
    DATOS: JUEGO 1 - EMPAREJAR
 ===================================================== */
 const game1Pairs = {
     es: {
-        cerebro:     { term: "Cerebro",            def: "Controla emociones, memoria y movimientos voluntarios" },
-        cerebelo:    { term: "Cerebelo",            def: "Equilibrio y coordinación de movimientos" },
-        tronco:      { term: "Tronco encefálico",   def: "Controla órganos y funciones internas" },
-        sensitivos:  { term: "Nervios sensitivos",  def: "llevan información al SNC" },
-        motores:     { term: "Nervios motores",     def: "llevan la respuesta al aparato locomotor" }
+        neuronas:  { term: "Neuronas",          def: "Células del sistema nervioso" },
+        dendritas: { term: "Dendritas",         def: "Reciben información de otras células" },
+        axon:      { term: "Axón",              def: "Transmite información a otras células" },
+        botones:   { term: "Botones del axón",  def: "Terminaciones del axón que se conectan a otras células" }
     },
     en: {
-        cerebro:     { term: "Cerebrum",            def: "Controls emotions, memory and voluntary movements" },
-        cerebelo:    { term: "Cerebellum",          def: "Balance and coordination of movements" },
-        tronco:      { term: "Brainstem",           def: "Controls internal organs and functions" },
-        sensitivos:  { term: "Sensory nerves",      def: "carry information to the CNS" },
-        motores:     { term: "Motor nerves",        def: "carry the response to the locomotor system" }
+        neuronas:  { term: "Neurons",           def: "Cells of the nervous system" },
+        dendritas: { term: "Dendrites",         def: "Receive information from other cells" },
+        axon:      { term: "Axon",              def: "Transmits information to other cells" },
+        botones:   { term: "Axon terminals",    def: "Endings of the axon that connect to other cells" }
     }
 };
-const game1Order = ['cerebro', 'cerebelo', 'tronco', 'sensitivos', 'motores'];
+const game1Order = ['neuronas', 'dendritas', 'axon', 'botones'];
 
 /* ====================================================
    DATOS: JUEGO 2 - SEÑALAR PARTES (NOMBRES)
 ===================================================== */
 const game2Labels = {
-    es: { cerebelo:"Cerebelo", cerebro:"Cerebro", tronco:"Tronco encefálico", medula:"Médula espinal", nervios:"Nervios" },
-    en: { cerebelo:"Cerebellum", cerebro:"Cerebrum", tronco:"Brainstem", medula:"Spinal cord", nervios:"Nerves" }
+    es: { botones:"Botones del axón", axon:"Axón", dendritas:"Dendritas" },
+    en: { botones:"Axon terminals", axon:"Axon", dendritas:"Dendrites" }
 };
 
 /* ====================================================
    DATOS: JUEGO 3 - SEÑALAR PARTES (FUNCIONES)
 ===================================================== */
 const game3Functions = [
-    { box:'cerebelo', es:'Coordina movimientos',                                   en:'Coordinates movements' },
-    { box:'cerebelo', es:'Controla el equilibrio',                                  en:'Controls balance' },
-    { box:'cerebro',  es:'Ordena movimientos voluntarios',                          en:'Commands voluntary movements' },
-    { box:'cerebro',  es:'Controla la memoria',                                     en:'Controls memory' },
-    { box:'cerebro',  es:'Es responsable de las emociones',                         en:'Is responsible for emotions' },
-    { box:'tronco',   es:'Controla órganos y funciones internas',                   en:'Controls internal organs and functions' },
-    { box:'medula',   es:'Es responsable de los movimientos reflejos',              en:'Is responsible for reflex movements' },
-    { box:'nervios',  es:'Envían información al sistema nervioso central',          en:'Send information to the central nervous system' },
-    { box:'nervios',  es:'Envían la respuesta al aparato locomotor',                en:'Send the response to the locomotor system' }
+    { box:'botones',   es:'Terminaciones del axón que se conectan a otras células',  en:'Endings of the axon that connect to other cells' },
+    { box:'axon',      es:'Transmite información a otras células',                   en:'Transmits information to other cells' },
+    { box:'dendritas', es:'Reciben información de otras células',                    en:'Receive information from other cells' }
 ];
 
 /* ====================================================
@@ -412,55 +402,23 @@ const game3Functions = [
 const summaryData = {
     es: [
         {
-            heading: "El sistema nervioso",
-            intro: "El sistema nervioso está compuesto por el sistema nervioso central (SNC) y el sistema nervioso periférico (SNP)",
-            items: []
-        },
-        {
-            heading: "Sistema nervioso central (SNC)",
-            intro: "El SNC está compuesto por el encéfalo y la médula espinal",
+            heading: "Neuronas",
+            intro: "Neuronas: son las células del sistema nervioso que reciben y transmiten impulsos nerviosos. Tienen tres partes:",
             items: [
-                { text: "Encéfalo: está compuesto por el cerebro, el cerebelo y el tronco encefálico", sub: [
-                    "Cerebro: es responsable de la memoria, los movimientos voluntarios y las emociones.",
-                    "Cerebelo: es responsable del equilibrio y de la coordinación de movimientos.",
-                    "Tronco encefálico: controla órganos internos, como el latido del corazón y la respiración"
-                ]},
-                "La médula espinal es responsable de los movimientos involuntarios o reflejos"
-            ]
-        },
-        {
-            heading: "Sistema nervioso periférico (SNP)",
-            intro: "El SNP está compuesto por los nervios sensitivos y nervios motores:",
-            items: [
-                "Nervios sensitivos: llevan el estímulo desde los sentidos hasta el SNC",
-                "Nervios motores: llevan la respuesta desde el SNC hasta el aparato locomotor"
+                "Dendritas: parte de la neurona que recibe información de otras células.",
+                "Axón: parte de la neurona que transmite la información hacia otras células.",
+                "Botones del axón: terminaciones del axón que se conectan a otras células."
             ]
         }
     ],
     en: [
         {
-            heading: "The nervous system",
-            intro: "The nervous system is made up of the central nervous system (CNS) and the peripheral nervous system (PNS)",
-            items: []
-        },
-        {
-            heading: "Central nervous system (CNS)",
-            intro: "The CNS is made up of the brain and the spinal cord",
+            heading: "Neurons",
+            intro: "Neurons: cells of the nervous system that receive and transmit nerve impulses. They have three parts:",
             items: [
-                { text: "Brain: made up of the cerebrum, the cerebellum and the brainstem", sub: [
-                    "Cerebrum: responsible for memory, voluntary movements and emotions.",
-                    "Cerebellum: responsible for balance and coordination of movements.",
-                    "Brainstem: controls internal organs, such as heartbeat and breathing"
-                ]},
-                "The spinal cord is responsible for involuntary or reflex movements"
-            ]
-        },
-        {
-            heading: "Peripheral nervous system (PNS)",
-            intro: "The PNS is made up of sensory nerves and motor nerves:",
-            items: [
-                "Sensory nerves: carry the stimulus from the senses to the CNS",
-                "Motor nerves: carry the response from the CNS to the locomotor system"
+                "Dendrites: part of the neuron that receives information from other cells.",
+                "Axon: part of the neuron that transmits information to other cells.",
+                "Axon terminals: endings of the axon that connect to other cells."
             ]
         }
     ]
@@ -471,18 +429,18 @@ const summaryData = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'El sistema nervioso',
-        startSubtitle: 'Sistema nervioso central y periférico',
-        startAdvice: 'El sistema nervioso está compuesto por el sistema nervioso central (SNC): <span class="highlight-keyword">encéfalo</span> y <span class="highlight-keyword">médula espinal</span>; y el sistema nervioso periférico (SNP): <span class="highlight-keyword">nervios sensitivos</span> y <span class="highlight-keyword">nervios motores</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startTitle: 'Las neuronas',
+        startSubtitle: 'Las neuronas, transmisoras de impulsos nerviosos',
+        startAdvice: 'Las neuronas son las células encargadas de transmitir impulsos nerviosos y conectan los <span class="highlight-keyword">sentidos</span>, el <span class="highlight-keyword">sistema nervioso central</span> y el <span class="highlight-keyword">aparato locomotor</span>. Sus partes son las <span class="highlight-keyword">dendritas</span>, <span class="highlight-keyword">el axón</span> y los <span class="highlight-keyword">botones del axón</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
-        summaryTitle: 'El sistema nervioso',
+        summaryTitle: 'Las neuronas',
         continueBtn: 'Continuar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
-        game1Title: '¿Qué función realiza cada parte del sistema nervioso?',
-        game2Title: 'Señala las partes del sistema nervioso.',
-        game3Title: '¿Qué función realiza cada parte del sistema nervioso?',
-        finalTitle: 'El sistema nervioso',
+        game1Title: 'La neurona y sus partes',
+        game2Title: 'Partes de la neurona',
+        game3Title: 'Función de las partes de la célula',
+        finalTitle: 'Las neuronas',
         scoreLabel: 'Puntuación:',
         timeLabel: 'Tiempo:',
         backBtn: 'Volver al menú',
@@ -499,18 +457,18 @@ const i18n = {
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
     },
     en: {
-        startTitle: 'The nervous system',
-        startSubtitle: 'Central and peripheral nervous system',
-        startAdvice: 'The nervous system is made up of the central nervous system (CNS): <span class="highlight-keyword">brain</span> and <span class="highlight-keyword">spinal cord</span>; and the peripheral nervous system (PNS): <span class="highlight-keyword">sensory nerves</span> and <span class="highlight-keyword">motor nerves</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startTitle: 'Neurons',
+        startSubtitle: 'Neurons, transmitters of nerve impulses',
+        startAdvice: 'Neurons are the cells responsible for transmitting nerve impulses and connect the <span class="highlight-keyword">senses</span>, the <span class="highlight-keyword">central nervous system</span> and the <span class="highlight-keyword">locomotor system</span>. Their parts are the <span class="highlight-keyword">dendrites</span>, <span class="highlight-keyword">the axon</span> and the <span class="highlight-keyword">axon terminals</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
         startBtn: 'Start',
-        summaryTitle: 'The nervous system',
+        summaryTitle: 'Neurons',
         continueBtn: 'Continue',
         hofTitle: 'Best scores',
         hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
-        game1Title: 'What function does each part of the nervous system perform?',
-        game2Title: 'Point to the parts of the nervous system.',
-        game3Title: 'What function does each part of the nervous system perform?',
-        finalTitle: 'The nervous system',
+        game1Title: 'The neuron and its parts',
+        game2Title: 'Parts of the neuron',
+        game3Title: 'Function of the parts of the cell',
+        finalTitle: 'Neurons',
         scoreLabel: 'Score:',
         timeLabel: 'Time:',
         backBtn: 'Back to menu',
@@ -730,16 +688,18 @@ function buildSummary() {
     const data = summaryData[currentLang];
 
     const keywords = currentLang === 'es'
-        ? ['encéfalo', 'médula espinal', 'cerebro', 'cerebelo', 'tronco encefálico', 'nervios sensitivos', 'nervios motores']
-        : ['brain', 'spinal cord', 'cerebrum', 'cerebellum', 'brainstem', 'sensory nerves', 'motor nerves'];
+        ? ['neuronas', 'dendritas', 'botones del axón', 'axón']
+        : ['neurons', 'dendrites', 'axon terminals', 'axon'];
 
     const highlightKeywords = (text) => {
-        let result = text;
-        keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-            result = result.replace(regex, `<span class="keyword">${kw}</span>`);
-        });
-        return result;
+        // Una sola pasada, con las frases más largas primero en la alternancia,
+        // para que "botones del axón" no deje "axón" anidado dentro de su propio span.
+        const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+        const escaped = sortedKeywords.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi');
+        // Se conserva el texto original tal y como aparece (mayúsculas al inicio de frase incluidas),
+        // en vez de sustituirlo siempre por la keyword en minúscula.
+        return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
     };
 
     const blockColors = ['block-blue', 'block-orange', 'block-yellow'];
@@ -1283,7 +1243,7 @@ window.addEventListener('load', () => {
 function preloadImages() {
     return Promise.race([
         Promise.all([
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png'; }),
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Neurona.png'; }),
             new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png'; })
         ]),
         new Promise(resolve => setTimeout(resolve, 5000))

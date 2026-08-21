@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>El sistema nervioso</title>
+    <title>La musculatura</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         * { box-sizing: border-box; margin:0; padding:0; }
         :root {
-            --blue:#001DFF;
             --blue-dark:#04032B;
             --blue-700:#1a3a5f;
             --blue-600:#254fba;
@@ -38,7 +37,6 @@
         .subtitle { color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
         .highlight-keyword { color:var(--orange); font-weight:800; }
 
-        /* Buttons */
         .btn { color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
             transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
             display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
@@ -46,8 +44,6 @@
         .btn:active { transform:translateY(0) scale(.97); }
         .btn-primary { background:var(--orange); }
         .btn-primary:hover { background:var(--orange-700); }
-        .btn-blue { background:var(--blue-600); }
-        .btn-blue:hover { filter:brightness(.9); }
         .btn-ghost { background:#e6f2ff; color:var(--blue-700); }
 
         .screen { display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
@@ -59,7 +55,6 @@
         .progress-bar { flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
         .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
 
-        /* Top controls */
         .top-controls { position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
         .lang-pill { display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
             box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
@@ -90,30 +85,10 @@
             80%{transform:translateX(5px);}
         }
 
-        /* Pantalla Resumen */
-        .summary-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.5rem; flex:1; padding:1rem 0; }
-        .summary-container { width:100%; max-width:850px; display:flex; flex-direction:column; gap:1.2rem; }
-        .summary-block { border-radius:16px; padding:1.5rem 1.7rem; border:2px solid; }
-        .summary-block-title { font-size:clamp(1.1rem,3vw,1.35rem); font-weight:800; margin-bottom:.7rem; }
-        .summary-block p.intro { color:var(--blue-dark); margin-bottom:.6rem; font-size:clamp(.9rem,2.3vw,1.02rem); }
-        .summary-list { list-style:disc; padding-left:1.4rem; }
-        .summary-list li { margin-bottom:.9rem; line-height:1.7; font-size:clamp(.9rem,2.3vw,1.02rem); color:var(--blue-dark); }
-        .summary-list li:last-child { margin-bottom:0; }
-        .summary-list .summary-sublist { list-style:circle; padding-left:1.3rem; margin-top:.5rem; }
-        .summary-list .summary-sublist li { margin-bottom:.5rem; font-size:clamp(.85rem,2.1vw,.96rem); }
-        .keyword { font-weight:900; }
-        .summary-block.block-blue { background:#E8EAFF; border-color:var(--blue-600); }
-        .summary-block.block-blue .summary-block-title { color:var(--blue-600); }
-        .summary-block.block-blue .keyword { color:var(--blue-600); }
-        .summary-block.block-orange { background:#FFF1E0; border-color:var(--orange); }
-        .summary-block.block-orange .summary-block-title { color:var(--orange-700); }
-        .summary-block.block-orange .keyword { color:var(--orange-700); }
-        .summary-block.block-yellow { background:#FFF9DB; border-color:#e8b910; }
-        .summary-block.block-yellow .summary-block-title { color:#a17f00; }
-        .summary-block.block-yellow .keyword { color:#a17f00; }
-
-        /* Pantallas Juego 2 y 3: Señalar partes (área transparente) */
+        /* Pantallas de señalar partes (área transparente) */
         .hotspot-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.2rem 0 1rem; }
+        .explain-text { background:var(--panel); border-left:4px solid var(--blue-700); padding:.9rem 1.2rem; border-radius:12px;
+            color:var(--blue-dark); max-width:700px; text-align:center; font-size:clamp(.92rem,2.6vw,1.05rem); line-height:1.5; }
         .word-display { display:flex; align-items:center; justify-content:center; gap:.8rem; }
         .word-box { font-size:clamp(1.1rem,3.6vw,1.7rem); font-weight:900; color:var(--blue-dark); background:var(--panel);
             padding:.55rem 1.5rem; border-radius:14px; box-shadow:0 3px 8px rgba(0,0,0,.08); min-width:170px; max-width:600px;
@@ -124,11 +99,13 @@
         .btn-play-word:hover { transform:scale(1.12); }
         .btn-play-word:active { transform:scale(.95); }
         .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
-        .sn-image-wrapper { position:relative; width:100%; max-width:400px; aspect-ratio:1084/1230; margin:0 auto;
-            border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
-        .sn-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; user-select:none; -webkit-user-drag:none; }
+        .img-wrapper { position:relative; width:100%; margin:0 auto; border-radius:14px; overflow:hidden;
+            box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
+        .img-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; user-select:none; -webkit-user-drag:none; }
+        .img-wrapper-portrait { max-width:300px; aspect-ratio:1847/2738; }
+        .img-wrapper-landscape { max-width:440px; aspect-ratio:789/648; }
         .hotspots-container { position:absolute; inset:0; width:100%; height:100%; }
-        /* Manuel ya ha dibujado los cuadros de selección en la propia imagen:
+        /* Manuel ya dibuja los cuadros de selección en la propia imagen:
            el área clicable debe ser invisible, sin borde y sin fondo. */
         .hotspot { position:absolute; background:transparent; border:none; cursor:pointer; padding:0; }
         .hotspot.flash-correct { animation:flashGreen .6s ease; }
@@ -142,26 +119,6 @@
             0% { box-shadow:0 0 0 0 rgba(231,76,60,0); background-color:transparent; }
             40% { box-shadow:0 0 0 8px rgba(231,76,60,.55); background-color:rgba(231,76,60,.25); }
             100% { box-shadow:0 0 0 0 rgba(231,76,60,0); background-color:transparent; }
-        }
-
-        /* Pantalla Juego 1: Emparejar (diseño exacto del modelo El_embarazo.html) */
-        .match-container { display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:8px; margin:.5rem auto; align-content:flex-start; justify-content:center; align-self:center; width:100%; max-width:700px; }
-        .memory-card {
-            background-color:var(--blue-600); color:#fff; border:3px solid transparent; border-radius:10px;
-            padding:12px 10px; cursor:pointer; transition:background-color .2s ease, box-shadow .2s ease, transform .15s ease;
-            text-align:center; min-height:80px; width:100%; height:100%; box-sizing:border-box;
-            display:flex; align-items:center; justify-content:center;
-            font-size:clamp(.85rem,2.4vw,1.05rem); font-weight:700; user-select:none; word-break:break-word;
-            overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08);
-        }
-        .memory-card:hover:not(.selected):not(.matched):not(.flash-error) { transform:scale(1.02); box-shadow:0 4px 10px rgba(0,0,0,.18); }
-        .memory-card.selected { background-color:var(--orange); animation:cardPulse 1s ease-in-out infinite; }
-        @keyframes cardPulse { 0%,100%{ transform:scale(1.02); } 50%{ transform:scale(1.05); } }
-        .memory-card.matched { background-color:var(--green); cursor:default; animation:none; transform:none; box-shadow:0 3px 10px rgba(46,204,113,.35); }
-        .memory-card.flash-error { animation:shakeAnim .4s ease-in-out; background-color:var(--red) !important; }
-        @media (max-width:380px) {
-            .match-container { gap:6px; }
-            .memory-card { min-height:76px; padding:8px 6px; font-size:.8rem; border-radius:8px; }
         }
 
         /* Pantalla Final */
@@ -214,12 +171,12 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">El sistema nervioso</h1>
-            <div class="subtitle" id="startSubtitle">Sistema nervioso central y periférico</div>
+            <h1 id="startTitle">La musculatura</h1>
+            <div class="subtitle" id="startSubtitle">Músculos del cuerpo</div>
         </header>
         <div class="start-content">
             <div class="advice-box" id="startAdvice">
-                El sistema nervioso está compuesto por el sistema nervioso central (SNC): <span class="highlight-keyword">encéfalo</span> y <span class="highlight-keyword">médula espinal</span>; y el sistema nervioso periférico (SNP): <span class="highlight-keyword">nervios sensitivos</span> y <span class="highlight-keyword">nervios motores</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+                Repasa y aprende los principales <span class="highlight-keyword">músculos</span> que componen nuestra <span class="highlight-keyword">musculatura</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
             </div>
             <button class="btn btn-primary" id="playBtn">Comenzar</button>
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
@@ -240,71 +197,49 @@
         </div>
     </section>
 
-    <!-- ===== PANTALLA RESUMEN ===== -->
-    <section class="screen" id="summaryScreen">
-        <header>
-            <h1 id="summaryTitle">El sistema nervioso</h1>
-        </header>
-        <div class="summary-wrapper">
-            <div class="summary-container" id="accordionContainer"></div>
-            <button class="btn btn-primary" id="continueBtn">Continuar</button>
-        </div>
-    </section>
-
-    <!-- ===== PANTALLA JUEGO 1: EMPAREJAR (sin TTS) ===== -->
+    <!-- ===== PANTALLA JUEGO 1: SEÑALAR MÚSCULOS (con TTS) ===== -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1 id="game1Title">¿Qué función realiza cada parte del sistema nervioso?</h1>
+            <h1 id="game1Title">Identifica los músculos del cuerpo.</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         </div>
-        <div class="match-container" id="game1Container"></div>
+        <div class="hotspot-wrapper">
+            <div class="word-display">
+                <span class="word-box" id="game1WordText">...</span>
+                <button class="btn-play-word" id="btnPlayWord1" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="img-wrapper img-wrapper-portrait" id="imgWrapper1">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Musculatura_juego.png" alt="Musculatura">
+                <div id="hotspotsContainer1" class="hotspots-container"></div>
+            </div>
+        </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 2: SEÑALAR PARTES (nombres, con TTS) ===== -->
+    <!-- ===== PANTALLA JUEGO 2: LOS MÚSCULOS Y EL MOVIMIENTO (con TTS) ===== -->
     <section class="screen" id="game2Screen">
         <header>
-            <h1 id="game2Title">Señala las partes del sistema nervioso.</h1>
+            <h1 id="game2Title">Los músculos y el movimiento.</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay2">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
         </div>
         <div class="hotspot-wrapper">
+            <div class="explain-text" id="game2ExplainText">Los músculos permiten el movimiento al contraerse y tirar de los huesos mediante los tendones.</div>
             <div class="word-display">
                 <span class="word-box" id="game2WordText">...</span>
                 <button class="btn-play-word" id="btnPlayWord2" title="Escuchar">
                     <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
                 </button>
             </div>
-            <div class="sn-image-wrapper" id="snImageWrapper2">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
+            <div class="img-wrapper img-wrapper-landscape" id="imgWrapper2">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Movimiento.png" alt="Movimiento muscular">
                 <div id="hotspotsContainer2" class="hotspots-container"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== PANTALLA JUEGO 3: SEÑALAR PARTES (funciones, con TTS) ===== -->
-    <section class="screen" id="game3Screen">
-        <header>
-            <h1 id="game3Title">¿Qué función realiza cada parte del sistema nervioso?</h1>
-        </header>
-        <div class="game-info">
-            <div class="timer" id="timerDisplay3">00:00.00</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
-        </div>
-        <div class="hotspot-wrapper">
-            <div class="word-display">
-                <span class="word-box" id="game3WordText">...</span>
-                <button class="btn-play-word" id="btnPlayWord3" title="Escuchar">
-                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
-                </button>
-            </div>
-            <div class="sn-image-wrapper" id="snImageWrapper3">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png" alt="Sistema nervioso">
-                <div id="hotspotsContainer3" class="hotspots-container"></div>
             </div>
         </div>
     </section>
@@ -312,7 +247,7 @@
     <!-- ===== PANTALLA FINAL ===== -->
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title" id="finalTitle">El sistema nervioso</h1>
+            <h1 class="final-title" id="finalTitle">Músculos del cuerpo</h1>
         </header>
         <div class="results">
             <div id="trophyDiv" class="trophy hidden">🏆</div>
@@ -344,126 +279,71 @@
 /* ====================================================
    CONFIGURACIÓN GLOBAL
 ===================================================== */
-const SHEET_NAME = "UD1_Sistema_nervioso";
+const SHEET_NAME = "UD1_Musculatura";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
-const IMG_W = 1084;
-const IMG_H = 1230;
-const TOTAL_INTERACTIONS = 19; // 5 (emparejar) + 5 (partes por nombre) + 9 (partes por función)
+
+const GAME1_IMG_W = 1847;
+const GAME1_IMG_H = 2738;
+const GAME2_IMG_W = 789;
+const GAME2_IMG_H = 648;
+
+const TOTAL_INTERACTIONS = 19; // 16 (músculos) + 3 (músculo/tendón/hueso)
 
 /* ====================================================
-   DATOS: ÁREAS DE LA IMAGEN (comunes a juego 2 y 3)
+   DATOS: JUEGO 1 - SEÑALAR MÚSCULOS
 ===================================================== */
-const BOX_DEFS = {
-    cerebelo: [854,152,1057,349],
-    cerebro:  [68,47,274,241],
-    tronco:   [854,442,1059,639],
-    medula:   [848,721,1049,918],
-    nervios:  [57,569,256,764]
+const game1BoxDefs = {
+    masetero:       [938,83,1176,302],
+    esterno:        [993,358,1233,577],
+    trapecios:      [1321,397,1557,619],
+    deltoides:      [1485,644,1721,861],
+    triceps:        [1485,897,1720,1116],
+    dorsales:       [1488,1167,1732,1389],
+    intercostales:  [1488,1427,1731,1644],
+    gluteo:         [1484,1708,1723,1928],
+    bicepsfemoral:  [1163,1778,1406,2000],
+    gemelos:        [1231,2117,1470,2336],
+    orbicular:      [271,296,509,516],
+    pectoral:       [170,563,410,788],
+    biceps:         [196,837,436,1056],
+    abdominales:    [489,1241,729,1462],
+    cuadriceps:     [151,1471,391,1690],
+    tibial:         [345,1967,582,2187]
 };
-const BOX_ORDER = ['cerebelo', 'cerebro', 'tronco', 'medula', 'nervios'];
+const game1BoxOrder = ['masetero','esterno','trapecios','deltoides','triceps','dorsales',
+    'intercostales','gluteo','bicepsfemoral','gemelos','orbicular','pectoral','biceps',
+    'abdominales','cuadriceps','tibial'];
 
-/* ====================================================
-   DATOS: JUEGO 1 - EMPAREJAR
-===================================================== */
-const game1Pairs = {
+const game1Labels = {
     es: {
-        cerebro:     { term: "Cerebro",            def: "Controla emociones, memoria y movimientos voluntarios" },
-        cerebelo:    { term: "Cerebelo",            def: "Equilibrio y coordinación de movimientos" },
-        tronco:      { term: "Tronco encefálico",   def: "Controla órganos y funciones internas" },
-        sensitivos:  { term: "Nervios sensitivos",  def: "llevan información al SNC" },
-        motores:     { term: "Nervios motores",     def: "llevan la respuesta al aparato locomotor" }
+        masetero: "Masetero", esterno: "Esternocleidomastoideo", trapecios: "Trapecios",
+        deltoides: "Deltoides", triceps: "Tríceps", dorsales: "Dorsales",
+        intercostales: "Intercostales", gluteo: "Glúteos", bicepsfemoral: "Bíceps femoral",
+        gemelos: "Gemelos", orbicular: "Orbicular del ojo", pectoral: "Pectoral",
+        biceps: "Bíceps", abdominales: "Abdominales", cuadriceps: "Cuádriceps", tibial: "Tibial"
     },
     en: {
-        cerebro:     { term: "Cerebrum",            def: "Controls emotions, memory and voluntary movements" },
-        cerebelo:    { term: "Cerebellum",          def: "Balance and coordination of movements" },
-        tronco:      { term: "Brainstem",           def: "Controls internal organs and functions" },
-        sensitivos:  { term: "Sensory nerves",      def: "carry information to the CNS" },
-        motores:     { term: "Motor nerves",        def: "carry the response to the locomotor system" }
+        masetero: "Masseter", esterno: "Sternocleidomastoid", trapecios: "Trapezius",
+        deltoides: "Deltoids", triceps: "Triceps", dorsales: "Latissimus dorsi",
+        intercostales: "Intercostals", gluteo: "Glutes", bicepsfemoral: "Biceps femoris",
+        gemelos: "Calves", orbicular: "Orbicularis oculi", pectoral: "Pectoral",
+        biceps: "Biceps", abdominales: "Abdominals", cuadriceps: "Quadriceps", tibial: "Tibialis"
     }
 };
-const game1Order = ['cerebro', 'cerebelo', 'tronco', 'sensitivos', 'motores'];
 
 /* ====================================================
-   DATOS: JUEGO 2 - SEÑALAR PARTES (NOMBRES)
+   DATOS: JUEGO 2 - LOS MÚSCULOS Y EL MOVIMIENTO
 ===================================================== */
-const game2Labels = {
-    es: { cerebelo:"Cerebelo", cerebro:"Cerebro", tronco:"Tronco encefálico", medula:"Médula espinal", nervios:"Nervios" },
-    en: { cerebelo:"Cerebellum", cerebro:"Cerebrum", tronco:"Brainstem", medula:"Spinal cord", nervios:"Nerves" }
+const game2BoxDefs = {
+    musculo: [352,97,479,225],
+    tendon:  [399,276,526,409],
+    hueso:   [587,297,714,429]
 };
+const game2BoxOrder = ['musculo', 'tendon', 'hueso'];
 
-/* ====================================================
-   DATOS: JUEGO 3 - SEÑALAR PARTES (FUNCIONES)
-===================================================== */
-const game3Functions = [
-    { box:'cerebelo', es:'Coordina movimientos',                                   en:'Coordinates movements' },
-    { box:'cerebelo', es:'Controla el equilibrio',                                  en:'Controls balance' },
-    { box:'cerebro',  es:'Ordena movimientos voluntarios',                          en:'Commands voluntary movements' },
-    { box:'cerebro',  es:'Controla la memoria',                                     en:'Controls memory' },
-    { box:'cerebro',  es:'Es responsable de las emociones',                         en:'Is responsible for emotions' },
-    { box:'tronco',   es:'Controla órganos y funciones internas',                   en:'Controls internal organs and functions' },
-    { box:'medula',   es:'Es responsable de los movimientos reflejos',              en:'Is responsible for reflex movements' },
-    { box:'nervios',  es:'Envían información al sistema nervioso central',          en:'Send information to the central nervous system' },
-    { box:'nervios',  es:'Envían la respuesta al aparato locomotor',                en:'Send the response to the locomotor system' }
-];
-
-/* ====================================================
-   RESUMEN PANTALLA (Bloques)
-===================================================== */
-const summaryData = {
-    es: [
-        {
-            heading: "El sistema nervioso",
-            intro: "El sistema nervioso está compuesto por el sistema nervioso central (SNC) y el sistema nervioso periférico (SNP)",
-            items: []
-        },
-        {
-            heading: "Sistema nervioso central (SNC)",
-            intro: "El SNC está compuesto por el encéfalo y la médula espinal",
-            items: [
-                { text: "Encéfalo: está compuesto por el cerebro, el cerebelo y el tronco encefálico", sub: [
-                    "Cerebro: es responsable de la memoria, los movimientos voluntarios y las emociones.",
-                    "Cerebelo: es responsable del equilibrio y de la coordinación de movimientos.",
-                    "Tronco encefálico: controla órganos internos, como el latido del corazón y la respiración"
-                ]},
-                "La médula espinal es responsable de los movimientos involuntarios o reflejos"
-            ]
-        },
-        {
-            heading: "Sistema nervioso periférico (SNP)",
-            intro: "El SNP está compuesto por los nervios sensitivos y nervios motores:",
-            items: [
-                "Nervios sensitivos: llevan el estímulo desde los sentidos hasta el SNC",
-                "Nervios motores: llevan la respuesta desde el SNC hasta el aparato locomotor"
-            ]
-        }
-    ],
-    en: [
-        {
-            heading: "The nervous system",
-            intro: "The nervous system is made up of the central nervous system (CNS) and the peripheral nervous system (PNS)",
-            items: []
-        },
-        {
-            heading: "Central nervous system (CNS)",
-            intro: "The CNS is made up of the brain and the spinal cord",
-            items: [
-                { text: "Brain: made up of the cerebrum, the cerebellum and the brainstem", sub: [
-                    "Cerebrum: responsible for memory, voluntary movements and emotions.",
-                    "Cerebellum: responsible for balance and coordination of movements.",
-                    "Brainstem: controls internal organs, such as heartbeat and breathing"
-                ]},
-                "The spinal cord is responsible for involuntary or reflex movements"
-            ]
-        },
-        {
-            heading: "Peripheral nervous system (PNS)",
-            intro: "The PNS is made up of sensory nerves and motor nerves:",
-            items: [
-                "Sensory nerves: carry the stimulus from the senses to the CNS",
-                "Motor nerves: carry the response from the CNS to the locomotor system"
-            ]
-        }
-    ]
+const game2Labels = {
+    es: { musculo: "Músculo", tendon: "Tendón", hueso: "Hueso" },
+    en: { musculo: "Muscle", tendon: "Tendon", hueso: "Bone" }
 };
 
 /* ====================================================
@@ -471,18 +351,16 @@ const summaryData = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'El sistema nervioso',
-        startSubtitle: 'Sistema nervioso central y periférico',
-        startAdvice: 'El sistema nervioso está compuesto por el sistema nervioso central (SNC): <span class="highlight-keyword">encéfalo</span> y <span class="highlight-keyword">médula espinal</span>; y el sistema nervioso periférico (SNP): <span class="highlight-keyword">nervios sensitivos</span> y <span class="highlight-keyword">nervios motores</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startTitle: 'La musculatura',
+        startSubtitle: 'Músculos del cuerpo',
+        startAdvice: 'Repasa y aprende los principales <span class="highlight-keyword">músculos</span> que componen nuestra <span class="highlight-keyword">musculatura</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
-        summaryTitle: 'El sistema nervioso',
-        continueBtn: 'Continuar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
-        game1Title: '¿Qué función realiza cada parte del sistema nervioso?',
-        game2Title: 'Señala las partes del sistema nervioso.',
-        game3Title: '¿Qué función realiza cada parte del sistema nervioso?',
-        finalTitle: 'El sistema nervioso',
+        game1Title: 'Identifica los músculos del cuerpo.',
+        game2Title: 'Los músculos y el movimiento.',
+        game2ExplainText: 'Los músculos permiten el movimiento al contraerse y tirar de los huesos mediante los tendones.',
+        finalTitle: 'Músculos del cuerpo',
         scoreLabel: 'Puntuación:',
         timeLabel: 'Tiempo:',
         backBtn: 'Volver al menú',
@@ -499,18 +377,16 @@ const i18n = {
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
     },
     en: {
-        startTitle: 'The nervous system',
-        startSubtitle: 'Central and peripheral nervous system',
-        startAdvice: 'The nervous system is made up of the central nervous system (CNS): <span class="highlight-keyword">brain</span> and <span class="highlight-keyword">spinal cord</span>; and the peripheral nervous system (PNS): <span class="highlight-keyword">sensory nerves</span> and <span class="highlight-keyword">motor nerves</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startTitle: 'The musculature',
+        startSubtitle: 'Muscles of the body',
+        startAdvice: 'Review and learn the main <span class="highlight-keyword">muscles</span> that make up our <span class="highlight-keyword">musculature</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
         startBtn: 'Start',
-        summaryTitle: 'The nervous system',
-        continueBtn: 'Continue',
         hofTitle: 'Best scores',
         hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
-        game1Title: 'What function does each part of the nervous system perform?',
-        game2Title: 'Point to the parts of the nervous system.',
-        game3Title: 'What function does each part of the nervous system perform?',
-        finalTitle: 'The nervous system',
+        game1Title: 'Identify the muscles of the body.',
+        game2Title: 'Muscles and movement.',
+        game2ExplainText: 'Muscles allow movement by contracting and pulling on the bones through the tendons.',
+        finalTitle: 'Muscles of the body',
         scoreLabel: 'Score:',
         timeLabel: 'Time:',
         backBtn: 'Back to menu',
@@ -540,19 +416,15 @@ let currentScreen = 'start';
 let isHofLoading = false;
 let lastElapsedSeconds = 0;
 
-// Juego 1 (emparejar)
-let game1Matches = 0;
-let game1SelectedCard = null;
+// Juego 1 (señalar músculos)
+let game1Shuffled = [];
+let game1CurrentIndex = 0;
+let game1Completed = [];
 
-// Juego 2 (señalar partes por nombre)
+// Juego 2 (músculo / tendón / hueso)
 let game2Shuffled = [];
 let game2CurrentIndex = 0;
 let game2Completed = [];
-
-// Juego 3 (señalar partes por función)
-let game3Shuffled = [];
-let game3CurrentIndex = 0;
-let game3Completed = [];
 
 /* ====================================================
    SISTEMA DE AUDIO Y TTS
@@ -643,11 +515,9 @@ function applyLanguage(lang) {
     document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
     document.getElementById('startAdvice').innerHTML = t.startAdvice;
     document.getElementById('playBtn').innerHTML = t.startBtn;
-    document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
-    document.getElementById('continueBtn').innerHTML = t.continueBtn;
     document.getElementById('game1Title').innerHTML = t.game1Title;
     document.getElementById('game2Title').innerHTML = t.game2Title;
-    document.getElementById('game3Title').innerHTML = t.game3Title;
+    document.getElementById('game2ExplainText').innerHTML = t.game2ExplainText;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
     document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
     document.getElementById('backBtn').innerHTML = t.backBtn;
@@ -665,27 +535,17 @@ function applyLanguage(lang) {
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
 
-    if (currentScreen === 'summary') {
-        buildSummary();
-    } else if (currentScreen === 'game1') {
-        Array.from(document.querySelectorAll('#game1Container .memory-card:not(.matched)')).forEach(card => {
-            const key = card.dataset.key;
-            const type = card.dataset.type;
-            const pair = game1Pairs[lang][key];
-            card.textContent = type === 'term' ? pair.term : pair.def;
-        });
+    if (currentScreen === 'game1') {
+        if (game1CurrentIndex < game1Shuffled.length) {
+            const boxId = game1Shuffled[game1CurrentIndex];
+            document.getElementById('game1WordText').textContent = game1Labels[lang][boxId];
+            speakText(game1Labels[lang][boxId], lang);
+        }
     } else if (currentScreen === 'game2') {
         if (game2CurrentIndex < game2Shuffled.length) {
             const boxId = game2Shuffled[game2CurrentIndex];
             document.getElementById('game2WordText').textContent = game2Labels[lang][boxId];
             speakText(game2Labels[lang][boxId], lang);
-        }
-    } else if (currentScreen === 'game3') {
-        if (game3CurrentIndex < game3Shuffled.length) {
-            const idx = game3Shuffled[game3CurrentIndex];
-            const text = game3Functions[idx][lang];
-            document.getElementById('game3WordText').textContent = text;
-            speakText(text, lang);
         }
     }
 }
@@ -715,74 +575,15 @@ document.getElementById('playBtn').addEventListener('click', () => {
     unlockAudioContext();
     forceInitTTS();
     preloadImages().finally(() => {
-        showScreen('summary');
+        showScreen('game1');
+        initGame1();
         startTimer();
     });
 });
 
 /* ====================================================
-   PANTALLA RESUMEN
+   UTILIDADES COMPARTIDAS
 ===================================================== */
-function buildSummary() {
-    const container = document.getElementById('accordionContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    const data = summaryData[currentLang];
-
-    const keywords = currentLang === 'es'
-        ? ['encéfalo', 'médula espinal', 'cerebro', 'cerebelo', 'tronco encefálico', 'nervios sensitivos', 'nervios motores']
-        : ['brain', 'spinal cord', 'cerebrum', 'cerebellum', 'brainstem', 'sensory nerves', 'motor nerves'];
-
-    const highlightKeywords = (text) => {
-        let result = text;
-        keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-            result = result.replace(regex, `<span class="keyword">${kw}</span>`);
-        });
-        return result;
-    };
-
-    const blockColors = ['block-blue', 'block-orange', 'block-yellow'];
-
-    const blocksHTML = data.map((section, idx) => {
-        const introHTML = section.intro ? `<p class="intro">${highlightKeywords(section.intro)}</p>` : '';
-        const itemsHTML = section.items.map((item) => {
-            if (typeof item === 'string') {
-                return `<li>${highlightKeywords(item)}</li>`;
-            }
-            const subHTML = item.sub.map(s => `<li>${highlightKeywords(s)}</li>`).join('');
-            return `<li>${highlightKeywords(item.text)}<ul class="summary-list summary-sublist">${subHTML}</ul></li>`;
-        }).join('');
-        const listHTML = section.items.length ? `<ul class="summary-list">${itemsHTML}</ul>` : '';
-        const colorClass = blockColors[idx % blockColors.length];
-        return `
-            <div class="summary-block ${colorClass}">
-                <div class="summary-block-title">${section.heading}</div>
-                ${introHTML}
-                ${listHTML}
-            </div>
-        `;
-    }).join('');
-
-    container.innerHTML = blocksHTML;
-}
-
-document.getElementById('continueBtn').addEventListener('click', () => {
-    playSound('tap');
-    showScreen('game1');
-    initGame1();
-});
-
-/* ====================================================
-   JUEGO 1: EMPAREJAR
-===================================================== */
-function initGame1() {
-    game1Matches = 0;
-    game1SelectedCard = null;
-    updateProgress();
-    buildMatchCards();
-}
-
 function shuffleArray(arr) {
     const result = [...arr];
     for (let i = result.length - 1; i > 0; i--) {
@@ -792,121 +593,104 @@ function shuffleArray(arr) {
     return result;
 }
 
-function buildMatchCards() {
-    const container = document.getElementById('game1Container');
-    container.innerHTML = '';
-    const termOrder = shuffleArray(game1Order);
-    const defOrder = shuffleArray(game1Order);
-
-    for (let row = 0; row < game1Order.length; row++) {
-        container.appendChild(createMatchCard(termOrder[row], 'term'));
-        container.appendChild(createMatchCard(defOrder[row], 'def'));
-    }
-    container.onclick = handleMatchCardClick;
-}
-
-function createMatchCard(key, type) {
-    const card = document.createElement('div');
-    card.className = 'memory-card';
-    card.dataset.key = key;
-    card.dataset.type = type;
-    const pair = game1Pairs[currentLang][key];
-    card.textContent = type === 'term' ? pair.term : pair.def;
-    return card;
-}
-
-function handleMatchCardClick(e) {
-    const target = e.target.closest('.memory-card');
-    if (!target || target.classList.contains('matched')) return;
-
-    if (!game1SelectedCard) {
-        playSound('tap');
-        game1SelectedCard = target;
-        game1SelectedCard.classList.add('selected');
-        return;
-    }
-    if (target === game1SelectedCard) {
-        game1SelectedCard.classList.remove('selected');
-        game1SelectedCard = null;
-        return;
-    }
-    if (target.dataset.type === game1SelectedCard.dataset.type) {
-        game1SelectedCard.classList.remove('selected');
-        playSound('tap');
-        game1SelectedCard = target;
-        game1SelectedCard.classList.add('selected');
-        return;
-    }
-
-    const prevCard = game1SelectedCard;
-    const keyA = prevCard.dataset.key;
-    const keyB = target.dataset.key;
-
-    if (keyA === keyB) {
-        playSound('correcto');
-        prevCard.classList.remove('selected');
-        prevCard.classList.add('matched');
-        target.classList.add('matched');
-        game1SelectedCard = null;
-        game1Matches++;
-        updateProgress();
-        if (game1Matches === game1Order.length) {
-            setTimeout(() => {
-                playSound('completado');
-                setTimeout(() => {
-                    showScreen('game2');
-                    initGame2();
-                }, 800);
-            }, 400);
-        }
-    } else {
-        totalErrors++; // Cada emparejamiento fallido resta 100/19 puntos
-        playSound('error');
-        prevCard.classList.remove('selected');
-        prevCard.classList.remove('flash-error');
-        target.classList.remove('flash-error');
-        // Forzar reflow para garantizar que la animación shakeAnim se reinicie siempre,
-        // incluso si la tarjeta ya tenía la clase de un intento anterior muy reciente.
-        void prevCard.offsetWidth;
-        void target.offsetWidth;
-        prevCard.classList.add('flash-error');
-        target.classList.add('flash-error');
-        game1SelectedCard = null;
-        setTimeout(() => {
-            prevCard.classList.remove('flash-error');
-            target.classList.remove('flash-error');
-        }, 400);
-    }
-}
-
-/* ====================================================
-   JUEGOS 2 y 3: SEÑALAR PARTES (utilidades comunes)
-===================================================== */
-function buildHotspots(containerId) {
+function buildHotspots(containerId, boxDefs, boxOrder, imgW, imgH) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
-    BOX_ORDER.forEach(boxId => {
-        const [x1, y1, x2, y2] = BOX_DEFS[boxId];
+    boxOrder.forEach(boxId => {
+        const [x1, y1, x2, y2] = boxDefs[boxId];
         const hotspot = document.createElement('div');
         hotspot.className = 'hotspot';
-        hotspot.style.left = ((x1 / IMG_W) * 100) + '%';
-        hotspot.style.top = ((y1 / IMG_H) * 100) + '%';
-        hotspot.style.width = (((x2 - x1) / IMG_W) * 100) + '%';
-        hotspot.style.height = (((y2 - y1) / IMG_H) * 100) + '%';
+        hotspot.style.left = ((x1 / imgW) * 100) + '%';
+        hotspot.style.top = ((y1 / imgH) * 100) + '%';
+        hotspot.style.width = (((x2 - x1) / imgW) * 100) + '%';
+        hotspot.style.height = (((y2 - y1) / imgH) * 100) + '%';
         hotspot.dataset.box = boxId;
         container.appendChild(hotspot);
     });
 }
 
+function updateProgress() {
+    const total = TOTAL_INTERACTIONS;
+    const completed = game1Completed.length + game2Completed.length;
+    const percent = Math.min(100, (completed / total) * 100);
+    ['progressFill', 'progressFill2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.width = percent + '%';
+    });
+}
+
 /* ====================================================
-   JUEGO 2: SEÑALAR PARTES (NOMBRES)
+   JUEGO 1: SEÑALAR MÚSCULOS
+===================================================== */
+function initGame1() {
+    game1Shuffled = shuffleArray(game1BoxOrder);
+    game1CurrentIndex = 0;
+    game1Completed = [];
+    buildHotspots('hotspotsContainer1', game1BoxDefs, game1BoxOrder, GAME1_IMG_W, GAME1_IMG_H);
+    document.querySelectorAll('#hotspotsContainer1 .hotspot').forEach(h => {
+        h.addEventListener('click', () => checkGame1Answer(h.dataset.box, h));
+    });
+    showGame1Word();
+}
+
+function showGame1Word() {
+    if (game1CurrentIndex >= game1Shuffled.length) {
+        endGame1();
+        return;
+    }
+    const boxId = game1Shuffled[game1CurrentIndex];
+    const word = game1Labels[currentLang][boxId];
+    document.getElementById('game1WordText').textContent = word;
+    setTimeout(() => speakText(word, currentLang), 300);
+    updateProgress();
+}
+
+function checkGame1Answer(boxId, hotspotEl) {
+    window.speechSynthesis.cancel();
+    const correct = boxId === game1Shuffled[game1CurrentIndex];
+    if (correct) {
+        hotspotEl.classList.add('flash-correct');
+        playSound('correcto');
+        game1Completed.push(boxId);
+        setTimeout(() => {
+            hotspotEl.classList.remove('flash-correct');
+            game1CurrentIndex++;
+            showGame1Word();
+        }, 350);
+    } else {
+        totalErrors++; // Cada error resta 100/19 puntos
+        hotspotEl.classList.remove('flash-incorrect');
+        void hotspotEl.offsetWidth;
+        hotspotEl.classList.add('flash-incorrect');
+        playSound('error');
+        setTimeout(() => hotspotEl.classList.remove('flash-incorrect'), 500);
+    }
+}
+
+document.getElementById('btnPlayWord1').addEventListener('click', () => {
+    if (game1CurrentIndex < game1Shuffled.length) {
+        const boxId = game1Shuffled[game1CurrentIndex];
+        speakText(game1Labels[currentLang][boxId], currentLang);
+    }
+});
+
+function endGame1() {
+    window.speechSynthesis.cancel();
+    playSound('completado');
+    setTimeout(() => {
+        showScreen('game2');
+        initGame2();
+    }, 1000);
+}
+
+/* ====================================================
+   JUEGO 2: LOS MÚSCULOS Y EL MOVIMIENTO
 ===================================================== */
 function initGame2() {
-    game2Shuffled = shuffleArray(BOX_ORDER);
+    game2Shuffled = shuffleArray(game2BoxOrder);
     game2CurrentIndex = 0;
     game2Completed = [];
-    document.getElementById('trophyDiv').classList.add('hidden');
-    buildHotspots('hotspotsContainer2');
+    buildHotspots('hotspotsContainer2', game2BoxDefs, game2BoxOrder, GAME2_IMG_W, GAME2_IMG_H);
     document.querySelectorAll('#hotspotsContainer2 .hotspot').forEach(h => {
         h.addEventListener('click', () => checkGame2Answer(h.dataset.box, h));
     });
@@ -915,7 +699,7 @@ function initGame2() {
 
 function showGame2Word() {
     if (game2CurrentIndex >= game2Shuffled.length) {
-        endGame2();
+        endGame();
         return;
     }
     const boxId = game2Shuffled[game2CurrentIndex];
@@ -954,72 +738,6 @@ document.getElementById('btnPlayWord2').addEventListener('click', () => {
     }
 });
 
-function endGame2() {
-    window.speechSynthesis.cancel();
-    playSound('completado');
-    setTimeout(() => {
-        showScreen('game3');
-        initGame3();
-    }, 1000);
-}
-
-/* ====================================================
-   JUEGO 3: SEÑALAR PARTES (FUNCIONES)
-===================================================== */
-function initGame3() {
-    game3Shuffled = shuffleArray(Array.from({ length: game3Functions.length }, (_, i) => i));
-    game3CurrentIndex = 0;
-    game3Completed = [];
-    buildHotspots('hotspotsContainer3');
-    document.querySelectorAll('#hotspotsContainer3 .hotspot').forEach(h => {
-        h.addEventListener('click', () => checkGame3Answer(h.dataset.box, h));
-    });
-    showGame3Word();
-}
-
-function showGame3Word() {
-    if (game3CurrentIndex >= game3Shuffled.length) {
-        endGame();
-        return;
-    }
-    const idx = game3Shuffled[game3CurrentIndex];
-    const text = game3Functions[idx][currentLang];
-    document.getElementById('game3WordText').textContent = text;
-    setTimeout(() => speakText(text, currentLang), 300);
-    updateProgress();
-}
-
-function checkGame3Answer(boxId, hotspotEl) {
-    window.speechSynthesis.cancel();
-    const idx = game3Shuffled[game3CurrentIndex];
-    const correctBox = game3Functions[idx].box;
-    const correct = boxId === correctBox;
-    if (correct) {
-        hotspotEl.classList.add('flash-correct');
-        playSound('correcto');
-        game3Completed.push(idx);
-        setTimeout(() => {
-            hotspotEl.classList.remove('flash-correct');
-            game3CurrentIndex++;
-            showGame3Word();
-        }, 350);
-    } else {
-        totalErrors++; // Cada error resta 100/19 puntos
-        hotspotEl.classList.remove('flash-incorrect');
-        void hotspotEl.offsetWidth;
-        hotspotEl.classList.add('flash-incorrect');
-        playSound('error');
-        setTimeout(() => hotspotEl.classList.remove('flash-incorrect'), 500);
-    }
-}
-
-document.getElementById('btnPlayWord3').addEventListener('click', () => {
-    if (game3CurrentIndex < game3Shuffled.length) {
-        const idx = game3Shuffled[game3CurrentIndex];
-        speakText(game3Functions[idx][currentLang], currentLang);
-    }
-});
-
 /* ====================================================
    FUNCIONES DE NAVEGACIÓN
 ===================================================== */
@@ -1028,17 +746,11 @@ function showScreen(screen) {
     currentScreen = screen;
     if (screen === 'start') {
         document.getElementById('startScreen').classList.add('active');
-        buildSummary();
         loadHallOfFame();
-    } else if (screen === 'summary') {
-        document.getElementById('summaryScreen').classList.add('active');
-        buildSummary();
     } else if (screen === 'game1') {
         document.getElementById('game1Screen').classList.add('active');
     } else if (screen === 'game2') {
         document.getElementById('game2Screen').classList.add('active');
-    } else if (screen === 'game3') {
-        document.getElementById('game3Screen').classList.add('active');
     } else if (screen === 'final') {
         document.getElementById('finalScreen').classList.add('active');
     }
@@ -1053,7 +765,6 @@ function startTimer() {
         const elapsed = Date.now() - startTime;
         document.getElementById('timerDisplay').textContent = formatTime(elapsed);
         document.getElementById('timerDisplay2').textContent = formatTime(elapsed);
-        document.getElementById('timerDisplay3').textContent = formatTime(elapsed);
     }, 10);
 }
 
@@ -1074,19 +785,6 @@ function formatTimeFromSeconds(value) {
 
 function getElapsedSeconds() {
     return (Date.now() - startTime) / 1000;
-}
-
-/* ====================================================
-   PROGRESO
-===================================================== */
-function updateProgress() {
-    const total = TOTAL_INTERACTIONS;
-    const completed = game1Matches + game2Completed.length + game3Completed.length;
-    const percent = Math.min(100, (completed / total) * 100);
-    ['progressFill', 'progressFill2', 'progressFill3'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.width = percent + '%';
-    });
 }
 
 /* ====================================================
@@ -1276,15 +974,14 @@ document.getElementById('backBtn').addEventListener('click', () => {
    INICIALIZACIÓN
 ===================================================== */
 window.addEventListener('load', () => {
-    buildSummary();
     loadHallOfFame();
 });
 
 function preloadImages() {
     return Promise.race([
         Promise.all([
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Seres_vivos/Imagen/SN2.png'; }),
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png'; })
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Musculatura_juego.png'; }),
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Movimiento.png'; })
         ]),
         new Promise(resolve => setTimeout(resolve, 5000))
     ]);
