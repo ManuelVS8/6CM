@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>La musculatura</title>
+    <title>El esqueleto</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -102,14 +102,17 @@
         .img-wrapper { position:relative; width:100%; margin:0 auto; border-radius:14px; overflow:hidden;
             box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
         .img-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; user-select:none; -webkit-user-drag:none; }
-        .img-wrapper-portrait { max-width:300px; aspect-ratio:1847/2738; }
-        .img-wrapper-landscape { max-width:440px; aspect-ratio:789/648; }
+        .img-wrapper-portrait { max-width:300px; aspect-ratio:1882/2820; }
+        .img-wrapper-landscape { max-width:400px; aspect-ratio:1058/992; }
         .hotspots-container { position:absolute; inset:0; width:100%; height:100%; }
         /* Manuel ya dibuja los cuadros de selección en la propia imagen:
            el área clicable debe ser invisible, sin borde y sin fondo. */
         .hotspot { position:absolute; background:transparent; border:none; cursor:pointer; padding:0; }
-        .hotspot.flash-correct { animation:flashGreen .6s ease; }
-        .hotspot.flash-incorrect { animation:flashRed .5s ease, shakeAnim .4s ease-in-out; }
+        /* Hotspot de tipo polígono (articulaciones de forma irregular): cubre toda la imagen
+           y el clip-path recorta la zona clicable exacta, igual que en Partes_de_un_ordenador.html */
+        .hotspot-poly { position:absolute; inset:0; width:100%; height:100%; background:transparent; border:none; cursor:pointer; padding:0; }
+        .hotspot.flash-correct, .hotspot-poly.flash-correct { animation:flashGreen .6s ease; }
+        .hotspot.flash-incorrect, .hotspot-poly.flash-incorrect { animation:flashRed .5s ease, shakeAnim .4s ease-in-out; }
         @keyframes flashGreen {
             0% { box-shadow:0 0 0 0 rgba(46,204,113,0); background-color:transparent; }
             40% { box-shadow:0 0 0 8px rgba(46,204,113,.55); background-color:rgba(46,204,113,.25); }
@@ -171,12 +174,12 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">La musculatura</h1>
-            <div class="subtitle" id="startSubtitle">Músculos del cuerpo</div>
+            <h1 id="startTitle">El esqueleto</h1>
+            <div class="subtitle" id="startSubtitle">Principales huesos del cuerpo</div>
         </header>
         <div class="start-content">
             <div class="advice-box" id="startAdvice">
-                Repasa y aprende los principales <span class="highlight-keyword">músculos</span> que componen nuestra <span class="highlight-keyword">musculatura</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+                El <span class="highlight-keyword">esqueleto</span> adulto está compuesto de 206 <span class="highlight-keyword">huesos</span>. En este juego aprenderás a identificar los <span class="highlight-keyword">huesos</span> más importantes<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
             </div>
             <button class="btn btn-primary" id="playBtn">Comenzar</button>
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
@@ -197,10 +200,10 @@
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 1: SEÑALAR MÚSCULOS (con TTS) ===== -->
+    <!-- ===== PANTALLA JUEGO 1: SEÑALAR HUESOS (con TTS) ===== -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1 id="game1Title">Identifica los músculos del cuerpo.</h1>
+            <h1 id="game1Title">Identifica los huesos del cuerpo.</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay">00:00.00</div>
@@ -214,23 +217,22 @@
                 </button>
             </div>
             <div class="img-wrapper img-wrapper-portrait" id="imgWrapper1">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Musculatura_juego.png" alt="Musculatura">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Esqueleto_juego.png" alt="Esqueleto">
                 <div id="hotspotsContainer1" class="hotspots-container"></div>
             </div>
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 2: LOS MÚSCULOS Y EL MOVIMIENTO (con TTS) ===== -->
+    <!-- ===== PANTALLA JUEGO 2: TIPOS DE ARTICULACIONES Y TEJIDOS (con TTS) ===== -->
     <section class="screen" id="game2Screen">
         <header>
-            <h1 id="game2Title">Los músculos y el movimiento.</h1>
+            <h1 id="game2Title">Tipos de articulaciones y tejidos</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay2">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
         </div>
         <div class="hotspot-wrapper">
-            <div class="explain-text" id="game2ExplainText">Los músculos permiten el movimiento al contraerse y tirar de los huesos mediante los tendones.</div>
             <div class="word-display">
                 <span class="word-box" id="game2WordText">...</span>
                 <button class="btn-play-word" id="btnPlayWord2" title="Escuchar">
@@ -238,7 +240,7 @@
                 </button>
             </div>
             <div class="img-wrapper img-wrapper-landscape" id="imgWrapper2">
-                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Movimiento.png" alt="Movimiento muscular">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/huesos.png" alt="Articulaciones y tejidos">
                 <div id="hotspotsContainer2" class="hotspots-container"></div>
             </div>
         </div>
@@ -247,7 +249,7 @@
     <!-- ===== PANTALLA FINAL ===== -->
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title" id="finalTitle">Músculos del cuerpo</h1>
+            <h1 class="final-title" id="finalTitle">El esqueleto</h1>
         </header>
         <div class="results">
             <div id="trophyDiv" class="trophy hidden">🏆</div>
@@ -279,71 +281,110 @@
 /* ====================================================
    CONFIGURACIÓN GLOBAL
 ===================================================== */
-const SHEET_NAME = "UD1_Musculatura";
+const SHEET_NAME = "UD1_Esqueleto";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
 
-const GAME1_IMG_W = 1847;
-const GAME1_IMG_H = 2738;
-const GAME2_IMG_W = 789;
-const GAME2_IMG_H = 648;
+const GAME1_IMG_W = 1882;
+const GAME1_IMG_H = 2820;
+const GAME2_IMG_W = 1058;
+const GAME2_IMG_H = 992;
 
-const TOTAL_INTERACTIONS = 19; // 16 (músculos) + 3 (músculo/tendón/hueso)
+const TOTAL_INTERACTIONS = 25; // 20 (huesos) + 5 (articulaciones y tejidos)
 
 /* ====================================================
-   DATOS: JUEGO 1 - SEÑALAR MÚSCULOS
+   DATOS: JUEGO 1 - SEÑALAR HUESOS (áreas rectangulares)
 ===================================================== */
 const game1BoxDefs = {
-    masetero:       [938,83,1176,302],
-    esterno:        [993,358,1233,577],
-    trapecios:      [1321,397,1557,619],
-    deltoides:      [1485,644,1721,861],
-    triceps:        [1485,897,1720,1116],
-    dorsales:       [1488,1167,1732,1389],
-    intercostales:  [1488,1427,1731,1644],
-    gluteo:         [1484,1708,1723,1928],
-    bicepsfemoral:  [1163,1778,1406,2000],
-    gemelos:        [1231,2117,1470,2336],
-    orbicular:      [271,296,509,516],
-    pectoral:       [170,563,410,788],
-    biceps:         [196,837,436,1056],
-    abdominales:    [489,1241,729,1462],
-    cuadriceps:     [151,1471,391,1690],
-    tibial:         [345,1967,582,2187]
+    craneo:        [966,66,1207,285],
+    esternon:      [1261,259,1502,479],
+    costillas:     [1445,541,1684,764],
+    columna:       [1471,789,1709,1009],
+    pelvis:        [1472,1051,1711,1275],
+    carpo:         [1524,1490,1761,1706],
+    falangesmano:  [1548,1747,1785,1966],
+    rotula:        [1313,2003,1551,2218],
+    tarso:         [1321,2253,1560,2475],
+    falangespie:   [1321,2508,1563,2728],
+    perone:        [423,2435,658,2655],
+    tibia:         [369,2160,608,2380],
+    femur:         [338,1889,579,2107],
+    sacro:         [176,1628,416,1844],
+    cubito:        [129,1358,369,1577],
+    radio:         [121,1099,357,1319],
+    humero:        [119,853,358,1071],
+    omoplato:      [101,583,338,803],
+    clavicula:     [377,392,616,612],
+    mandibula:     [435,140,672,361]
 };
-const game1BoxOrder = ['masetero','esterno','trapecios','deltoides','triceps','dorsales',
-    'intercostales','gluteo','bicepsfemoral','gemelos','orbicular','pectoral','biceps',
-    'abdominales','cuadriceps','tibial'];
+const game1BoxOrder = ['craneo','esternon','costillas','columna','pelvis','carpo',
+    'falangesmano','rotula','tarso','falangespie','perone','tibia','femur','sacro',
+    'cubito','radio','humero','omoplato','clavicula','mandibula'];
 
 const game1Labels = {
     es: {
-        masetero: "Masetero", esterno: "Esternocleidomastoideo", trapecios: "Trapecios",
-        deltoides: "Deltoides", triceps: "Tríceps", dorsales: "Dorsales",
-        intercostales: "Intercostales", gluteo: "Glúteo", bicepsfemoral: "Bíceps femoral",
-        gemelos: "Gemelos", orbicular: "Orbicular del ojo", pectoral: "Pectoral",
-        biceps: "Bíceps", abdominales: "Abdominales", cuadriceps: "Cuádriceps", tibial: "Tibial"
+        craneo: "Cráneo", esternon: "Esternón", costillas: "Costillas", columna: "Columna vertebral",
+        pelvis: "Pelvis", carpo: "Huesos del carpo", falangesmano: "Falanges de la mano",
+        rotula: "Rótula", tarso: "Huesos del tarso", falangespie: "Falanges del pie",
+        perone: "Peroné", tibia: "Tibia", femur: "Fémur", sacro: "Sacro", cubito: "Cúbito",
+        radio: "Radio", humero: "Húmero", omoplato: "Omóplato (Escápula)",
+        clavicula: "Clavícula", mandibula: "Mandíbula"
     },
     en: {
-        masetero: "Masseter", esterno: "Sternocleidomastoid", trapecios: "Trapezius",
-        deltoides: "Deltoids", triceps: "Triceps", dorsales: "Latissimus dorsi",
-        intercostales: "Intercostals", gluteo: "Gluteus", bicepsfemoral: "Biceps femoris",
-        gemelos: "Calves", orbicular: "Orbicularis oculi", pectoral: "Pectoral",
-        biceps: "Biceps", abdominales: "Abdominals", cuadriceps: "Quadriceps", tibial: "Tibialis"
+        craneo: "Skull", esternon: "Sternum", costillas: "Ribs", columna: "Spine",
+        pelvis: "Pelvis", carpo: "Carpal bones", falangesmano: "Finger phalanges",
+        rotula: "Patella", tarso: "Tarsal bones", falangespie: "Toe phalanges",
+        perone: "Fibula", tibia: "Tibia", femur: "Femur", sacro: "Sacrum", cubito: "Ulna",
+        radio: "Radius", humero: "Humerus", omoplato: "Shoulder blade (Scapula)",
+        clavicula: "Collarbone", mandibula: "Jaw"
     }
 };
 
 /* ====================================================
-   DATOS: JUEGO 2 - LOS MÚSCULOS Y EL MOVIMIENTO
+   DATOS: JUEGO 2 - TIPOS DE ARTICULACIONES Y TEJIDOS
+   (mezcla de polígonos y rectángulos, igual que en Partes_de_un_ordenador.html)
 ===================================================== */
-const game2BoxDefs = {
-    musculo: [352,97,479,225],
-    tendon:  [399,276,526,409],
-    hueso:   [587,297,714,429]
-};
-const game2BoxOrder = ['musculo', 'tendon', 'hueso'];
+const game2Areas = [
+    {
+        id: 'movil', tipo: 'poligono',
+        es: 'Articulación móvil', en: 'Movable joint',
+        coords: [[184,9],[179,66],[166,101],[137,122],[129,149],[120,287],[132,319],[134,388],
+            [262,388],[276,312],[302,274],[314,243],[319,139],[296,114],[276,71],[270,13]]
+    },
+    {
+        id: 'semimovil', tipo: 'poligono',
+        es: 'Articulación semimóvil', en: 'Semi-movable joint',
+        coords: [[387,76],[395,102],[390,156],[394,177],[402,207],[395,246],[395,258],[404,289],
+            [396,337],[409,349],[514,349],[521,316],[539,312],[557,333],[556,353],[569,371],
+            [596,374],[666,378],[690,364],[689,353],[651,343],[616,318],[632,301],[610,274],
+            [594,269],[581,277],[570,259],[595,259],[652,283],[671,301],[685,291],[676,259],
+            [652,251],[610,202],[625,189],[671,219],[671,182],[625,141],[600,102],[609,101],
+            [600,49],[566,56],[541,19],[531,24],[519,52],[476,63]]
+    },
+    {
+        id: 'fija', tipo: 'poligono',
+        es: 'Articulación fija', en: 'Fixed joint',
+        coords: [[866,8],[796,21],[754,57],[737,87],[731,126],[732,156],[744,201],[741,226],
+            [748,231],[752,250],[768,269],[766,308],[762,327],[765,339],[783,356],[801,373],
+            [856,393],[897,389],[940,368],[963,340],[973,331],[971,307],[965,266],[979,253],
+            [989,222],[991,190],[996,143],[987,86],[979,66],[957,41],[922,21],[886,11]]
+    },
+    {
+        id: 'cartilago', tipo: 'rectangulo',
+        es: 'Cartílago', en: 'Cartilage',
+        box: [624,449,806,626]
+    },
+    {
+        id: 'ligamentos', tipo: 'rectangulo',
+        es: 'Ligamentos', en: 'Ligaments',
+        box: [627,752,806,924]
+    }
+];
+const game2BoxOrder = game2Areas.map(a => a.id);
+const game2AreasById = Object.fromEntries(game2Areas.map(a => [a.id, a]));
 
 const game2Labels = {
-    es: { musculo: "Músculo", tendon: "Tendón", hueso: "Hueso" },
-    en: { musculo: "Muscle", tendon: "Tendon", hueso: "Bone" }
+    es: Object.fromEntries(game2Areas.map(a => [a.id, a.es])),
+    en: Object.fromEntries(game2Areas.map(a => [a.id, a.en]))
 };
 
 /* ====================================================
@@ -351,16 +392,15 @@ const game2Labels = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'La musculatura',
-        startSubtitle: 'Músculos del cuerpo',
-        startAdvice: 'Repasa y aprende los principales <span class="highlight-keyword">músculos</span> que componen nuestra <span class="highlight-keyword">musculatura</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startTitle: 'El esqueleto',
+        startSubtitle: 'Principales huesos del cuerpo',
+        startAdvice: 'El <span class="highlight-keyword">esqueleto</span> adulto está compuesto de 206 <span class="highlight-keyword">huesos</span>. En este juego aprenderás a identificar los <span class="highlight-keyword">huesos</span> más importantes<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
-        game1Title: 'Identifica los músculos del cuerpo.',
-        game2Title: 'Los músculos y el movimiento.',
-        game2ExplainText: 'Los músculos permiten el movimiento al contraerse y tirar de los huesos mediante los tendones.',
-        finalTitle: 'Músculos del cuerpo',
+        game1Title: 'Identifica los huesos del cuerpo.',
+        game2Title: 'Tipos de articulaciones y tejidos',
+        finalTitle: 'El esqueleto',
         scoreLabel: 'Puntuación:',
         timeLabel: 'Tiempo:',
         backBtn: 'Volver al menú',
@@ -377,16 +417,15 @@ const i18n = {
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
     },
     en: {
-        startTitle: 'The musculature',
-        startSubtitle: 'Muscles of the body',
-        startAdvice: 'Review and learn the main <span class="highlight-keyword">muscles</span> that make up our <span class="highlight-keyword">musculature</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startTitle: 'The skeleton',
+        startSubtitle: 'Main bones of the body',
+        startAdvice: 'The adult <span class="highlight-keyword">skeleton</span> is made up of 206 <span class="highlight-keyword">bones</span>. In this game you will learn to identify the most important <span class="highlight-keyword">bones</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
         startBtn: 'Start',
         hofTitle: 'Best scores',
         hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
-        game1Title: 'Identify the muscles of the body.',
-        game2Title: 'Muscles and movement.',
-        game2ExplainText: 'Muscles allow movement by contracting and pulling on the bones through the tendons.',
-        finalTitle: 'Muscles of the body',
+        game1Title: 'Identify the bones of the body.',
+        game2Title: 'Types of joints and tissues',
+        finalTitle: 'The skeleton',
         scoreLabel: 'Score:',
         timeLabel: 'Time:',
         backBtn: 'Back to menu',
@@ -517,7 +556,6 @@ function applyLanguage(lang) {
     document.getElementById('playBtn').innerHTML = t.startBtn;
     document.getElementById('game1Title').innerHTML = t.game1Title;
     document.getElementById('game2Title').innerHTML = t.game2Title;
-    document.getElementById('game2ExplainText').innerHTML = t.game2ExplainText;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
     document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
     document.getElementById('backBtn').innerHTML = t.backBtn;
@@ -609,6 +647,30 @@ function buildHotspots(containerId, boxDefs, boxOrder, imgW, imgH) {
     });
 }
 
+// Construye los hotspots del juego 2, que mezcla polígonos (articulaciones, forma irregular)
+// y rectángulos (cartílago, ligamentos), igual que el modelo Partes_de_un_ordenador.html.
+function buildHotspotsGame2(containerId, areas, imgW, imgH) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    areas.forEach(area => {
+        const hotspot = document.createElement('div');
+        hotspot.dataset.box = area.id;
+        if (area.tipo === 'poligono') {
+            hotspot.className = 'hotspot hotspot-poly';
+            const points = area.coords.map(([x, y]) => `${(x / imgW) * 100}% ${(y / imgH) * 100}%`);
+            hotspot.style.clipPath = `polygon(${points.join(', ')})`;
+        } else {
+            const [x1, y1, x2, y2] = area.box;
+            hotspot.className = 'hotspot';
+            hotspot.style.left = ((x1 / imgW) * 100) + '%';
+            hotspot.style.top = ((y1 / imgH) * 100) + '%';
+            hotspot.style.width = (((x2 - x1) / imgW) * 100) + '%';
+            hotspot.style.height = (((y2 - y1) / imgH) * 100) + '%';
+        }
+        container.appendChild(hotspot);
+    });
+}
+
 function updateProgress() {
     const total = TOTAL_INTERACTIONS;
     const completed = game1Completed.length + game2Completed.length;
@@ -684,13 +746,13 @@ function endGame1() {
 }
 
 /* ====================================================
-   JUEGO 2: LOS MÚSCULOS Y EL MOVIMIENTO
+   JUEGO 2: TIPOS DE ARTICULACIONES Y TEJIDOS
 ===================================================== */
 function initGame2() {
     game2Shuffled = shuffleArray(game2BoxOrder);
     game2CurrentIndex = 0;
     game2Completed = [];
-    buildHotspots('hotspotsContainer2', game2BoxDefs, game2BoxOrder, GAME2_IMG_W, GAME2_IMG_H);
+    buildHotspotsGame2('hotspotsContainer2', game2Areas, GAME2_IMG_W, GAME2_IMG_H);
     document.querySelectorAll('#hotspotsContainer2 .hotspot').forEach(h => {
         h.addEventListener('click', () => checkGame2Answer(h.dataset.box, h));
     });
@@ -980,8 +1042,8 @@ window.addEventListener('load', () => {
 function preloadImages() {
     return Promise.race([
         Promise.all([
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Musculatura_juego.png'; }),
-            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Movimiento.png'; })
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/Esqueleto_juego.png'; }),
+            new Promise(resolve => { const img = new Image(); img.onload = resolve; img.onerror = resolve; img.src = 'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD1_Relacion/Imagen/huesos.png'; })
         ]),
         new Promise(resolve => setTimeout(resolve, 5000))
     ]);
