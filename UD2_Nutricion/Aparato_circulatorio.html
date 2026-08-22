@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>Aparato digestivo</title>
+    <title>Aparato circulatorio</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -122,32 +122,30 @@
         .btn-play-word:hover { transform:scale(1.12); }
         .btn-play-word:active { transform:scale(.95); }
         .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
-        .digestive-image-wrapper { position:relative; width:100%; max-width:400px; aspect-ratio:842/1024; margin:0 auto;
+        .circulatory-image-wrapper { position:relative; width:100%; max-width:400px; aspect-ratio:842/1024; margin:0 auto;
             border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
-        .digestive-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; }
+        .circulatory-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; }
         .hotspots-container { position:absolute; inset:0; width:100%; height:100%; }
         .hotspot { position:absolute; border:2px solid #000; background:#fff; cursor:pointer; border-radius:8px;
             transition:background-color .15s ease; }
         .hotspot:hover { background:#f5f5f5; }
         .hotspot.shake { animation:shakeAnim .4s ease; }
 
-        /* Pantalla Juego 2: Ordenar Fases */
-        .game2-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; flex:1; padding:.5rem 0 1rem; }
-        .phases-container { width:100%; max-width:700px; }
-        .phase-card { background:var(--white); border:2px solid #b7e4c7; border-radius:12px; padding:1rem; margin-bottom:1rem;
-            display:flex; align-items:center; justify-content:space-between; transition:all .3s ease; cursor:move;
-            background:#f8fff9; }
-        .phase-card:hover { transform:translateY(-4px); box-shadow:0 8px 16px rgba(0,0,0,.08); }
-        .phase-text { flex:1; font-weight:700; font-size:clamp(.9rem,2vw,1.1rem); color:var(--blue-dark); text-align:left; }
-        .phase-controls { display:flex; gap:.4rem; flex-shrink:0; }
-        .phase-btn { width:40px; height:40px; border-radius:8px; background:var(--orange); border:none; color:white; font-weight:800;
-            cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s ease; }
-        .phase-btn:hover:not(:disabled) { background:var(--orange-700); transform:scale(1.1); }
-        .phase-btn:disabled { background:#ccc; cursor:not-allowed; opacity:.5; }
-        .check-btn { width:100%; max-width:300px; margin-top:1.5rem; }
-        .phase-card.correct .phase-text { color:var(--green); font-weight:900; }
-        .phase-card.incorrect .phase-text { color:var(--red); font-weight:900; }
-        .phase-card.shake { animation:shakeAnim .4s ease; }
+        /* Pantalla Juego 2: Emparejar Tarjetas */
+        .match-container { display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:8px; margin:.5rem auto; align-content:flex-start; justify-content:center; align-self:center; width:100%; max-width:700px; }
+        .memory-card {
+            background-color:var(--blue-600); color:#fff; border:3px solid transparent; border-radius:10px;
+            padding:12px 10px; cursor:pointer; transition:background-color .2s ease, box-shadow .2s ease, transform .15s ease;
+            text-align:center; min-height:80px; width:100%; height:100%; box-sizing:border-box;
+            display:flex; align-items:center; justify-content:center;
+            font-size:clamp(.85rem,2.4vw,1.05rem); font-weight:700; user-select:none; word-break:break-word;
+            overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08);
+        }
+        .memory-card:hover:not(.selected):not(.matched):not(.flash-error) { transform:scale(1.02); box-shadow:0 4px 10px rgba(0,0,0,.18); }
+        .memory-card.selected { background-color:var(--orange); animation:cardPulse 1s ease-in-out infinite; }
+        @keyframes cardPulse { 0%,100%{ transform:scale(1.02); } 50%{ transform:scale(1.05); } }
+        .memory-card.matched { background-color:var(--green); cursor:default; animation:none; transform:none; box-shadow:0 3px 10px rgba(46,204,113,.35); }
+        .memory-card.flash-error { animation:shakeAnim .4s ease-in-out; background-color:var(--red) !important; }
 
         /* Pantalla Final */
         .results { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:1.2rem; padding:1rem; }
@@ -179,6 +177,10 @@
         @keyframes confetti-fall { 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
         .hidden { display:none !important; }
         @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
+        @media (max-width:380px) {
+            .match-container { gap:6px; }
+            .memory-card { min-height:76px; padding:8px 6px; font-size:.8rem; border-radius:8px; }
+        }
     </style>
 </head>
 <body lang="es">
@@ -199,12 +201,12 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">Aparato digestivo</h1>
-            <div class="subtitle" id="startSubtitle">Órganos y funcionamiento del aparato digestivo</div>
+            <h1 id="startTitle">Aparato circulatorio</h1>
+            <div class="subtitle" id="startSubtitle">Órganos y funcionamiento del aparato circulatorio</div>
         </header>
         <div class="start-content">
             <div class="advice-box" id="startAdvice">
-                El aparato digestivo se encarga de <span class="highlight-keyword">digerir</span> los alimentos y absorber <span class="highlight-keyword">nutrientes</span>, para llevarlos a la sangre y que llegue a todas las partes del cuerpo<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+                Mediante la <span class="highlight-keyword">circulación</span>, el <span class="highlight-keyword">corazón</span> bombea la <span class="highlight-keyword">sangre</span> por los <span class="highlight-keyword">vasos sanguíneos</span> para repartir el oxígeno y los nutrientes por todo el cuerpo y recogen los desechos. Aprende con este juego.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
             </div>
             <button class="btn btn-primary" id="playBtn">Comenzar</button>
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
@@ -228,7 +230,7 @@
     <!-- ===== PANTALLA RESUMEN ===== -->
     <section class="screen" id="summaryScreen">
         <header>
-            <h1 id="summaryTitle">Aparato digestivo</h1>
+            <h1 id="summaryTitle">Aparato circulatorio</h1>
         </header>
         <div class="summary-wrapper">
             <div class="summary-intro" id="summaryIntro"></div>
@@ -237,10 +239,10 @@
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 1: HOTSPOT ===== -->
+    <!-- ===== PANTALLA JUEGO 1: HOTSPOT (SIEMPRE EN INGLÉS) ===== -->
     <section class="screen notranslate" id="game1Screen" lang="en" translate="no">
         <header>
-            <h1 id="game1Title">Identify the parts of the digestive system</h1>
+            <h1 id="game1Title">The circulatory system</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay">00:00.00</div>
@@ -248,38 +250,34 @@
         </div>
         <div class="game1-wrapper">
             <div class="word-display">
-                <span id="game1WordText">Salivary glands</span>
-                <button class="btn-play-word" id="btnPlayWord" title="Escuchar">
+                <span id="game1WordText">Heart</span>
+                <button class="btn-play-word" id="btnPlayWord" title="Listen">
                     <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
                 </button>
             </div>
-            <div class="digestive-image-wrapper" id="digestiveImageWrapper">
-                <img id="digestiveImg" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Nutrcici%C3%B3n%20y%20reporducci%C3%B3n/DIgestivo_juego2.png" alt="Aparato digestivo">
+            <div class="circulatory-image-wrapper" id="circulatoryImageWrapper">
+                <img id="circulatoryImg" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Nutrcici%C3%B3n%20y%20reporducci%C3%B3n/Circulatorio_juego3.png" alt="Circulatory system">
                 <div id="hotspotsContainer" class="hotspots-container"></div>
             </div>
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 2: ORDENAR FASES ===== -->
+    <!-- ===== PANTALLA JUEGO 2: EMPAREJAR TARJETAS ===== -->
     <section class="screen" id="game2Screen">
         <header>
-            <h1 id="game2Title">¿Cómo funciona el aparato digestivo?</h1>
-            <div class="subtitle" id="game2Subtitle">Ordena las fases</div>
+            <h1 id="game2Title">Componentes del aparato circulatorio</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay2">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
         </div>
-        <div class="game2-wrapper">
-            <div class="phases-container" id="phasesContainer"></div>
-            <button class="btn btn-primary check-btn" id="checkPhasesBtn">Comprobar</button>
-        </div>
+        <div class="match-container" id="game2Container"></div>
     </section>
 
     <!-- ===== PANTALLA FINAL ===== -->
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title" id="finalTitle">Aparato digestivo</h1>
+            <h1 class="final-title" id="finalTitle">El aparato circulatorio</h1>
         </header>
         <div class="results">
             <div id="trophyDiv" class="trophy hidden">🏆</div>
@@ -311,115 +309,95 @@
 /* ====================================================
    CONFIGURACIÓN GLOBAL
 ===================================================== */
-const SHEET_NAME = "UD2_Digestivo";
+const SHEET_NAME = "UD2_Circulatorio";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
 
 /* ====================================================
-   DATOS DEL JUEGO - HOTSPOT (JUEGO 1)
+   DATOS DEL JUEGO - HOTSPOT (JUEGO 1) — SIEMPRE EN INGLÉS
 ===================================================== */
 const game1Data = {
-    es: [
-        { text:"Glándulas salivales", coords:[637,9,788,147] },
-        { text:"Faringe", coords:[640,184,789,323] },
-        { text:"Esófago", coords:[646,361,796,500] },
-        { text:"Estómago", coords:[638,538,789,678] },
-        { text:"Hígado", coords:[75,449,224,588] },
-        { text:"Páncreas", coords:[82,664,229,801] },
-        { text:"Intestino delgado", coords:[634,707,784,848] },
-        { text:"Intestino grueso", coords:[81,845,230,984] },
-        { text:"Ano", coords:[538,876,688,1017] }
-    ],
     en: [
-        { text:"Salivary glands", coords:[637,9,788,147] },
-        { text:"Pharynx", coords:[640,184,789,323] },
-        { text:"Oesophagus", coords:[646,361,796,500] },
-        { text:"Stomach", coords:[638,538,789,678] },
-        { text:"Liver", coords:[75,449,224,588] },
-        { text:"Pancreas", coords:[82,664,229,801] },
-        { text:"Small intestine", coords:[634,707,784,848] },
-        { text:"Large intestine", coords:[81,845,230,984] },
-        { text:"Anus", coords:[538,876,688,1017] }
+        { text:"Heart", coords:[665,432,822,584] },
+        { text:"Artery", coords:[668,648,825,800] },
+        { text:"Vein", coords:[28,540,186,692] },
+        { text:"Capillaries", coords:[49,48,206,200] }
     ]
 };
 const game1ImgWidth = 842;
 
 /* ====================================================
-   DATOS DEL JUEGO - FASES (JUEGO 2)
+   DATOS DEL JUEGO - PAREJAS (JUEGO 2)
 ===================================================== */
 const game2Data = {
     es: [
-        "El alimento entra en la boca y, con los dientes y la saliva, se forma el bolo alimenticio",
-        "El bolo alimenticio pasa por el esófago y llega al estómago",
-        "El bolo alimenticio se mezcla con los jugos del estómago y se forma el quimo",
-        "El quimo pasa al intestino delgado y se mezcla con los jugos del hígado y del páncreas y se forma el quilo",
-        "Se separan los nutrientes y pasan a la sangre",
-        "Los desechos pasan al intestino grueso, donde se absorbe el agua",
-        "Los desechos se convierten en heces y se expulsan por el ano"
+        { id:0, term:"Corazón", def:"Órgano musculoso que bombea la sangre" },
+        { id:1, term:"Vena", def:"Lleva la sangre de vuelta al corazón" },
+        { id:2, term:"Arteria", def:"Lleva sangre desde el corazón a todo el cuerpo" },
+        { id:3, term:"Capilares", def:"Vasos muy finos que conectan venas y arterias" },
+        { id:4, term:"Vasos sanguíneos", def:"Conductos por los que circula la sangre" },
+        { id:5, term:"Sangre", def:"Líquido que reparte nutrientes y recoge desechos" }
     ],
     en: [
-        "Food enters the mouth and, with the teeth and saliva, the food bolus is formed",
-        "The food bolus passes through the oesophagus and reaches the stomach",
-        "The food bolus mixes with the stomach juices and forms chyme",
-        "The chyme passes into the small intestine and mixes with juices from the liver and pancreas, forming chyle",
-        "The nutrients are separated and pass into the blood",
-        "The waste passes into the large intestine, where water is absorbed",
-        "The waste turns into faeces and is expelled through the anus"
+        { id:0, term:"Heart", def:"Muscular organ that pumps blood" },
+        { id:1, term:"Vein", def:"Carries blood back to the heart" },
+        { id:2, term:"Artery", def:"Carries blood from the heart to the whole body" },
+        { id:3, term:"Capillaries", def:"Very thin vessels that connect veins and arteries" },
+        { id:4, term:"Blood vessels", def:"Conduits through which blood flows" },
+        { id:5, term:"Blood", def:"Liquid that delivers nutrients and collects waste" }
     ]
 };
-const game2Total = 7;
+const game2TotalPairs = 6;
 
 /* ====================================================
    RESUMEN PANTALLA
 ===================================================== */
 const summaryIntroText = {
-    es: "El aparato digestivo está formado por el tubo digestivo y las glándulas anejas: glándulas salivales, hígado y páncreas.",
-    en: "The digestive system is made up of the digestive tract and the accessory glands: salivary glands, liver and pancreas."
+    es: "El aparato circulatorio está formado por el corazón, los vasos sanguíneos y la sangre.",
+    en: "The circulatory system is made up of the heart, the blood vessels and the blood."
 };
 
 const summaryData = {
     es: [
         {
-            heading: "Ingestión y transporte:",
+            heading: "Vasos sanguíneos. Existen tres tipos:",
             items: [
-                "Los alimentos entran por la boca. Con ayuda de los dientes, la lengua y la saliva se forma el bolo alimenticio.",
-                "El bolo alimenticio pasa por la faringe y por el esófago hasta llegar al estómago."
+                "Arterias: llevan la sangre desde el corazón a todo el cuerpo.",
+                "Venas: llevan la sangre de vuelta al corazón.",
+                "Capilares: son vasos muy finos que unen las arterias y las venas y llegan a todas las partes de nuestro cuerpo."
             ]
         },
         {
-            heading: "Digestión:",
+            heading: "Corazón:",
             items: [
-                "En el estómago, el bolo alimenticio se mezcla con los jugos gástricos y se forma una papilla llamada quimo.",
-                "El quimo pasa al intestino delgado y se mezcla con la bilis, el jugo pancreático y los jugos intestinales y se forma el quilo."
+                "Órgano musculoso que bombea la sangre por todo el cuerpo."
             ]
         },
         {
-            heading: "Absorción y expulsión:",
+            heading: "Sangre:",
             items: [
-                "En el intestino delgado se absorben los nutrientes y pasan a la sangre. Los desechos pasan al intestino grueso.",
-                "En el intestino grueso se absorbe el agua y se forman las heces, que se expulsan por el ano."
+                "Líquido rojo que reparte el oxígeno y los nutrientes y recoge los desechos."
             ]
         }
     ],
     en: [
         {
-            heading: "Ingestion and transport:",
+            heading: "Blood vessels. There are three types:",
             items: [
-                "Food enters through the mouth. With the help of the teeth, tongue and saliva, the food bolus is formed.",
-                "The food bolus passes through the pharynx and the oesophagus until it reaches the stomach."
+                "Arteries: carry blood from the heart to the whole body.",
+                "Veins: carry blood back to the heart.",
+                "Capillaries: are very thin vessels that connect arteries and veins and reach every part of our body."
             ]
         },
         {
-            heading: "Digestion:",
+            heading: "Heart:",
             items: [
-                "In the stomach, the food bolus mixes with gastric juices and forms a mash called chyme.",
-                "The chyme passes into the small intestine and mixes with bile, pancreatic juice and intestinal juices, forming chyle."
+                "A muscular organ that pumps blood throughout the body."
             ]
         },
         {
-            heading: "Absorption and expulsion:",
+            heading: "Blood:",
             items: [
-                "In the small intestine, nutrients are absorbed and pass into the blood. Waste passes into the large intestine.",
-                "In the large intestine, water is absorbed and faeces are formed, which are expelled through the anus."
+                "A red liquid that delivers oxygen and nutrients and collects waste."
             ]
         }
     ]
@@ -430,19 +408,17 @@ const summaryData = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'Aparato digestivo',
-        startSubtitle: 'Órganos y funcionamiento del aparato digestivo',
-        startAdvice: 'El aparato digestivo se encarga de <span class="highlight-keyword">digerir</span> los alimentos y absorber <span class="highlight-keyword">nutrientes</span>, para llevarlos a la sangre y que llegue a todas las partes del cuerpo<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startTitle: 'Aparato circulatorio',
+        startSubtitle: 'Órganos y funcionamiento del aparato circulatorio',
+        startAdvice: 'Mediante la <span class="highlight-keyword">circulación</span>, el <span class="highlight-keyword">corazón</span> bombea la <span class="highlight-keyword">sangre</span> por los <span class="highlight-keyword">vasos sanguíneos</span> para repartir el oxígeno y los nutrientes por todo el cuerpo y recogen los desechos. Aprende con este juego.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
-        summaryTitle: 'Aparato digestivo',
+        summaryTitle: 'Aparato circulatorio',
         continueBtn: 'Continuar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
-        game1Title: 'Identifica las partes del aparato digestivo',
-        game2Title: '¿Cómo funciona el aparato digestivo?',
-        game2Subtitle: 'Ordena las fases',
+        game2Title: 'Componentes del aparato circulatorio',
         checkBtn: 'Comprobar',
-        finalTitle: 'Aparato digestivo',
+        finalTitle: 'El aparato circulatorio',
         scoreLabel: 'Puntuación:',
         timeLabel: 'Tiempo:',
         backBtn: 'Volver al menú',
@@ -459,19 +435,17 @@ const i18n = {
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
     },
     en: {
-        startTitle: 'Digestive System',
-        startSubtitle: 'Organs and functioning of the digestive system',
-        startAdvice: 'The digestive system is responsible for <span class="highlight-keyword">digesting</span> food and absorbing <span class="highlight-keyword">nutrients</span>, to carry them to the blood so they reach every part of the body<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startTitle: 'Circulatory System',
+        startSubtitle: 'Organs and functioning of the circulatory system',
+        startAdvice: 'Through <span class="highlight-keyword">circulation</span>, the <span class="highlight-keyword">heart</span> pumps <span class="highlight-keyword">blood</span> through the <span class="highlight-keyword">blood vessels</span> to deliver oxygen and nutrients throughout the body and collect waste. Learn with this game.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
         startBtn: 'Start',
-        summaryTitle: 'Digestive System',
+        summaryTitle: 'Circulatory System',
         continueBtn: 'Continue',
         hofTitle: 'Best scores',
         hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
-        game1Title: 'Identify the parts of the digestive system',
-        game2Title: 'How does the digestive system work?',
-        game2Subtitle: 'Order the stages',
+        game2Title: 'Components of the circulatory system',
         checkBtn: 'Check',
-        finalTitle: 'Digestive System',
+        finalTitle: 'The Circulatory System',
         scoreLabel: 'Score:',
         timeLabel: 'Time:',
         backBtn: 'Back to menu',
@@ -497,19 +471,20 @@ let isMuted = false;
 let startTime = 0;
 let timerInterval = null;
 let totalAttempts = 0;
-let totalErrors = 0; // Contador de errores cometidos (cada uno resta 100/16 puntos)
+let totalErrors = 0; // Contador de errores cometidos (cada uno resta 100/10 puntos)
 let currentScreen = 'start';
 let isHofLoading = false;
 let lastElapsedSeconds = 0; // Guarda el tiempo final en segundos para enviarlo al HOF
 
-// Variables para Juego 1 (Hotspot)
+// Variables para Juego 1 (Hotspot, fijo en inglés)
 let game1CurrentIndex = 0;
 let game1Shuffled = [];
 let game1Completed = [];
 let game1SpeakTimeoutId = null;
 
-// Variables para Juego 2 (Ordenar fases)
-let game2Shuffled = [];
+// Variables para Juego 2 (Emparejar tarjetas)
+let game2Matches = 0;
+let game2SelectedCard = null;
 
 /* ====================================================
    SISTEMA DE AUDIO Y TTS
@@ -609,8 +584,6 @@ function applyLanguage(lang) {
     document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
     document.getElementById('continueBtn').innerHTML = t.continueBtn;
     document.getElementById('game2Title').innerHTML = t.game2Title;
-    document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
-    document.getElementById('checkPhasesBtn').innerHTML = t.checkBtn;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
     document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
     document.getElementById('backBtn').innerHTML = t.backBtn;
@@ -628,13 +601,16 @@ function applyLanguage(lang) {
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
 
+    // La pantalla de juego 1 (Señalar partes) permanece siempre en inglés y no se traduce
     if (currentScreen === 'summary') {
         buildSummary();
     } else if (currentScreen === 'game2') {
-        const phasesContainer = document.getElementById('phasesContainer');
-        Array.from(phasesContainer.querySelectorAll('.phase-card')).forEach((card) => {
+        const game2Container = document.getElementById('game2Container');
+        Array.from(game2Container.querySelectorAll('.memory-card:not(.matched)')).forEach(card => {
             const origIndex = parseInt(card.dataset.origIndex);
-            card.querySelector('.phase-text').innerHTML = game2Data[lang][origIndex];
+            const type = card.dataset.type;
+            const item = game2Data[lang][origIndex];
+            card.textContent = type === 'term' ? item.term : item.def;
         });
     }
 }
@@ -681,8 +657,8 @@ function buildSummary() {
     const data = summaryData[currentLang];
 
     const keywords = currentLang === 'es'
-        ? ['glándulas salivales','jugos intestinales','intestino delgado','jugo pancreático','bolo alimenticio','intestino grueso','jugos gástricos','tubo digestivo','nutrientes','páncreas','estómago','desechos','faringe','esófago','hígado','sangre','quimo','quilo','bilis','heces','agua','ano']
-        : ['intestinal juices','pancreatic juice','salivary glands','small intestine','large intestine','digestive tract','gastric juices','food bolus','oesophagus','nutrients','pancreas','stomach','pharynx','faeces','waste','liver','blood','chyme','chyle','water','bile','anus'];
+        ? ['vasos sanguíneos','nutrientes','capilares','arterias','desechos','corazón','oxígeno','sangre','venas']
+        : ['blood vessels','capillaries','nutrients','arteries','oxygen','blood','heart','waste','veins'];
 
     const highlightKeywords = (text) => {
         let result = text;
@@ -716,7 +692,7 @@ document.getElementById('continueBtn').addEventListener('click', () => {
 });
 
 /* ====================================================
-   JUEGO 1: HOTSPOT
+   JUEGO 1: HOTSPOT (SIEMPRE EN INGLÉS)
 ===================================================== */
 function initGame1() {
     totalAttempts = 0;
@@ -746,7 +722,7 @@ function showGame1Word() {
 }
 
 function buildHotspots() {
-    const wrapper = document.getElementById('digestiveImageWrapper');
+    const wrapper = document.getElementById('circulatoryImageWrapper');
     const container = wrapper.querySelector('.hotspots-container');
     container.innerHTML = '';
     const scale = wrapper.offsetWidth / game1ImgWidth;
@@ -797,7 +773,7 @@ function checkGame1Answer(idx) {
     } else {
         safeCancelSpeech();
         clearTimeout(game1SpeakTimeoutId);
-        totalErrors++; // Cada error resta 100/16 puntos
+        totalErrors++; // Cada error resta 100/10 puntos
         hotspot.style.backgroundColor = '#e74c3c';
         hotspot.classList.add('shake');
         playSound('error');
@@ -828,93 +804,103 @@ function endGame1() {
 }
 
 /* ====================================================
-   JUEGO 2: ORDENAR FASES
+   JUEGO 2: EMPAREJAR TARJETAS
 ===================================================== */
 function initGame2() {
-    game2Shuffled = shuffleArray([...Array(game2Total).keys()]);
+    game2Matches = 0;
+    game2SelectedCard = null;
     document.getElementById('timerDisplay2').textContent = formatTime(Date.now() - startTime);
-    document.getElementById('checkPhasesBtn').disabled = false;
-    buildPhases();
-}
-
-function buildPhases() {
-    const container = document.getElementById('phasesContainer');
-    container.innerHTML = '';
-    game2Shuffled.forEach((idx, pos) => {
-        const card = document.createElement('div');
-        card.className = 'phase-card';
-        card.dataset.origIndex = idx;
-        card.dataset.position = pos;
-        const text = game2Data[currentLang][idx];
-        card.innerHTML = `
-            <div class="phase-text">${text}</div>
-            <div class="phase-controls">
-                <button class="phase-btn up-btn" data-pos="${pos}">▲</button>
-                <button class="phase-btn down-btn" data-pos="${pos}">▼</button>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-    updatePhaseButtons();
-}
-
-function updatePhaseButtons() {
-    const cards = document.querySelectorAll('.phase-card');
-    cards.forEach((card, i) => {
-        const upBtn = card.querySelector('.up-btn');
-        const downBtn = card.querySelector('.down-btn');
-        upBtn.disabled = i === 0;
-        downBtn.disabled = i === cards.length - 1;
-        upBtn.addEventListener('click', () => movePhase(i, -1));
-        downBtn.addEventListener('click', () => movePhase(i, 1));
-    });
-}
-
-function movePhase(pos, dir) {
-    playSound('tap');
-    const newPos = pos + dir;
-    if (newPos < 0 || newPos >= game2Shuffled.length) return;
-    const temp = game2Shuffled[pos];
-    game2Shuffled[pos] = game2Shuffled[newPos];
-    game2Shuffled[newPos] = temp;
-    buildPhases();
-}
-
-document.getElementById('checkPhasesBtn').addEventListener('click', () => {
-    playSound('tap');
-    totalAttempts++;
-    const cards = document.querySelectorAll('.phase-card');
-    let allCorrect = true;
-    cards.forEach((card, i) => {
-        const isCorrect = game2Shuffled[i] === i;
-        if (isCorrect) {
-            card.classList.add('correct');
-            card.classList.remove('incorrect');
-        } else {
-            card.classList.add('incorrect');
-            card.classList.remove('correct');
-            card.classList.add('shake');
-            totalErrors++; // Cada fase mal colocada resta 100/16 puntos
-            allCorrect = false;
-        }
-    });
     updateProgress();
-    if (allCorrect) {
-        playSound('correcto');
-        setTimeout(() => {
-            safeCancelSpeech();
-            playSound('completado');
-            setTimeout(() => endGame(), 1000);
-        }, 500);
-    } else {
-        playSound('error');
-        setTimeout(() => {
-            cards.forEach(card => {
-                card.classList.remove('correct', 'incorrect', 'shake');
-            });
-        }, 1500);
+    buildMatchCards();
+}
+
+function buildMatchCards() {
+    const container = document.getElementById('game2Container');
+    container.innerHTML = '';
+
+    const data = game2Data[currentLang];
+    const indices = Array.from({ length: data.length }, (_, i) => i);
+
+    const termOrder = shuffleArray(indices);
+    const defOrder = shuffleArray(indices);
+
+    for (let row = 0; row < data.length; row++) {
+        container.appendChild(createMatchCard(termOrder[row], 'term'));
+        container.appendChild(createMatchCard(defOrder[row], 'def'));
     }
-});
+
+    container.onclick = handleMatchCardClick;
+}
+
+function createMatchCard(origIndex, type) {
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.dataset.origIndex = origIndex;
+    card.dataset.type = type;
+    const item = game2Data[currentLang][origIndex];
+    card.textContent = type === 'term' ? item.term : item.def;
+    return card;
+}
+
+function handleMatchCardClick(e) {
+    const target = e.target.closest('.memory-card');
+    if (!target || target.classList.contains('matched')) return;
+
+    if (!game2SelectedCard) {
+        playSound('tap');
+        game2SelectedCard = target;
+        game2SelectedCard.classList.add('selected');
+        return;
+    }
+
+    if (target === game2SelectedCard) {
+        game2SelectedCard.classList.remove('selected');
+        game2SelectedCard = null;
+        return;
+    }
+
+    if (target.dataset.type === game2SelectedCard.dataset.type) {
+        game2SelectedCard.classList.remove('selected');
+        playSound('tap');
+        game2SelectedCard = target;
+        game2SelectedCard.classList.add('selected');
+        return;
+    }
+
+    safeCancelSpeech();
+    totalAttempts++;
+    const prevCard = game2SelectedCard;
+    const idA = prevCard.dataset.origIndex;
+    const idB = target.dataset.origIndex;
+
+    if (idA === idB) {
+        playSound('correcto');
+        prevCard.classList.remove('selected');
+        prevCard.classList.add('matched');
+        target.classList.add('matched');
+        game2SelectedCard = null;
+        game2Matches++;
+        updateProgress();
+        if (game2Matches === game2TotalPairs) {
+            setTimeout(() => {
+                safeCancelSpeech();
+                playSound('completado');
+                setTimeout(() => endGame(), 1000);
+            }, 500);
+        }
+    } else {
+        totalErrors++; // Cada emparejamiento erróneo resta 100/10 puntos
+        playSound('error');
+        prevCard.classList.remove('selected');
+        prevCard.classList.add('flash-error');
+        target.classList.add('flash-error');
+        game2SelectedCard = null;
+        setTimeout(() => {
+            prevCard.classList.remove('flash-error');
+            target.classList.remove('flash-error');
+        }, 400);
+    }
+}
 
 /* ====================================================
    FUNCIONES DE NAVEGACIÓN
@@ -973,9 +959,8 @@ function getElapsedSeconds() {
    PROGRESO
 ===================================================== */
 function updateProgress() {
-    const total = 16; // 9 del juego 1 + 7 del juego 2
-    const game2CorrectCount = document.querySelectorAll('.phase-card.correct').length;
-    const completed = game1Completed.length + game2CorrectCount;
+    const total = 10; // 4 del juego 1 + 6 del juego 2
+    const completed = game1Completed.length + game2Matches;
     const percent = Math.min(100, (completed / total) * 100);
     document.getElementById('progressFill').style.width = percent + '%';
     if (document.getElementById('progressFill2')) {
@@ -997,8 +982,8 @@ function endGame() {
 }
 
 function calcularPuntuacionFinal() {
-    // La puntuación empieza en 100 y cada error resta 100/16 puntos
-    let puntuacion = 100 - (totalErrors * (100 / 16));
+    // La puntuación empieza en 100 y cada error resta 100/10 puntos
+    let puntuacion = 100 - (totalErrors * (100 / 10));
     puntuacion = Math.round(puntuacion);
     puntuacion = Math.max(0, Math.min(100, puntuacion)); // Nunca negativa, máximo 100
     return puntuacion;
@@ -1186,7 +1171,7 @@ window.addEventListener('load', () => {
 function preloadImages() {
     const urls = [
         'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png',
-        'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Nutrcici%C3%B3n%20y%20reporducci%C3%B3n/DIgestivo_juego2.png'
+        'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Nutrcici%C3%B3n%20y%20reporducci%C3%B3n/Circulatorio_juego3.png'
     ];
     return Promise.race([
         Promise.all(urls.map(url => new Promise(resolve => {
