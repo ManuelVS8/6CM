@@ -118,7 +118,7 @@
         .memory-card.matched { background-color:var(--green); cursor:default; animation:none; transform:none; box-shadow:0 3px 10px rgba(46,204,113,.35); }
         .memory-card.flash-error { animation:shakeAnim .4s ease-in-out; background-color:var(--red) !important; }
 
-        /* Pantalla Juego 3: Señalar colores (zonas poligonales) */
+        /* Pantalla Juego 4: Señalar colores (zonas poligonales) */
         .hotspot-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.2rem 0 1rem; }
         .word-display { display:flex; align-items:center; justify-content:center; gap:.8rem; }
         .hotspot-word-text { font-size:clamp(1.1rem,3.4vw,1.5rem); font-weight:900; color:var(--blue-dark); background:var(--panel);
@@ -146,7 +146,30 @@
             100% { fill:rgba(231,76,60,0); }
         }
 
-        /* Pantalla Juego 5: Ordenar fases */
+        /* Pantalla Juego 5: Grid con imágenes */
+        .grid-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; flex:1; padding:.2rem 0 1rem; width:100%; }
+        .grid-word-card { display:flex; align-items:center; gap:1rem; background:linear-gradient(135deg, var(--panel) 0%, #dbe4ff 100%);
+            border:2px solid var(--blue-600); border-radius:16px; padding:.9rem 1.6rem; box-shadow:0 4px 14px rgba(37,79,186,.15);
+            min-width:220px; max-width:90%; }
+        .grid-word-text-block { display:flex; flex-direction:column; align-items:flex-start; gap:.1rem; }
+        .grid-word-eyebrow { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-600); opacity:.85; }
+        #game5WordText { font-size:clamp(1.3rem,4vw,1.9rem); font-weight:900; color:var(--blue-dark); line-height:1.1; }
+        .image-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; width:100%; margin:0 auto; }
+        .image-cell { position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; cursor:pointer;
+            background-color:#eef2f9; border:3px solid transparent; box-shadow:0 3px 10px rgba(0,0,0,.1);
+            transition:transform .15s ease, box-shadow .2s ease; }
+        .image-cell:hover { transform:scale(1.03); box-shadow:0 6px 16px rgba(0,0,0,.18); }
+        .image-cell img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
+        .image-cell .cell-flash { position:absolute; inset:0; background-color:transparent; transition:background-color .15s ease; pointer-events:none; }
+        .image-cell.flash-correct .cell-flash { background-color:rgba(46,204,113,.55); }
+        .image-cell.flash-error .cell-flash { background-color:rgba(231,76,60,.55); }
+        .image-cell.shake { animation:shakeAnim .4s ease; }
+        .image-cell.solved { cursor:default; }
+        @media (max-width:600px) {
+            .image-grid { grid-template-columns:repeat(2, 1fr); }
+        }
+
+        /* Pantalla Juego 6: Ordenar fases */
         .order-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; flex:1; padding:.5rem 0 1rem; }
         .phases-container { width:100%; max-width:700px; }
         .phase-card { background:#f8fff9; border:2px solid #b7e4c7; border-radius:12px; padding:1rem; margin-bottom:1rem;
@@ -315,18 +338,41 @@
         </div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 5: ORDENAR FASES ===== -->
+    <!-- ===== PANTALLA JUEGO 5: GRID CON IMÁGENES ===== -->
     <section class="screen" id="game5Screen">
         <header>
-            <h1 id="game5Title">Ordena las fases de la menstruación</h1>
+            <h1 id="game5Title">Fases del ciclo de la menstruación</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay5">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill5"></div></div>
         </div>
+        <div class="grid-wrapper">
+            <div class="grid-word-card">
+                <div class="grid-word-text-block">
+                    <span class="grid-word-eyebrow" id="game5Eyebrow">Encuentra:</span>
+                    <span id="game5WordText">Fase de menstruación</span>
+                </div>
+                <button class="btn-play-word" id="btnPlayWord5" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="image-grid" id="imageGrid5"></div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 6: ORDENAR FASES ===== -->
+    <section class="screen" id="game6Screen">
+        <header>
+            <h1 id="game6Title">Ordena las fases de la menstruación</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay6">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill6"></div></div>
+        </div>
         <div class="order-wrapper">
-            <div class="phases-container" id="phasesContainer5"></div>
-            <button class="btn btn-primary check-btn" id="checkPhasesBtn5">Comprobar</button>
+            <div class="phases-container" id="phasesContainer6"></div>
+            <button class="btn btn-primary check-btn" id="checkPhasesBtn6">Comprobar</button>
         </div>
     </section>
 
@@ -421,7 +467,25 @@ const matchData = {
 };
 
 /* ====================================================
-   DATOS DEL JUEGO - SEÑALAR COLORES (JUEGO 4, CON TTS)
+   DATOS DEL JUEGO - GRID CON IMÁGENES (JUEGO 4, CON TTS)
+===================================================== */
+const gridImageData = {
+    es: [
+        { text:"Fase de menstruación", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/MESTRUACION.png" },
+        { text:"Fase de recuperación", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Recuperaci%C3%B3n.png" },
+        { text:"Fase de ovulación", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Ovulacion.png" },
+        { text:"Fase de espera", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/endometrio.png" }
+    ],
+    en: [
+        { text:"Menstruation phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/MESTRUACION.png" },
+        { text:"Recovery phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Recuperaci%C3%B3n.png" },
+        { text:"Ovulation phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Ovulacion.png" },
+        { text:"Waiting phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/endometrio.png" }
+    ]
+};
+
+/* ====================================================
+   DATOS DEL JUEGO - SEÑALAR COLORES (JUEGO 5, CON TTS)
    El anillo tiene 28 días repartidos en 4 fases. En vez de
    usar polígonos de bordes rectos (que se salían del anillo
    por el redondeo manual al crearlos), cada zona se calcula
@@ -533,7 +597,9 @@ const i18n = {
         game2Title: 'Días de la menstruación',
         game3Title: 'Fases y días del ciclo de la menstruación',
         game4Title: 'Señala los colores para indicar las fases',
-        game5Title: 'Ordena las fases de la menstruación',
+        findLabel: 'Encuentra:',
+        game5Title: 'Fases del ciclo de la menstruación',
+        game6Title: 'Ordena las fases de la menstruación',
         checkBtn: 'Comprobar',
         finalTitle: 'El ciclo de la menstruación',
         scoreLabel: 'Puntuación:',
@@ -564,7 +630,9 @@ const i18n = {
         game2Title: 'Days of the menstrual cycle',
         game3Title: 'Phases and days of the menstrual cycle',
         game4Title: 'Point to the colours that indicate each phase',
-        game5Title: 'Put the phases of menstruation in order',
+        findLabel: 'Find:',
+        game5Title: 'Phases of the menstrual cycle',
+        game6Title: 'Put the phases of menstruation in order',
         checkBtn: 'Check',
         finalTitle: 'The Menstrual Cycle',
         scoreLabel: 'Score:',
@@ -592,8 +660,8 @@ let isMuted = false;
 let startTime = 0;
 let timerInterval = null;
 let totalAttempts = 0;
-let totalErrors = 0; // Cada error resta 100/20 puntos (4+4+4+4+4 interacciones)
-const TOTAL_ITEMS = 20;
+let totalErrors = 0; // Cada error resta 100/24 puntos (4+4+4+4+4+4 interacciones)
+const TOTAL_ITEMS = 24;
 let currentScreen = 'start';
 let isHofLoading = false;
 let lastElapsedSeconds = 0;
@@ -608,8 +676,11 @@ let matchState = {
 // Estado Juego 4: Señalar colores (segmentos de anillo)
 let hotspot4State = { currentIndex:0, shuffled:[], completed:[], locked:false };
 
-// Estado Juego 5: Ordenar fases
-let game5Shuffled = [];
+// Estado Juego 5: Grid con imágenes
+let grid5State = { currentIndex:0, shuffled:[], completed:[] };
+
+// Estado Juego 6: Ordenar fases
+let game6Shuffled = [];
 
 /* ====================================================
    SISTEMA DE AUDIO Y TTS
@@ -748,6 +819,8 @@ function applyLanguage(lang) {
     document.getElementById('game3Title').innerHTML = t.game3Title;
     document.getElementById('game4Title').innerHTML = t.game4Title;
     document.getElementById('game5Title').innerHTML = t.game5Title;
+    document.getElementById('game5Eyebrow').innerHTML = t.findLabel;
+    document.getElementById('game6Title').innerHTML = t.game6Title;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
     document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
     document.getElementById('backBtn').innerHTML = t.backBtn;
@@ -764,7 +837,7 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
-    document.getElementById('checkPhasesBtn5').innerHTML = t.checkBtn;
+    document.getElementById('checkPhasesBtn6').innerHTML = t.checkBtn;
 
     if (currentScreen === 'summary') {
         buildSummary();
@@ -786,7 +859,18 @@ function applyLanguage(lang) {
         }
         buildHotspot4Elements();
     } else if (currentScreen === 'game5') {
-        Array.from(document.querySelectorAll('#phasesContainer5 .phase-card')).forEach(card => {
+        const st = grid5State;
+        if (st.currentIndex < st.shuffled.length) {
+            const idx = st.shuffled[st.currentIndex];
+            document.getElementById('game5WordText').innerHTML = gridImageData[lang][idx].text;
+            speakText(gridImageData[lang][idx].text, lang);
+        }
+        Array.from(document.querySelectorAll('#imageGrid5 .image-cell')).forEach(cell => {
+            const origIndex = parseInt(cell.dataset.origIndex);
+            cell.querySelector('img').alt = gridImageData[lang][origIndex].text;
+        });
+    } else if (currentScreen === 'game6') {
+        Array.from(document.querySelectorAll('#phasesContainer6 .phase-card')).forEach(card => {
             const origIndex = parseInt(card.dataset.origIndex);
             card.querySelector('.phase-text').innerHTML = orderData[lang][origIndex];
         });
@@ -1033,7 +1117,7 @@ function checkHotspot4Answer(idx) {
             showHotspot4Word();
         }, 350);
     } else {
-        totalErrors++; // Cada error resta 100/16 puntos
+        totalErrors++; // Cada error resta 100/24 puntos
         hotspot.classList.add('flash-error');
         playSound('error');
         setTimeout(() => {
@@ -1055,24 +1139,115 @@ function endHotspot4Game() {
     playSound('completado');
     setTimeout(() => {
         showScreen('game5');
-        initGame5();
+        initGrid5Game();
     }, 1000);
 }
 
 /* ====================================================
-   JUEGO 5: ORDENAR FASES (SIN TTS)
+   JUEGO 5: GRID CON IMÁGENES (CON TTS)
 ===================================================== */
-function initGame5() {
-    game5Shuffled = shuffleArray([...Array(orderData.es.length).keys()]);
+function initGrid5Game() {
+    const st = grid5State;
+    st.currentIndex = 0;
+    st.shuffled = shuffleArray([...Array(gridImageData.es.length).keys()]);
+    st.completed = [];
     document.getElementById('timerDisplay5').textContent = formatTime(Date.now() - startTime);
-    document.getElementById('checkPhasesBtn5').disabled = false;
-    buildPhases5();
+    forceInitTTS(); // Refresca el motor de TTS al entrar en esta pantalla
+    buildImageGrid5();
+    showGrid5Word();
 }
 
-function buildPhases5() {
-    const container = document.getElementById('phasesContainer5');
+function buildImageGrid5() {
+    const grid = document.getElementById('imageGrid5');
+    grid.innerHTML = '';
+    // El orden visual de las celdas se baraja de forma independiente,
+    // para que la posición de cada imagen no coincida con el orden de las palabras.
+    const cellOrder = shuffleArray([...Array(gridImageData.es.length).keys()]);
+    cellOrder.forEach(origIdx => {
+        const cell = document.createElement('div');
+        cell.className = 'image-cell';
+        cell.dataset.origIndex = origIdx;
+        const item = gridImageData[currentLang][origIdx];
+        cell.innerHTML = `<img src="${item.img}" alt="${item.text}"><div class="cell-flash"></div>`;
+        cell.addEventListener('click', () => checkGrid5Answer(origIdx, cell));
+        grid.appendChild(cell);
+    });
+}
+
+function showGrid5Word() {
+    const st = grid5State;
+    if (st.currentIndex >= st.shuffled.length) {
+        endGrid5Game();
+        return;
+    }
+    const idx = st.shuffled[st.currentIndex];
+    const word = gridImageData[currentLang][idx].text;
+    document.getElementById('game5WordText').innerHTML = word;
+    setTimeout(() => {
+        speakText(word, currentLang);
+    }, 300);
+    updateProgress();
+}
+
+document.getElementById('btnPlayWord5').addEventListener('click', () => {
+    const st = grid5State;
+    if (st.currentIndex < st.shuffled.length) {
+        speakText(gridImageData[currentLang][st.shuffled[st.currentIndex]].text, currentLang);
+    }
+});
+
+function checkGrid5Answer(idx, cell) {
+    if (cell.classList.contains('solved')) return;
+    const st = grid5State;
+    safeCancelSpeech();
+    totalAttempts++;
+    const correct = idx === st.shuffled[st.currentIndex];
+
+    if (correct) {
+        cell.classList.add('flash-correct', 'solved');
+        playSound('correcto');
+        st.completed.push(st.shuffled[st.currentIndex]);
+        setTimeout(() => {
+            cell.classList.remove('flash-correct');
+            st.currentIndex++;
+            showGrid5Word();
+        }, 250);
+    } else {
+        totalErrors++; // Cada error resta 100/24 puntos
+        cell.classList.add('flash-error', 'shake');
+        playSound('error');
+        setTimeout(() => {
+            cell.classList.remove('flash-error');
+        }, 250);
+        setTimeout(() => {
+            cell.classList.remove('shake');
+        }, 400);
+    }
+}
+
+function endGrid5Game() {
+    safeCancelSpeech();
+    playSound('completado');
+    setTimeout(() => {
+        showScreen('game6');
+        initGame6();
+    }, 1000);
+}
+
+/* ====================================================
+   JUEGO 6: ORDENAR FASES (SIN TTS)
+===================================================== */
+function initGame6() {
+    game6Shuffled = shuffleArray([...Array(orderData.es.length).keys()]);
+    document.getElementById('timerDisplay6').textContent = formatTime(Date.now() - startTime);
+    document.getElementById('checkPhasesBtn6').disabled = false;
+    buildPhases6();
+}
+
+function buildPhases6() {
+    const container = document.getElementById('phasesContainer6');
     container.innerHTML = '';
-    game5Shuffled.forEach((idx, pos) => {
+    game6Shuffled.forEach((idx, pos) => {
         const card = document.createElement('div');
         card.className = 'phase-card';
         card.dataset.origIndex = idx;
@@ -1087,38 +1262,38 @@ function buildPhases5() {
         `;
         container.appendChild(card);
     });
-    updatePhase5Buttons();
+    updatePhase6Buttons();
 }
 
-function updatePhase5Buttons() {
-    const cards = document.querySelectorAll('#phasesContainer5 .phase-card');
+function updatePhase6Buttons() {
+    const cards = document.querySelectorAll('#phasesContainer6 .phase-card');
     cards.forEach((card, i) => {
         const upBtn = card.querySelector('.up-btn');
         const downBtn = card.querySelector('.down-btn');
         upBtn.disabled = i === 0;
         downBtn.disabled = i === cards.length - 1;
-        upBtn.addEventListener('click', () => movePhase5(i, -1));
-        downBtn.addEventListener('click', () => movePhase5(i, 1));
+        upBtn.addEventListener('click', () => movePhase6(i, -1));
+        downBtn.addEventListener('click', () => movePhase6(i, 1));
     });
 }
 
-function movePhase5(pos, dir) {
+function movePhase6(pos, dir) {
     playSound('tap');
     const newPos = pos + dir;
-    if (newPos < 0 || newPos >= game5Shuffled.length) return;
-    const temp = game5Shuffled[pos];
-    game5Shuffled[pos] = game5Shuffled[newPos];
-    game5Shuffled[newPos] = temp;
-    buildPhases5();
+    if (newPos < 0 || newPos >= game6Shuffled.length) return;
+    const temp = game6Shuffled[pos];
+    game6Shuffled[pos] = game6Shuffled[newPos];
+    game6Shuffled[newPos] = temp;
+    buildPhases6();
 }
 
-document.getElementById('checkPhasesBtn5').addEventListener('click', () => {
+document.getElementById('checkPhasesBtn6').addEventListener('click', () => {
     playSound('tap');
     totalAttempts++;
-    const cards = document.querySelectorAll('#phasesContainer5 .phase-card');
+    const cards = document.querySelectorAll('#phasesContainer6 .phase-card');
     let allCorrect = true;
     cards.forEach((card, i) => {
-        const isCorrect = game5Shuffled[i] === i;
+        const isCorrect = game6Shuffled[i] === i;
         if (isCorrect) {
             card.classList.add('correct');
             card.classList.remove('incorrect');
@@ -1135,7 +1310,7 @@ document.getElementById('checkPhasesBtn5').addEventListener('click', () => {
         playSound('correcto');
         setTimeout(() => {
             playSound('completado');
-            setTimeout(() => endGame5(), 1000);
+            setTimeout(() => endGame6(), 1000);
         }, 500);
     } else {
         playSound('error');
@@ -1147,7 +1322,7 @@ document.getElementById('checkPhasesBtn5').addEventListener('click', () => {
     }
 });
 
-function endGame5() {
+function endGame6() {
     setTimeout(() => {
         endGame();
     }, 300);
@@ -1176,6 +1351,8 @@ function showScreen(screen) {
         document.getElementById('game4Screen').classList.add('active');
     } else if (screen === 'game5') {
         document.getElementById('game5Screen').classList.add('active');
+    } else if (screen === 'game6') {
+        document.getElementById('game6Screen').classList.add('active');
     } else if (screen === 'final') {
         document.getElementById('finalScreen').classList.add('active');
     }
@@ -1193,6 +1370,7 @@ function startTimer() {
         document.getElementById('timerDisplay3').textContent = formatTime(elapsed);
         document.getElementById('timerDisplay4').textContent = formatTime(elapsed);
         document.getElementById('timerDisplay5').textContent = formatTime(elapsed);
+        document.getElementById('timerDisplay6').textContent = formatTime(elapsed);
     }, 10);
 }
 
@@ -1219,11 +1397,11 @@ function getElapsedSeconds() {
    PROGRESO
 ===================================================== */
 function updateProgress() {
-    const game5Cards = document.querySelectorAll('#phasesContainer5 .phase-card.correct');
-    const game5Done = game5Cards.length === orderData.es.length ? orderData.es.length : 0;
-    const completed = matchState[1].matches + matchState[2].matches + matchState[3].matches + hotspot4State.completed.length + game5Done;
+    const game6Cards = document.querySelectorAll('#phasesContainer6 .phase-card.correct');
+    const game6Done = game6Cards.length === orderData.es.length ? orderData.es.length : 0;
+    const completed = matchState[1].matches + matchState[2].matches + matchState[3].matches + hotspot4State.completed.length + grid5State.completed.length + game6Done;
     const percent = Math.min(100, (completed / TOTAL_ITEMS) * 100);
-    ['progressFill1', 'progressFill2', 'progressFill3', 'progressFill4', 'progressFill5'].forEach(id => {
+    ['progressFill1', 'progressFill2', 'progressFill3', 'progressFill4', 'progressFill5', 'progressFill6'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.width = percent + '%';
     });
@@ -1441,7 +1619,8 @@ window.addEventListener('load', () => {
 function preloadImages() {
     const urls = [
         'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png',
-        IMG_URL
+        IMG_URL,
+        ...gridImageData.es.map(item => item.img)
     ];
     return Promise.race([
         Promise.all(urls.map(url => new Promise(resolve => {
