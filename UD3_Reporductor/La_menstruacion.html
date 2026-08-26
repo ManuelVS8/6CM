@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="es" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title>La menstruación</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root {
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
+            padding:20px 12px; color:#333;
+        }
+        .game-container {
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column; margin-bottom:2rem;
+        }
+        header { text-align:center; margin-bottom:.4rem; margin-top:3.2rem; }
+        h1 { color:var(--blue-dark); font-size:clamp(1.5rem,4.2vw,2.4rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle { color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
+        .highlight-keyword { color:var(--orange); font-weight:800; }
+
+        /* Buttons */
+        .btn { color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
+        .btn:hover { transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active { transform:translateY(0) scale(.97); }
+        .btn-primary { background:var(--orange); }
+        .btn-primary:hover { background:var(--orange-700); }
+        .btn-blue { background:var(--blue-600); }
+        .btn-blue:hover { filter:brightness(.9); }
+        .btn-ghost { background:#e6f2ff; color:var(--blue-700); }
+
+        .screen { display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active { display:flex; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+        .game-info { display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.3rem 0 .8rem; flex-wrap:wrap; }
+        .timer { font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar { flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+
+        /* Top controls */
+        .top-controls { position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
+        .lang-pill { display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        .mute-btn { background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff;
+            width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            z-index:20; transition:transform .2s, box-shadow .2s; }
+        .mute-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
+        .mute-btn.muted { background:linear-gradient(135deg,#999,#777); }
+        .mute-btn svg { width:20px; height:20px; pointer-events:none; }
+
+        /* Pantalla Inicio */
+        .start-content { display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box { background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image { max-width:300px; width:100%; margin:0 auto; }
+
+        @keyframes shakeAnim {
+            0%,100%{transform:translateX(0);}
+            20%{transform:translateX(-5px);}
+            40%{transform:translateX(5px);}
+            60%{transform:translateX(-5px);}
+            80%{transform:translateX(5px);}
+        }
+
+        /* Pantalla Resumen */
+        .summary-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.5rem; flex:1; padding:1rem 0; }
+        .summary-container { width:100%; max-width:850px; display:flex; flex-direction:column; gap:1.2rem; }
+        .summary-block { border-radius:16px; padding:1.5rem 1.7rem; border:2px solid; }
+        .summary-intro { line-height:1.7; font-size:clamp(.92rem,2.4vw,1.05rem); color:var(--blue-dark); margin-bottom:1rem; }
+        .summary-list { list-style:disc; padding-left:1.4rem; }
+        .summary-list li { margin-bottom:.9rem; line-height:1.7; font-size:clamp(.9rem,2.3vw,1.02rem); color:var(--blue-dark); }
+        .summary-list li:last-child { margin-bottom:0; }
+        .keyword { font-weight:900; }
+        .summary-block.block-blue { background:#E8EAFF; border-color:var(--blue-600); }
+        .summary-block.block-blue .keyword { color:var(--blue-600); }
+
+        /* Pantallas Juego 1 y 2: Emparejar */
+        .match-container { display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:8px; margin:.5rem auto; align-content:flex-start; justify-content:center; align-self:center; width:100%; max-width:700px; }
+        .memory-card {
+            background-color:var(--blue-600); color:#fff; border:3px solid transparent; border-radius:10px;
+            padding:12px 10px; cursor:pointer; transition:background-color .2s ease, box-shadow .2s ease, transform .15s ease;
+            text-align:center; min-height:80px; width:100%; height:100%; box-sizing:border-box;
+            display:flex; align-items:center; justify-content:center;
+            font-size:clamp(.85rem,2.4vw,1.05rem); font-weight:700; user-select:none; word-break:break-word;
+            overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08);
+        }
+        .memory-card:hover:not(.selected):not(.matched):not(.flash-error) { transform:scale(1.02); box-shadow:0 4px 10px rgba(0,0,0,.18); }
+        .memory-card.selected { background-color:var(--orange); animation:cardPulse 1s ease-in-out infinite; }
+        @keyframes cardPulse { 0%,100%{ transform:scale(1.02); } 50%{ transform:scale(1.05); } }
+        .memory-card.matched { background-color:var(--green); cursor:default; animation:none; transform:none; box-shadow:0 3px 10px rgba(46,204,113,.35); }
+        .memory-card.flash-error { animation:shakeAnim .4s ease-in-out; background-color:var(--red) !important; }
+
+        /* Pantalla Juego 3: Señalar colores (zonas poligonales) */
+        .hotspot-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.2rem 0 1rem; }
+        .word-display { display:flex; align-items:center; justify-content:center; gap:.8rem; }
+        .hotspot-word-text { font-size:clamp(1.1rem,3.4vw,1.5rem); font-weight:900; color:var(--blue-dark); background:var(--panel);
+            padding:.55rem 1.5rem; border-radius:14px; box-shadow:0 3px 8px rgba(0,0,0,.08); min-width:170px; max-width:90%; text-align:center; }
+        .btn-play-word { width:46px; height:46px; border-radius:50%; background:var(--blue-600); border:2px solid #fff; color:#fff;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(37,79,186,.35);
+            transition:transform .15s, box-shadow .15s; flex-shrink:0; }
+        .btn-play-word:hover { transform:scale(1.12); }
+        .btn-play-word:active { transform:scale(.95); }
+        .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
+        .hotspot-image-wrapper { position:relative; width:100%; max-width:360px; aspect-ratio:1008/1057; margin:0 auto;
+            border-radius:14px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#eef2f9; }
+        .hotspot-image-wrapper img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; user-select:none; -webkit-user-drag:none; }
+        .poly-hotspot { fill:rgba(0,0,0,0); stroke:none; cursor:pointer; pointer-events:auto; }
+        .poly-hotspot.flash-correct { animation:polyFlashGreen .35s ease-in-out; }
+        .poly-hotspot.flash-error { animation:polyFlashRed .35s ease-in-out; }
+        @keyframes polyFlashGreen {
+            0% { fill:rgba(46,204,113,0); }
+            50% { fill:rgba(46,204,113,.55); }
+            100% { fill:rgba(46,204,113,0); }
+        }
+        @keyframes polyFlashRed {
+            0% { fill:rgba(231,76,60,0); }
+            50% { fill:rgba(231,76,60,.55); }
+            100% { fill:rgba(231,76,60,0); }
+        }
+
+        /* Pantalla Juego 5: Ordenar fases */
+        .order-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; flex:1; padding:.5rem 0 1rem; }
+        .phases-container { width:100%; max-width:700px; }
+        .phase-card { background:#f8fff9; border:2px solid #b7e4c7; border-radius:12px; padding:1rem; margin-bottom:1rem;
+            display:flex; align-items:center; justify-content:space-between; gap:.8rem; transition:all .3s ease; }
+        .phase-card:hover { transform:translateY(-4px); box-shadow:0 8px 16px rgba(0,0,0,.08); }
+        .phase-text { flex:1; font-weight:700; font-size:clamp(.85rem,2vw,1.05rem); color:var(--blue-dark); text-align:left; }
+        .phase-controls { display:flex; gap:.4rem; flex-shrink:0; }
+        .phase-btn { width:40px; height:40px; border-radius:8px; background:var(--orange); border:none; color:white; font-weight:800;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s ease; }
+        .phase-btn:hover:not(:disabled) { background:var(--orange-700); transform:scale(1.1); }
+        .phase-btn:disabled { background:#ccc; cursor:not-allowed; opacity:.5; }
+        .check-btn { width:100%; max-width:300px; margin-top:.5rem; }
+        .phase-card.correct { border-color:var(--green); }
+        .phase-card.correct .phase-text { color:var(--green); font-weight:900; }
+        .phase-card.incorrect { border-color:var(--red); }
+        .phase-card.incorrect .phase-text { color:var(--red); font-weight:900; }
+        .phase-card.shake { animation:shakeAnim .4s ease; }
+
+        /* Pantalla Final */
+        .results { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:1.2rem; padding:1rem; }
+        .final-score { font-size:clamp(3rem,8vw,4.5rem); font-weight:900; color:var(--blue-600); }
+        .trophy { font-size:3rem; animation:bounce 1s ease infinite; }
+        @keyframes bounce { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-15px) scale(1.1);} }
+        .message { font-size:clamp(1.1rem,3vw,1.4rem); font-weight:700; color:var(--blue-700); text-align:center; }
+        .time-info { color:var(--blue-600); font-weight:600; }
+        .credit { font-size:.9rem; color:#999; margin-top:1rem; }
+        .school-logo { display:block; width:160px; max-width:28%; height:auto; margin-top:.8rem; border-radius:8px; object-fit:contain; }
+        @media (max-width:899px) { .school-logo { width:140px; max-width:160px; } }
+        @media (max-width:420px) { .school-logo { width:110px; max-width:40%; margin-top:.6rem; } }
+        .hall-of-fame { background:var(--panel); border-radius:12px; padding:1rem; margin-top:1.5rem; width:100%; max-width:600px; }
+        .hall-of-fame-title { color:var(--blue-700); font-weight:800; font-size:1.2rem; text-align:center; margin-bottom:.8rem; }
+        .hall-of-fame-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+        .hall-of-fame-table th { background:var(--blue-600); color:white; padding:.5rem; text-align:left; }
+        .hall-of-fame-table td { padding:.4rem .5rem; border-bottom:1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom:none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color:rgba(255,255,255,.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding:1rem; text-align:center; color:var(--blue-700); font-style:italic; }
+        .hall-of-fame-error { color:var(--red); }
+        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
+            display:none; align-items:center; justify-content:center; z-index:999; }
+        .modal-overlay.active { display:flex; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        .modal-validation-msg { color:var(--red); font-size:.9rem; font-weight:700; margin:-4px 0 10px; text-align:center; animation:shakeAnim .4s ease; }
+        .confetti { position:fixed; width:10px; height:10px; border-radius:50%; animation:confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall { 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
+        .hidden { display:none !important; }
+        @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
+        @media (max-width:380px) {
+            .match-container { gap:6px; }
+            .memory-card { min-height:76px; padding:8px 6px; font-size:.8rem; border-radius:8px; }
+        }
+    </style>
+</head>
+<body lang="es">
+<div class="game-container">
+    <div class="top-controls">
+        <div class="lang-pill">
+            <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
+            <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+        </div>
+        <button class="mute-btn" id="muteBtn" title="Volumen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 3.54a9 9 0 0 1 0 12.73M19.07 4.93a13 13 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ===== PANTALLA INICIO ===== -->
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1 id="startTitle">La menstruación</h1>
+            <div class="subtitle" id="startSubtitle">La regla. Maduración del aparato reproductor femenino</div>
+        </header>
+        <div class="start-content">
+            <div class="advice-box" id="startAdvice">
+                La <span class="highlight-keyword">regla</span> o periodo es el <span class="highlight-keyword">sangrado</span> mensual que ocurre cada <span class="highlight-keyword">28 días</span>, cuando el útero expulsa su revestimiento al no haber embarazo.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+            </div>
+            <button class="btn btn-primary" id="playBtn">Comenzar</button>
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
+            <div class="hall-of-fame" id="hallOfFame">
+                <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
+                <table class="hall-of-fame-table">
+                    <thead>
+                        <tr>
+                            <th id="hofPos">Posición</th>
+                            <th id="hofName">Nombre</th>
+                            <th id="hofPoints">Puntos</th>
+                            <th id="hofTime">Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA RESUMEN ===== -->
+    <section class="screen" id="summaryScreen">
+        <header>
+            <h1 id="summaryTitle">La menstruación:</h1>
+        </header>
+        <div class="summary-wrapper">
+            <div class="summary-container" id="accordionContainer"></div>
+            <button class="btn btn-primary" id="continueBtn">Continuar</button>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 1: EMPAREJAR FASES ===== -->
+    <section class="screen" id="game1Screen">
+        <header>
+            <h1 id="game1Title">Fases de la menstruación</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay1">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill1"></div></div>
+        </div>
+        <div class="match-container" id="game1Container"></div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 2: EMPAREJAR DÍAS ===== -->
+    <section class="screen" id="game2Screen">
+        <header>
+            <h1 id="game2Title">Días de la menstruación</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay2">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
+        </div>
+        <div class="match-container" id="game2Container"></div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 3: EMPAREJAR FASES Y DÍAS ===== -->
+    <section class="screen" id="game3Screen">
+        <header>
+            <h1 id="game3Title">Fases y días del ciclo de la menstruación</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay3">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
+        </div>
+        <div class="match-container" id="game3Container"></div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 4: SEÑALAR COLORES (ZONAS) ===== -->
+    <section class="screen" id="game4Screen">
+        <header>
+            <h1 id="game4Title">Señala los colores para indicar las fases</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay4">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill4"></div></div>
+        </div>
+        <div class="hotspot-wrapper">
+            <div class="word-display">
+                <span class="hotspot-word-text" id="game4WordText">Fase de menstruación</span>
+                <button class="btn-play-word" id="btnPlayWord4" title="Escuchar">
+                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
+                </button>
+            </div>
+            <div class="hotspot-image-wrapper" id="hotspotImageWrapper4">
+                <img id="hotspotImg4" src="https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/regla.png" alt="Ciclo de la menstruación">
+                <svg id="hotspotSvg4" viewBox="0 0 1008 1057" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;"></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA JUEGO 5: ORDENAR FASES ===== -->
+    <section class="screen" id="game5Screen">
+        <header>
+            <h1 id="game5Title">Ordena las fases de la menstruación</h1>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerDisplay5">00:00.00</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill5"></div></div>
+        </div>
+        <div class="order-wrapper">
+            <div class="phases-container" id="phasesContainer5"></div>
+            <button class="btn btn-primary check-btn" id="checkPhasesBtn5">Comprobar</button>
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA FINAL ===== -->
+    <section class="screen" id="finalScreen">
+        <header>
+            <h1 class="final-title" id="finalTitle">El ciclo de la menstruación</h1>
+        </header>
+        <div class="results">
+            <div id="trophyDiv" class="trophy hidden">🏆</div>
+            <div id="scoreLabel" style="font-weight:700; color:var(--blue-700); font-size:1.1rem;">Puntuación:</div>
+            <div class="final-score" id="finalScore">100</div>
+            <div class="message" id="finalMessage">¡Estu...pendo! ¡Puntuación perfecta!</div>
+            <div class="time-info" id="finalTime">Tiempo: 01:23.50</div>
+            <div class="credit">Creado por Manuel J. Ventura</div>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo Siurot">
+            <button class="btn btn-primary" id="backBtn">Volver al menú</button>
+        </div>
+    </section>
+</div>
+
+<!-- Modal de Envío de Puntuación -->
+<div class="modal-overlay" id="submitModal">
+    <div class="modal-content">
+        <h2 id="modalTitle">¡Juego Terminado!</h2>
+        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">01:23.50</span></p>
+        <input class="modal-input" id="playerName" placeholder="Nombre" maxlength="15" />
+        <input class="modal-input" id="playerSurname" placeholder="Apellido" maxlength="15" />
+        <p id="modalValidationMsg" class="modal-validation-msg hidden"></p>
+        <button class="btn btn-primary" id="submitScoreBtn">Guardar</button>
+        <button class="btn btn-ghost" id="discardScoreBtn">Cancelar</button>
+    </div>
+</div>
+
+<script>
+/* ====================================================
+   CONFIGURACIÓN GLOBAL
+===================================================== */
+const SHEET_NAME = "UD3_La_Regla";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+
+const IMG_URL = "https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/regla.png";
+const IMG_W = 1008;
+const IMG_H = 1057;
+
+/* ====================================================
+   DATOS DEL JUEGO - EMPAREJAR (JUEGOS 1 Y 2, SIN TTS)
+===================================================== */
+const matchData = {
+    1: {
+        es: [
+            { id:0, term:"Menstruación", def:"Se desprenden las paredes del útero y se produce el sangrado" },
+            { id:1, term:"Fase de recuperación", def:"Se vuelven a regenerar las paredes del útero" },
+            { id:2, term:"Ovulación", def:"Un ovario expulsa un óvulo hacia las trompas de Falopio" },
+            { id:3, term:"Fase de espera", def:"El útero está preparado para acoger el embrión" }
+        ],
+        en: [
+            { id:0, term:"Menstruation", def:"The walls of the uterus break down and bleeding occurs" },
+            { id:1, term:"Recovery phase", def:"The walls of the uterus grow back" },
+            { id:2, term:"Ovulation", def:"An ovary releases an egg into the fallopian tubes" },
+            { id:3, term:"Waiting phase", def:"The uterus is ready to receive the embryo" }
+        ]
+    },
+    2: {
+        es: [
+            { id:0, term:"Días 1 a 5", def:"Se desprenden las paredes del útero y se produce el sangrado" },
+            { id:1, term:"Días 6 a 13", def:"Se vuelven a regenerar las paredes del útero" },
+            { id:2, term:"Día 14", def:"Un ovario expulsa un óvulo hacia las trompas de Falopio" },
+            { id:3, term:"Días 15 a 28", def:"El útero está preparado para acoger el embrión" }
+        ],
+        en: [
+            { id:0, term:"Days 1 to 5", def:"The walls of the uterus break down and bleeding occurs" },
+            { id:1, term:"Days 6 to 13", def:"The walls of the uterus grow back" },
+            { id:2, term:"Day 14", def:"An ovary releases an egg into the fallopian tubes" },
+            { id:3, term:"Days 15 to 28", def:"The uterus is ready to receive the embryo" }
+        ]
+    },
+    3: {
+        es: [
+            { id:0, term:"Menstruación", def:"Días 1 a 5" },
+            { id:1, term:"Fase de recuperación", def:"Días 6 a 13" },
+            { id:2, term:"Ovulación", def:"Día 14" },
+            { id:3, term:"Fase de espera", def:"Días 15 a 28" }
+        ],
+        en: [
+            { id:0, term:"Menstruation", def:"Days 1 to 5" },
+            { id:1, term:"Recovery phase", def:"Days 6 to 13" },
+            { id:2, term:"Ovulation", def:"Day 14" },
+            { id:3, term:"Waiting phase", def:"Days 15 to 28" }
+        ]
+    }
+};
+
+/* ====================================================
+   DATOS DEL JUEGO - SEÑALAR COLORES (JUEGO 4, CON TTS)
+   El anillo tiene 28 días repartidos en 4 fases. En vez de
+   usar polígonos de bordes rectos (que se salían del anillo
+   por el redondeo manual al crearlos), cada zona se calcula
+   matemáticamente como un segmento exacto de anillo (arco
+   entre el círculo menor y el círculo mayor), delimitado por
+   el rango de días de cada fase. Así el área clicable queda
+   perfectamente ajustada dentro del anillo, sin sobresalir.
+===================================================== */
+const RING_CENTER = { x: 507.5, y: 544 };
+const RING_R_INNER = 372; // Círculo menor
+const RING_R_OUTER = 488; // Círculo mayor
+const RING_TOTAL_DAYS = 28;
+// El día 1 empieza arriba del todo (ángulo -90°) y avanza en sentido horario
+const RING_START_ANGLE = -90;
+
+const hotspotPolyData = {
+    es: [
+        { text:"Fase de menstruación", startDay:0, endDay:5 },
+        { text:"Fase de recuperación", startDay:5, endDay:13 },
+        { text:"Fase de ovulación", startDay:13, endDay:14 },
+        { text:"Fase de espera", startDay:14, endDay:28 }
+    ],
+    en: [
+        { text:"Menstruation phase", startDay:0, endDay:5 },
+        { text:"Recovery phase", startDay:5, endDay:13 },
+        { text:"Ovulation phase", startDay:13, endDay:14 },
+        { text:"Waiting phase", startDay:14, endDay:28 }
+    ]
+};
+
+function dayToAngle(day) {
+    return RING_START_ANGLE + (day / RING_TOTAL_DAYS) * 360;
+}
+
+function describeAnnulusWedge(startDay, endDay) {
+    const toRad = d => d * Math.PI / 180;
+    const a0 = dayToAngle(startDay);
+    const a1 = dayToAngle(endDay);
+    const { x: cx, y: cy } = RING_CENTER;
+    const rIn = RING_R_INNER, rOut = RING_R_OUTER;
+
+    const outerStart = { x: cx + rOut * Math.cos(toRad(a0)), y: cy + rOut * Math.sin(toRad(a0)) };
+    const outerEnd = { x: cx + rOut * Math.cos(toRad(a1)), y: cy + rOut * Math.sin(toRad(a1)) };
+    const innerEnd = { x: cx + rIn * Math.cos(toRad(a1)), y: cy + rIn * Math.sin(toRad(a1)) };
+    const innerStart = { x: cx + rIn * Math.cos(toRad(a0)), y: cy + rIn * Math.sin(toRad(a0)) };
+    const largeArc = (a1 - a0) > 180 ? 1 : 0;
+
+    return `M ${outerStart.x} ${outerStart.y} A ${rOut} ${rOut} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y} `
+         + `L ${innerEnd.x} ${innerEnd.y} A ${rIn} ${rIn} 0 ${largeArc} 0 ${innerStart.x} ${innerStart.y} Z`;
+}
+
+/* ====================================================
+   DATOS DEL JUEGO - ORDENAR FASES (JUEGO 5, SIN TTS)
+   El orden del array es el orden CORRECTO.
+===================================================== */
+const orderData = {
+    es: [
+        "Se desprenden las paredes del útero y se produce el sangrado.",
+        "Se vuelven a regenerar las paredes del útero.",
+        "Un ovario expulsa un óvulo hacia las trompas de Falopio.",
+        "El útero está preparado para acoger el embrión."
+    ],
+    en: [
+        "The walls of the uterus break down and bleeding occurs.",
+        "The walls of the uterus grow back.",
+        "An ovary releases an egg into the fallopian tubes.",
+        "The uterus is ready to receive the embryo."
+    ]
+};
+
+/* ====================================================
+   RESUMEN PANTALLA (Bloques - 1 solo bloque)
+===================================================== */
+const summaryData = {
+    es: {
+        intro: "El ciclo menstrual, también llamado regla o periodo, ocurre aproximadamente cada 28 días, cuando el útero expulsa su revestimiento al no haber embarazo. Tiene 4 fases:",
+        items: [
+            { term:"Menstruación (Días 1 a 5)", def:"Se desprenden las paredes del útero y se produce el sangrado." },
+            { term:"Fase de recuperación (Días 6 a 13)", def:"Se vuelven a regenerar las paredes del útero." },
+            { term:"Ovulación (Día 14)", def:"Un ovario expulsa un óvulo hacia las trompas de Falopio." },
+            { term:"Fase de espera (Días 15 a 28)", def:"El útero está preparado para acoger el embrión. Si no hay fecundación, comienza de nuevo la menstruación." }
+        ]
+    },
+    en: {
+        intro: "The menstrual cycle, also called the period, occurs approximately every 28 days, when the uterus sheds its lining because there is no pregnancy. It has 4 phases:",
+        items: [
+            { term:"Menstruation (Days 1 to 5)", def:"The walls of the uterus break down and bleeding occurs." },
+            { term:"Recovery phase (Days 6 to 13)", def:"The walls of the uterus grow back." },
+            { term:"Ovulation (Day 14)", def:"An ovary releases an egg into the fallopian tubes." },
+            { term:"Waiting phase (Days 15 to 28)", def:"The uterus is ready to receive the embryo. If there is no fertilization, menstruation begins again." }
+        ]
+    }
+};
+
+/* ====================================================
+   i18n TEXTOS DE INTERFAZ
+===================================================== */
+const i18n = {
+    es: {
+        startTitle: 'La menstruación',
+        startSubtitle: 'La regla. Maduración del aparato reproductor femenino',
+        startAdvice: 'La <span class="highlight-keyword">regla</span> o periodo es el <span class="highlight-keyword">sangrado</span> mensual que ocurre cada <span class="highlight-keyword">28 días</span>, cuando el útero expulsa su revestimiento al no haber embarazo.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startBtn: 'Comenzar',
+        summaryTitle: 'La menstruación:',
+        continueBtn: 'Continuar',
+        hofTitle: 'Mejores puntuaciones',
+        hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
+        game1Title: 'Fases de la menstruación',
+        game2Title: 'Días de la menstruación',
+        game3Title: 'Fases y días del ciclo de la menstruación',
+        game4Title: 'Señala los colores para indicar las fases',
+        game5Title: 'Ordena las fases de la menstruación',
+        checkBtn: 'Comprobar',
+        finalTitle: 'El ciclo de la menstruación',
+        scoreLabel: 'Puntuación:',
+        timeLabel: 'Tiempo:',
+        backBtn: 'Volver al menú',
+        modalTitle: '¡Juego Terminado!',
+        modalTimeLabel: 'Tu tiempo:',
+        modalSave: 'Guardar',
+        modalCancel: 'Cancelar',
+        namePlaceholder: 'Nombre',
+        surnamePlaceholder: 'Apellido',
+        validationMsg: 'Por favor, rellena nombre y apellido',
+        msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
+        msg80: 'Casi lo logras. ¡Sigue practicando!',
+        msg50: 'Esto no está listo; aún puedes hacerlo mejor',
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+    },
+    en: {
+        startTitle: 'Menstruation',
+        startSubtitle: 'The period. Maturation of the female reproductive system',
+        startAdvice: 'The <span class="highlight-keyword">period</span> is the monthly <span class="highlight-keyword">bleeding</span> that occurs every <span class="highlight-keyword">28 days</span>, when the uterus sheds its lining because there is no pregnancy.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startBtn: 'Start',
+        summaryTitle: 'Menstruation:',
+        continueBtn: 'Continue',
+        hofTitle: 'Best scores',
+        hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+        game1Title: 'Phases of menstruation',
+        game2Title: 'Days of the menstrual cycle',
+        game3Title: 'Phases and days of the menstrual cycle',
+        game4Title: 'Point to the colours that indicate each phase',
+        game5Title: 'Put the phases of menstruation in order',
+        checkBtn: 'Check',
+        finalTitle: 'The Menstrual Cycle',
+        scoreLabel: 'Score:',
+        timeLabel: 'Time:',
+        backBtn: 'Back to menu',
+        modalTitle: 'Game Over!',
+        modalTimeLabel: 'Your time:',
+        modalSave: 'Save',
+        modalCancel: 'Cancel',
+        namePlaceholder: 'Name',
+        surnamePlaceholder: 'Surname',
+        validationMsg: 'Please fill in name and surname',
+        msgPerfect: 'Fan-tas-tic! Perfect score!',
+        msg80: 'Almost there. Keep practising!',
+        msg50: 'Not quite ready; you can still do better',
+        msg0: 'What a disaster... Did you really study?'
+    }
+};
+
+/* ====================================================
+   VARIABLES GLOBALES
+===================================================== */
+let currentLang = 'es';
+let isMuted = false;
+let startTime = 0;
+let timerInterval = null;
+let totalAttempts = 0;
+let totalErrors = 0; // Cada error resta 100/20 puntos (4+4+4+4+4 interacciones)
+const TOTAL_ITEMS = 20;
+let currentScreen = 'start';
+let isHofLoading = false;
+let lastElapsedSeconds = 0;
+
+// Estado Juegos 1, 2 y 3: Emparejar (parametrizado por número de juego)
+let matchState = {
+    1: { matches:0, totalPairs:4, selectedCard:null },
+    2: { matches:0, totalPairs:4, selectedCard:null },
+    3: { matches:0, totalPairs:4, selectedCard:null }
+};
+
+// Estado Juego 4: Señalar colores (segmentos de anillo)
+let hotspot4State = { currentIndex:0, shuffled:[], completed:[], locked:false };
+
+// Estado Juego 5: Ordenar fases
+let game5Shuffled = [];
+
+/* ====================================================
+   SISTEMA DE AUDIO Y TTS
+===================================================== */
+function safeCancelSpeech() {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+}
+
+function unlockAudioContext() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const buf = audioCtx.createBuffer(1,1,22050);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(audioCtx.destination);
+        src.start(0);
+    } catch(e) {}
+}
+
+function forceInitTTS() {
+    try {
+        const u = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(u);
+        safeCancelSpeech();
+    } catch(e) {}
+}
+
+// Precarga de voces: algunos navegadores tardan en poblar getVoices()
+let voicesReady = [];
+if (window.speechSynthesis) {
+    try {
+        voicesReady = window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+            try { voicesReady = window.speechSynthesis.getVoices(); } catch(e) {}
+        };
+    } catch(e) {}
+}
+
+// Workaround para el bug de Chrome/Android que pausa speechSynthesis
+// automáticamente tras unos segundos de uso continuado, cortando el TTS
+// a mitad de la partida. Se reactiva periódicamente mientras hay síntesis activa.
+let ttsKeepAliveInterval = null;
+function startTTSKeepAlive() {
+    if (ttsKeepAliveInterval) return;
+    ttsKeepAliveInterval = setInterval(() => {
+        try {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                window.speechSynthesis.resume();
+            }
+        } catch(e) {}
+    }, 3000);
+}
+
+// Algunos navegadores móviles pausan speechSynthesis al perder el foco
+// de la pestaña/app; se reactiva en cuanto vuelve a primer plano.
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        try { window.speechSynthesis.resume(); } catch(e) {}
+    }
+});
+
+function getBestVoice(lang) {
+    let voices = [];
+    try { voices = window.speechSynthesis.getVoices(); } catch(e) { return null; }
+    if (!voices.length) return null;
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    for (let p of prefer) {
+        for (let v of voices) {
+            if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
+        }
+    }
+    return voices.find(v => v.lang.startsWith(lang)) || null;
+}
+
+function speakText(text, lang) {
+    safeCancelSpeech();
+    if (isMuted) return;
+    try {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        const voice = getBestVoice(lang);
+        if (voice) u.voice = voice;
+        u.rate = 0.8;
+        window.speechSynthesis.speak(u);
+    } catch(e) {}
+}
+
+function playAudio(url) {
+    if (isMuted) return;
+    const audio = new Audio(url);
+    audio.play().catch(e => console.log('Audio error:', e));
+}
+
+/* ====================================================
+   SISTEMA DE SONIDOS
+===================================================== */
+const sounds = {
+    correcto: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+    error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+    victoria: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+    completado: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3',
+    tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3'
+};
+
+function playSound(soundName) {
+    if (isMuted) return;
+    playAudio(sounds[soundName]);
+}
+
+/* ====================================================
+   SELECTOR DE IDIOMA
+===================================================== */
+document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.lang-flag-btn').forEach(b => b.classList.remove('active-lang'));
+        btn.classList.add('active-lang');
+        currentLang = btn.dataset.lang;
+        document.documentElement.lang = currentLang;
+        applyLanguage(currentLang);
+    });
+});
+
+function applyLanguage(lang) {
+    safeCancelSpeech();
+    const t = i18n[lang];
+    document.getElementById('startTitle').innerHTML = t.startTitle;
+    document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
+    document.getElementById('startAdvice').innerHTML = t.startAdvice;
+    document.getElementById('playBtn').innerHTML = t.startBtn;
+    document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
+    document.getElementById('continueBtn').innerHTML = t.continueBtn;
+    document.getElementById('game1Title').innerHTML = t.game1Title;
+    document.getElementById('game2Title').innerHTML = t.game2Title;
+    document.getElementById('game3Title').innerHTML = t.game3Title;
+    document.getElementById('game4Title').innerHTML = t.game4Title;
+    document.getElementById('game5Title').innerHTML = t.game5Title;
+    document.getElementById('finalTitle').innerHTML = t.finalTitle;
+    document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
+    document.getElementById('backBtn').innerHTML = t.backBtn;
+    document.getElementById('hofTitle').innerHTML = t.hofTitle;
+    document.getElementById('hofPos').innerHTML = t.hofPos;
+    document.getElementById('hofName').innerHTML = t.hofName;
+    document.getElementById('hofPoints').innerHTML = t.hofPoints;
+    document.getElementById('hofTime').innerHTML = t.hofTime;
+    document.getElementById('modalTitle').innerHTML = t.modalTitle;
+    const currentModalTimeEl = document.getElementById('modalTime');
+    const currentModalTime = currentModalTimeEl ? currentModalTimeEl.textContent : '00:00.00';
+    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + currentModalTime + '</span>';
+    document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
+    document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
+    document.getElementById('playerName').placeholder = t.namePlaceholder;
+    document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    document.getElementById('checkPhasesBtn5').innerHTML = t.checkBtn;
+
+    if (currentScreen === 'summary') {
+        buildSummary();
+    } else if (currentScreen === 'game1' || currentScreen === 'game2' || currentScreen === 'game3') {
+        const num = currentScreen === 'game1' ? 1 : (currentScreen === 'game2' ? 2 : 3);
+        const container = document.getElementById('game' + num + 'Container');
+        Array.from(container.querySelectorAll('.memory-card:not(.matched)')).forEach(card => {
+            const origIndex = parseInt(card.dataset.origIndex);
+            const type = card.dataset.type;
+            const item = matchData[num][lang][origIndex];
+            card.textContent = type === 'term' ? item.term : item.def;
+        });
+    } else if (currentScreen === 'game4') {
+        const st = hotspot4State;
+        if (st.currentIndex < st.shuffled.length) {
+            const idx = st.shuffled[st.currentIndex];
+            document.getElementById('game4WordText').innerHTML = hotspotPolyData[lang][idx].text;
+            speakText(hotspotPolyData[lang][idx].text, lang);
+        }
+        buildHotspot4Elements();
+    } else if (currentScreen === 'game5') {
+        Array.from(document.querySelectorAll('#phasesContainer5 .phase-card')).forEach(card => {
+            const origIndex = parseInt(card.dataset.origIndex);
+            card.querySelector('.phase-text').innerHTML = orderData[lang][origIndex];
+        });
+    }
+}
+
+/* ====================================================
+   BOTÓN SILENCIO
+===================================================== */
+document.getElementById('muteBtn').addEventListener('click', () => {
+    isMuted = !isMuted;
+    const btn = document.getElementById('muteBtn');
+    if (isMuted) {
+        btn.classList.add('muted');
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+    } else {
+        btn.classList.remove('muted');
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 3.54a9 9 0 0 1 0 12.73M19.07 4.93a13 13 0 0 1 0 14.14"></path></svg>';
+        playSound('tap');
+    }
+});
+
+/* ====================================================
+   PANTALLA INICIO
+===================================================== */
+document.getElementById('playBtn').addEventListener('click', () => {
+    playSound('tap');
+    unlockAudioContext();
+    forceInitTTS();
+    startTTSKeepAlive();
+    preloadImages().finally(() => {
+        showScreen('summary');
+        startTimer();
+    });
+});
+
+/* ====================================================
+   PANTALLA RESUMEN (1 solo bloque)
+===================================================== */
+function buildSummary() {
+    const container = document.getElementById('accordionContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    const data = summaryData[currentLang];
+
+    const itemsHTML = data.items.map((item) => {
+        return `<li><span class="keyword">${item.term}:</span> ${item.def}</li>`;
+    }).join('');
+
+    container.innerHTML = `
+        <div class="summary-block block-blue">
+            <p class="summary-intro">${data.intro}</p>
+            <ul class="summary-list">${itemsHTML}</ul>
+        </div>
+    `;
+}
+
+document.getElementById('continueBtn').addEventListener('click', () => {
+    playSound('tap');
+    showScreen('game1');
+    initMatchGame(1);
+});
+
+/* ====================================================
+   JUEGOS 1 Y 2: EMPAREJAR TARJETAS (SIN TTS)
+===================================================== */
+function initMatchGame(num) {
+    if (num === 1) {
+        totalAttempts = 0;
+        totalErrors = 0;
+        document.getElementById('trophyDiv').classList.add('hidden'); // Reset del trofeo de partidas anteriores
+    }
+    document.getElementById('timerDisplay' + num).textContent = formatTime(Date.now() - startTime);
+    matchState[num].matches = 0;
+    matchState[num].selectedCard = null;
+    updateProgress();
+    buildMatchCards(num);
+}
+
+function buildMatchCards(num) {
+    const container = document.getElementById('game' + num + 'Container');
+    container.innerHTML = '';
+
+    const data = matchData[num][currentLang];
+    const indices = Array.from({ length: data.length }, (_, i) => i);
+
+    const termOrder = shuffleArray(indices);
+    const defOrder = shuffleArray(indices);
+
+    for (let row = 0; row < data.length; row++) {
+        container.appendChild(createMatchCard(num, termOrder[row], 'term'));
+        container.appendChild(createMatchCard(num, defOrder[row], 'def'));
+    }
+
+    container.onclick = (e) => handleMatchCardClick(num, e);
+}
+
+function createMatchCard(num, origIndex, type) {
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.dataset.origIndex = origIndex;
+    card.dataset.type = type;
+    const item = matchData[num][currentLang][origIndex];
+    card.textContent = type === 'term' ? item.term : item.def;
+    return card;
+}
+
+function handleMatchCardClick(num, e) {
+    const st = matchState[num];
+    const target = e.target.closest('.memory-card');
+    if (!target || target.classList.contains('matched')) return;
+
+    if (!st.selectedCard) {
+        playSound('tap');
+        st.selectedCard = target;
+        st.selectedCard.classList.add('selected');
+        return;
+    }
+
+    if (target === st.selectedCard) {
+        st.selectedCard.classList.remove('selected');
+        st.selectedCard = null;
+        return;
+    }
+
+    if (target.dataset.type === st.selectedCard.dataset.type) {
+        st.selectedCard.classList.remove('selected');
+        playSound('tap');
+        st.selectedCard = target;
+        st.selectedCard.classList.add('selected');
+        return;
+    }
+
+    totalAttempts++;
+    const prevCard = st.selectedCard;
+    const idA = prevCard.dataset.origIndex;
+    const idB = target.dataset.origIndex;
+
+    if (idA === idB) {
+        playSound('correcto');
+        prevCard.classList.remove('selected');
+        prevCard.classList.add('matched');
+        target.classList.add('matched');
+        st.selectedCard = null;
+        st.matches++;
+        updateProgress();
+        if (st.matches === st.totalPairs) {
+            setTimeout(() => {
+                playSound('completado');
+                setTimeout(() => endMatchGame(num), 1000);
+            }, 500);
+        }
+    } else {
+        totalErrors++; // Cada emparejamiento erróneo resta 100/12 puntos
+        playSound('error');
+        prevCard.classList.remove('selected');
+        prevCard.classList.add('flash-error');
+        target.classList.add('flash-error');
+        st.selectedCard = null;
+        setTimeout(() => {
+            prevCard.classList.remove('flash-error');
+            target.classList.remove('flash-error');
+        }, 400);
+    }
+}
+
+function endMatchGame(num) {
+    setTimeout(() => {
+        if (num === 1) {
+            showScreen('game2');
+            initMatchGame(2);
+        } else if (num === 2) {
+            showScreen('game3');
+            initMatchGame(3);
+        } else {
+            showScreen('game4');
+            initHotspot4Game();
+        }
+    }, 300);
+}
+
+/* ====================================================
+   JUEGO 4: SEÑALAR COLORES (SEGMENTOS DE ANILLO, CON TTS)
+===================================================== */
+function initHotspot4Game() {
+    const st = hotspot4State;
+    st.currentIndex = 0;
+    st.shuffled = shuffleArray([...Array(4).keys()]);
+    st.completed = [];
+    st.locked = false;
+    document.getElementById('timerDisplay4').textContent = formatTime(Date.now() - startTime);
+    forceInitTTS(); // Refresca el motor de TTS al entrar en esta pantalla
+    showHotspot4Word();
+    buildHotspot4Elements();
+}
+
+function showHotspot4Word() {
+    const st = hotspot4State;
+    if (st.currentIndex >= st.shuffled.length) {
+        endHotspot4Game();
+        return;
+    }
+    const idx = st.shuffled[st.currentIndex];
+    const word = hotspotPolyData[currentLang][idx].text;
+    document.getElementById('game4WordText').innerHTML = word;
+    setTimeout(() => {
+        speakText(word, currentLang);
+    }, 300);
+    updateProgress();
+}
+
+function buildHotspot4Elements() {
+    const svg = document.getElementById('hotspotSvg4');
+    svg.innerHTML = '';
+
+    hotspotPolyData[currentLang].forEach((item, idx) => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', describeAnnulusWedge(item.startDay, item.endDay));
+        path.setAttribute('class', 'poly-hotspot');
+        path.dataset.index = idx;
+        path.setAttribute('aria-label', item.text);
+        path.addEventListener('click', () => checkHotspot4Answer(idx));
+        svg.appendChild(path);
+    });
+}
+
+function checkHotspot4Answer(idx) {
+    const st = hotspot4State;
+    if (st.locked) return;
+    safeCancelSpeech();
+    totalAttempts++;
+    const correct = idx === st.shuffled[st.currentIndex];
+    const hotspot = document.querySelector('#hotspotSvg4 [data-index="' + idx + '"]');
+
+    if (correct) {
+        st.locked = true;
+        hotspot.classList.add('flash-correct');
+        playSound('correcto');
+        st.completed.push(st.shuffled[st.currentIndex]);
+        setTimeout(() => {
+            hotspot.classList.remove('flash-correct');
+            st.currentIndex++;
+            st.locked = false;
+            showHotspot4Word();
+        }, 350);
+    } else {
+        totalErrors++; // Cada error resta 100/16 puntos
+        hotspot.classList.add('flash-error');
+        playSound('error');
+        setTimeout(() => {
+            hotspot.classList.remove('flash-error');
+        }, 350);
+    }
+}
+
+document.getElementById('btnPlayWord4').addEventListener('click', () => {
+    const st = hotspot4State;
+    if (st.locked) return;
+    if (st.currentIndex < st.shuffled.length) {
+        speakText(hotspotPolyData[currentLang][st.shuffled[st.currentIndex]].text, currentLang);
+    }
+});
+
+function endHotspot4Game() {
+    safeCancelSpeech();
+    playSound('completado');
+    setTimeout(() => {
+        showScreen('game5');
+        initGame5();
+    }, 1000);
+}
+
+/* ====================================================
+   JUEGO 5: ORDENAR FASES (SIN TTS)
+===================================================== */
+function initGame5() {
+    game5Shuffled = shuffleArray([...Array(orderData.es.length).keys()]);
+    document.getElementById('timerDisplay5').textContent = formatTime(Date.now() - startTime);
+    document.getElementById('checkPhasesBtn5').disabled = false;
+    buildPhases5();
+}
+
+function buildPhases5() {
+    const container = document.getElementById('phasesContainer5');
+    container.innerHTML = '';
+    game5Shuffled.forEach((idx, pos) => {
+        const card = document.createElement('div');
+        card.className = 'phase-card';
+        card.dataset.origIndex = idx;
+        card.dataset.position = pos;
+        const text = orderData[currentLang][idx];
+        card.innerHTML = `
+            <div class="phase-text">${text}</div>
+            <div class="phase-controls">
+                <button class="phase-btn up-btn" data-pos="${pos}">▲</button>
+                <button class="phase-btn down-btn" data-pos="${pos}">▼</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+    updatePhase5Buttons();
+}
+
+function updatePhase5Buttons() {
+    const cards = document.querySelectorAll('#phasesContainer5 .phase-card');
+    cards.forEach((card, i) => {
+        const upBtn = card.querySelector('.up-btn');
+        const downBtn = card.querySelector('.down-btn');
+        upBtn.disabled = i === 0;
+        downBtn.disabled = i === cards.length - 1;
+        upBtn.addEventListener('click', () => movePhase5(i, -1));
+        downBtn.addEventListener('click', () => movePhase5(i, 1));
+    });
+}
+
+function movePhase5(pos, dir) {
+    playSound('tap');
+    const newPos = pos + dir;
+    if (newPos < 0 || newPos >= game5Shuffled.length) return;
+    const temp = game5Shuffled[pos];
+    game5Shuffled[pos] = game5Shuffled[newPos];
+    game5Shuffled[newPos] = temp;
+    buildPhases5();
+}
+
+document.getElementById('checkPhasesBtn5').addEventListener('click', () => {
+    playSound('tap');
+    totalAttempts++;
+    const cards = document.querySelectorAll('#phasesContainer5 .phase-card');
+    let allCorrect = true;
+    cards.forEach((card, i) => {
+        const isCorrect = game5Shuffled[i] === i;
+        if (isCorrect) {
+            card.classList.add('correct');
+            card.classList.remove('incorrect');
+        } else {
+            card.classList.add('incorrect');
+            card.classList.remove('correct');
+            card.classList.add('shake');
+            totalErrors++; // Cada fase mal colocada resta 100/20 puntos
+            allCorrect = false;
+        }
+    });
+    updateProgress();
+    if (allCorrect) {
+        playSound('correcto');
+        setTimeout(() => {
+            playSound('completado');
+            setTimeout(() => endGame5(), 1000);
+        }, 500);
+    } else {
+        playSound('error');
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.classList.remove('correct', 'incorrect', 'shake');
+            });
+        }, 1500);
+    }
+});
+
+function endGame5() {
+    setTimeout(() => {
+        endGame();
+    }, 300);
+}
+
+/* ====================================================
+   FUNCIONES DE NAVEGACIÓN
+===================================================== */
+function showScreen(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    currentScreen = screen;
+    if (screen === 'start') {
+        document.getElementById('startScreen').classList.add('active');
+        buildSummary();
+        loadHallOfFame();
+    } else if (screen === 'summary') {
+        document.getElementById('summaryScreen').classList.add('active');
+        buildSummary();
+    } else if (screen === 'game1') {
+        document.getElementById('game1Screen').classList.add('active');
+    } else if (screen === 'game2') {
+        document.getElementById('game2Screen').classList.add('active');
+    } else if (screen === 'game3') {
+        document.getElementById('game3Screen').classList.add('active');
+    } else if (screen === 'game4') {
+        document.getElementById('game4Screen').classList.add('active');
+    } else if (screen === 'game5') {
+        document.getElementById('game5Screen').classList.add('active');
+    } else if (screen === 'final') {
+        document.getElementById('finalScreen').classList.add('active');
+    }
+}
+
+/* ====================================================
+   TIMER
+===================================================== */
+function startTimer() {
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        document.getElementById('timerDisplay1').textContent = formatTime(elapsed);
+        document.getElementById('timerDisplay2').textContent = formatTime(elapsed);
+        document.getElementById('timerDisplay3').textContent = formatTime(elapsed);
+        document.getElementById('timerDisplay4').textContent = formatTime(elapsed);
+        document.getElementById('timerDisplay5').textContent = formatTime(elapsed);
+    }, 10);
+}
+
+function formatTime(ms) {
+    const totalCentisecs = Math.floor(ms / 10);
+    const centisecs = totalCentisecs % 100;
+    const totalSecs = Math.floor(totalCentisecs / 100);
+    const sec = totalSecs % 60;
+    const mins = Math.floor(totalSecs / 60);
+    return `${mins.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}.${centisecs.toString().padStart(2,'0')}`;
+}
+
+function formatTimeFromSeconds(value) {
+    const secondsNum = parseFloat(value);
+    if (isNaN(secondsNum)) return '00:00.00';
+    return formatTime(secondsNum * 1000);
+}
+
+function getElapsedSeconds() {
+    return (Date.now() - startTime) / 1000;
+}
+
+/* ====================================================
+   PROGRESO
+===================================================== */
+function updateProgress() {
+    const game5Cards = document.querySelectorAll('#phasesContainer5 .phase-card.correct');
+    const game5Done = game5Cards.length === orderData.es.length ? orderData.es.length : 0;
+    const completed = matchState[1].matches + matchState[2].matches + matchState[3].matches + hotspot4State.completed.length + game5Done;
+    const percent = Math.min(100, (completed / TOTAL_ITEMS) * 100);
+    ['progressFill1', 'progressFill2', 'progressFill3', 'progressFill4', 'progressFill5'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.width = percent + '%';
+    });
+}
+
+/* ====================================================
+   PANTALLA FINAL
+===================================================== */
+function endGame() {
+    clearInterval(timerInterval);
+    safeCancelSpeech();
+    const score = calcularPuntuacionFinal();
+    const time = getElapsedSeconds();
+    lastElapsedSeconds = time;
+    showFinalScreen(score, time);
+    showSubmitModal(time, score);
+}
+
+function calcularPuntuacionFinal() {
+    // La puntuación empieza en 100 y cada error resta 100/12 puntos
+    let puntuacion = 100 - (totalErrors * (100 / TOTAL_ITEMS));
+    puntuacion = Math.round(puntuacion);
+    puntuacion = Math.max(0, Math.min(100, puntuacion));
+    return puntuacion;
+}
+
+function showFinalScreen(score, time) {
+    const t = i18n[currentLang];
+    document.getElementById('finalScore').innerHTML = score;
+
+    let msg = t.msg0;
+    if (score === 100) msg = t.msgPerfect;
+    else if (score >= 80) msg = t.msg80;
+    else if (score >= 50) msg = t.msg50;
+
+    document.getElementById('finalMessage').innerHTML = msg;
+    document.getElementById('finalTime').innerHTML = `${t.timeLabel} ${formatTime(time * 1000)}`;
+
+    if (score === 100) {
+        document.getElementById('trophyDiv').classList.remove('hidden');
+        playSound('victoria');
+        createConfetti();
+    } else {
+        playSound('completado');
+    }
+
+    showScreen('final');
+}
+
+function createConfetti() {
+    for (let i = 0; i < 100; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            const x = Math.random() * window.innerWidth;
+            const tx = (Math.random() - 0.5) * 200;
+            c.style.left = x + 'px'; c.style.top = '-10px';
+            c.style.backgroundColor = ['#ff595e', '#1982c4', '#6a4c93', '#ffca3a', '#8ac926'][Math.floor(Math.random() * 5)];
+            c.style.setProperty('--tx', tx + 'px');
+            c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3000);
+        }, i * 20);
+    }
+}
+
+/* ====================================================
+   HALL OF FAME
+===================================================== */
+function loadHallOfFame(isRetry) {
+    if (isHofLoading && !isRetry) return;
+    isHofLoading = true;
+    const tableBody = document.getElementById('hofTableBody');
+    if (!isRetry) {
+        tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando puntuaciones...</td></tr>';
+    }
+
+    const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+    fetch(url, { signal: controller.signal })
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        })
+        .then(data => {
+            clearTimeout(timeoutId);
+            isHofLoading = false;
+            if (data.status === 'success' && data.data && data.data.length) {
+                tableBody.innerHTML = data.data.slice(0,10).map((row, i) => `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td>${row.name} ${row.surname}</td>
+                        <td>${row.score}</td>
+                        <td>${formatTimeFromSeconds(row.time)}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+            }
+        })
+        .catch(err => {
+            clearTimeout(timeoutId);
+            isHofLoading = false;
+            if (!isRetry) {
+                loadHallOfFame(true); // Reintento silencioso
+            } else {
+                console.error('Error cargando Hall of Fame:', err);
+                tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error al cargar puntuaciones</td></tr>';
+            }
+        });
+}
+
+function showSubmitModal(time, score) {
+    const t = i18n[currentLang];
+    document.getElementById('modalTitle').innerHTML = t.modalTitle;
+    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + formatTime(time * 1000) + '</span>';
+    document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
+    document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
+    document.getElementById('playerName').value = '';
+    document.getElementById('playerSurname').value = '';
+    document.getElementById('modalValidationMsg').classList.add('hidden');
+    document.getElementById('submitModal').classList.add('active');
+    document.getElementById('playerName').focus();
+}
+
+let isSubmittingScore = false; // Evita envíos duplicados por doble clic
+
+function submitScore() {
+    if (isSubmittingScore) return;
+
+    const name = document.getElementById('playerName').value.trim();
+    const surname = document.getElementById('playerSurname').value.trim();
+    const score = parseInt(document.getElementById('finalScore').innerHTML);
+    const time = Math.round(lastElapsedSeconds * 100) / 100;
+    const validationMsg = document.getElementById('modalValidationMsg');
+
+    if (!name || !surname) {
+        validationMsg.textContent = i18n[currentLang].validationMsg;
+        validationMsg.classList.remove('hidden');
+        validationMsg.classList.remove('shake');
+        void validationMsg.offsetWidth;
+        validationMsg.classList.add('shake');
+        playSound('error');
+        return;
+    }
+    validationMsg.classList.add('hidden');
+
+    isSubmittingScore = true;
+    const btn = document.getElementById('submitScoreBtn');
+    btn.innerHTML = 'Enviando...';
+    const payload = { sheet: SHEET_NAME, action: 'write', data: { score, time, name, surname } };
+
+    fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+    }).then(() => {
+        setTimeout(() => {
+            document.getElementById('submitModal').classList.remove('active');
+            btn.innerHTML = i18n[currentLang].modalSave;
+            isSubmittingScore = false;
+            loadHallOfFame();
+        }, 1500);
+    }).catch(e => {
+        console.log('Error:', e);
+        btn.innerHTML = i18n[currentLang].modalSave;
+        isSubmittingScore = false;
+    });
+}
+
+document.getElementById('submitScoreBtn').addEventListener('click', submitScore);
+document.getElementById('discardScoreBtn').addEventListener('click', () => {
+    playSound('tap');
+    document.getElementById('submitModal').classList.remove('active');
+});
+
+document.getElementById('playerSurname').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('submitScoreBtn').click();
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+    playSound('tap');
+    showScreen('start');
+});
+
+/* ====================================================
+   UTILIDADES
+===================================================== */
+function shuffleArray(arr) {
+    const result = [...arr];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
+// Nota: el juego de señalar colores (game4) usa un <svg viewBox="..."> que
+// escala automáticamente con el contenedor, por lo que no necesita
+// recalcular las coordenadas en el evento resize.
+
+/* ====================================================
+   INICIALIZACIÓN
+===================================================== */
+window.addEventListener('load', () => {
+    applyLanguage(currentLang);
+    buildSummary();
+    loadHallOfFame();
+});
+
+// Precargar imágenes (fire-and-forget, con reintento en caso de error)
+function preloadImages() {
+    const urls = [
+        'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png',
+        IMG_URL
+    ];
+    return Promise.race([
+        Promise.all(urls.map(url => new Promise(resolve => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = () => {
+                setTimeout(() => {
+                    const retryImg = new Image();
+                    retryImg.onload = resolve;
+                    retryImg.onerror = resolve;
+                    retryImg.src = url + (url.includes('?') ? '&' : '?') + 'retry=' + Date.now();
+                }, 800);
+            };
+            img.src = url;
+        }))),
+        new Promise(resolve => setTimeout(resolve, 5000))
+    ]);
+}
+</script>
+</body>
+</html>
