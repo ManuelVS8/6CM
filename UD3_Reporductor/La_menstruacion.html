@@ -685,10 +685,6 @@ let game6Shuffled = [];
 /* ====================================================
    SISTEMA DE AUDIO Y TTS
 ===================================================== */
-function safeCancelSpeech() {
-    try { window.speechSynthesis.cancel(); } catch(e) {}
-}
-
 function unlockAudioContext() {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -705,48 +701,12 @@ function forceInitTTS() {
     try {
         const u = new SpeechSynthesisUtterance('');
         window.speechSynthesis.speak(u);
-        safeCancelSpeech();
+        window.speechSynthesis.cancel();
     } catch(e) {}
 }
-
-// Precarga de voces: algunos navegadores tardan en poblar getVoices()
-let voicesReady = [];
-if (window.speechSynthesis) {
-    try {
-        voicesReady = window.speechSynthesis.getVoices();
-        window.speechSynthesis.onvoiceschanged = () => {
-            try { voicesReady = window.speechSynthesis.getVoices(); } catch(e) {}
-        };
-    } catch(e) {}
-}
-
-// Workaround para el bug de Chrome/Android que pausa speechSynthesis
-// automáticamente tras unos segundos de uso continuado, cortando el TTS
-// a mitad de la partida. Se reactiva periódicamente mientras hay síntesis activa.
-let ttsKeepAliveInterval = null;
-function startTTSKeepAlive() {
-    if (ttsKeepAliveInterval) return;
-    ttsKeepAliveInterval = setInterval(() => {
-        try {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.pause();
-                window.speechSynthesis.resume();
-            }
-        } catch(e) {}
-    }, 3000);
-}
-
-// Algunos navegadores móviles pausan speechSynthesis al perder el foco
-// de la pestaña/app; se reactiva en cuanto vuelve a primer plano.
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        try { window.speechSynthesis.resume(); } catch(e) {}
-    }
-});
 
 function getBestVoice(lang) {
-    let voices = [];
-    try { voices = window.speechSynthesis.getVoices(); } catch(e) { return null; }
+    const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
     const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
@@ -754,17 +714,16 @@ function getBestVoice(lang) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
         }
     }
-    return voices.find(v => v.lang.startsWith(lang)) || null;
+    return voices.find(v => v.lang.startsWith(lang)) || voices[0];
 }
 
 function speakText(text, lang) {
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
         u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
-        const voice = getBestVoice(lang);
-        if (voice) u.voice = voice;
+        u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
     } catch(e) {}
@@ -806,7 +765,7 @@ document.querySelectorAll('.lang-flag-btn').forEach(btn => {
 });
 
 function applyLanguage(lang) {
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     const t = i18n[lang];
     document.getElementById('startTitle').innerHTML = t.startTitle;
     document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
@@ -900,7 +859,6 @@ document.getElementById('playBtn').addEventListener('click', () => {
     playSound('tap');
     unlockAudioContext();
     forceInitTTS();
-    startTTSKeepAlive();
     preloadImages().finally(() => {
         showScreen('summary');
         startTimer();
@@ -1062,7 +1020,6 @@ function initHotspot4Game() {
     st.completed = [];
     st.locked = false;
     document.getElementById('timerDisplay4').textContent = formatTime(Date.now() - startTime);
-    forceInitTTS(); // Refresca el motor de TTS al entrar en esta pantalla
     showHotspot4Word();
     buildHotspot4Elements();
 }
@@ -1100,7 +1057,7 @@ function buildHotspot4Elements() {
 function checkHotspot4Answer(idx) {
     const st = hotspot4State;
     if (st.locked) return;
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     totalAttempts++;
     const correct = idx === st.shuffled[st.currentIndex];
     const hotspot = document.querySelector('#hotspotSvg4 [data-index="' + idx + '"]');
@@ -1135,7 +1092,7 @@ document.getElementById('btnPlayWord4').addEventListener('click', () => {
 });
 
 function endHotspot4Game() {
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     playSound('completado');
     setTimeout(() => {
         showScreen('game5');
@@ -1152,7 +1109,6 @@ function initGrid5Game() {
     st.shuffled = shuffleArray([...Array(gridImageData.es.length).keys()]);
     st.completed = [];
     document.getElementById('timerDisplay5').textContent = formatTime(Date.now() - startTime);
-    forceInitTTS(); // Refresca el motor de TTS al entrar en esta pantalla
     buildImageGrid5();
     showGrid5Word();
 }
@@ -1199,7 +1155,7 @@ document.getElementById('btnPlayWord5').addEventListener('click', () => {
 function checkGrid5Answer(idx, cell) {
     if (cell.classList.contains('solved')) return;
     const st = grid5State;
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     totalAttempts++;
     const correct = idx === st.shuffled[st.currentIndex];
 
@@ -1226,7 +1182,7 @@ function checkGrid5Answer(idx, cell) {
 }
 
 function endGrid5Game() {
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     playSound('completado');
     setTimeout(() => {
         showScreen('game6');
@@ -1412,7 +1368,7 @@ function updateProgress() {
 ===================================================== */
 function endGame() {
     clearInterval(timerInterval);
-    safeCancelSpeech();
+    window.speechSynthesis.cancel();
     const score = calcularPuntuacionFinal();
     const time = getElapsedSeconds();
     lastElapsedSeconds = time;
