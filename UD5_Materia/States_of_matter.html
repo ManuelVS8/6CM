@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title>Changes of State in Matter</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        /* ====== Reset & base ====== */
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root{
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+        }
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; color:#333; padding:10px;
+            display: block; 
+        }
+
+        .game-container{
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:600px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column; margin: 20px auto;
+        }
+        header{ text-align:center; margin-bottom:.8rem; margin-top:1rem; }
+        h1{ color:var(--blue-dark); font-size:clamp(1.5rem,5.2vw,2.4rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle{ color:var(--blue-700); font-size:clamp(1rem,3.5vw,1.25rem); margin-top:.25rem; }
+        .highlight-keyword{ color:var(--orange); font-weight:800; }
+
+        .btn{ color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size: 1rem; gap: 8px; }
+        .btn:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active{ transform:translateY(0); }
+        .btn-primary{ background:var(--orange); }
+        .btn-primary:hover{ background:var(--orange-700); color:#fff; }
+        
+        .screen{ display:none; animation:fadeIn .35s ease; flex-direction: column; flex:1;}
+        .screen.active{ display:flex; }
+        @keyframes fadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+        .shake {
+            animation: doShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes doShake {
+            10%, 90% { transform: translate3d(-4px, 0, 0); }
+            20%, 80% { transform: translate3d(8px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+
+        .game-info{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.4rem 0 1rem; flex-wrap:wrap; }
+        .timer{ font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar{ flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; position: relative; }
+        .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+        
+        .step-counter {
+            font-weight: 800;
+            color: var(--blue-700);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            margin-left: 10px;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .start-content{ display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box{ background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image{ max-width: 300px; width: 100%; margin: 1.5rem auto 0; }
+        
+        .mute-btn{ position:absolute; top:.8rem; right:1rem; background:var(--orange); color:#fff; border:2px solid #fff; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; z-index:20; }
+        .mute-btn:hover{ background:var(--orange-700); }
+
+        /* --- JUEGO 1: POLYGON --- */
+        .board{ display:grid; grid-template-columns:1fr; gap:.8rem; align-items:start; }
+        
+        .panel{ background:#f8fbff; border:2px solid #d3e2ff; border-radius:12px; padding:.7rem .9rem; display:flex; align-items:center; justify-content:space-between; gap:.8rem; }
+        
+        .word-display-container{ display:flex; align-items:center; justify-content:center; gap:0.5rem; flex:1; }
+        .word-display{ font-size:clamp(1.2rem,4.5vw,1.8rem); font-weight:900; color:var(--blue-700); text-align:center; }
+        .btn-play-word{ background:var(--blue-600); color:#fff; border:none; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background-color .2s; flex-shrink: 0; }
+        .btn-play-word:hover{ background:var(--blue-700); }
+        .btn-play-word svg{ width:20px; height:20px; }
+
+        .stage{ background:#fff; border-radius:12px; border:2px solid #e6f2ff; padding:.6rem; box-shadow: inset 0 0 0 1px #f3f7ff; position: relative;}
+        .img-wrap{ position:relative; width:100%; max-width:519px; margin:0 auto; user-select: none; -webkit-user-select: none; aspect-ratio: 519/343;}
+        .img-wrap img{ display:block; width:100%; height:auto; border-radius:10px; user-select:none; -webkit-user-drag:none; }
+        
+        .poly-area {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .poly-shape {
+            fill: transparent;
+            stroke: transparent;
+            stroke-width: 1;
+            pointer-events: all;
+            cursor: pointer;
+            transition: fill 0.1s ease;
+        }
+        .poly-shape.flash-green { fill: rgba(46, 204, 113, 0.4); stroke: var(--green); }
+        .poly-shape.flash-red { fill: rgba(231, 76, 60, 0.4); stroke: var(--red); }
+
+        /* --- ESTILO TEST (JUEGO 2 Y 3) --- */
+        .test-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            flex: 1;
+            justify-content: flex-start;
+            padding-top: 1rem;
+        }
+
+        /* Caja de Pregunta (ESTILO LAVANDA) */
+        .test-question-box {
+            background-color: var(--panel);
+            border-radius: 12px;
+            border-left: 5px solid var(--blue);
+            padding: 1.5rem;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .test-question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--blue-dark);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Opciones Test (Contenedor externo) */
+        .test-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        /* Botones estándar del Test (Juego 2) */
+        .test-option-btn {
+            background-color: var(--white);
+            border: 2px solid var(--blue);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--blue-700);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+            width: 100%;
+        }
+        
+        .test-option-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            background-color: #f8f9fa;
+        }
+        
+        .test-option-btn.correct {
+            background-color: #d1fae5;
+            border-color: var(--green);
+            color: #065f46;
+        }
+        
+        .test-option-btn.incorrect {
+            background-color: #fee2e2;
+            border-color: var(--red);
+            color: #991b1b;
+            animation: shakeRed 0.4s ease-in-out;
+        }
+        
+        .test-option-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        @keyframes shakeRed {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        /* --- JUEGO 3: PROPIEDADES (DISEÑO CORREGIDO) --- */
+        
+        /* Fila de propiedad (estilo tarjeta blanca) */
+        .property-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .property-label {
+            font-weight: 700;
+            color: var(--blue-700);
+            font-size: 1.1rem;
+        }
+
+        .btn-group-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Botones específicos de Juego 3 */
+        .btn-game3 {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            min-width: 80px;
+            height: auto;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            border: none;
+            color: white;
+        }
+        
+        .btn-game3:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-game3.yes-btn {
+            background-color: var(--green);
+        }
+        
+        .btn-game3.no-btn {
+            background-color: var(--red);
+        }
+        
+        .btn-game3:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-game3:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* --- RESULTADOS --- */
+        .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center;}
+        .final-title{ color:var(--blue-dark); font-weight:900; }
+        .big-score{ font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title{ font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time{ color:var(--blue-700); }
+        
+        #trophyBox { 
+            display: none; 
+            font-size: clamp(4rem, 10vw, 7rem);
+            margin: .5rem 0;
+            text-align: center;
+            align-self: center;
+            animation: bounce 1s ease infinite;
+            color: var(--orange);
+            line-height: 1; 
+        }
+        
+        @keyframes bounce { 
+            0%,100%{ transform: translateY(0) scale(1); } 
+            50%{ transform: translateY(-15px) scale(1.1); } 
+        }
+        
+        .credit{ color:var(--blue-700); margin-top:1rem; }
+        
+        #finalMsg { font-size: clamp(1.2rem, 4.2vw, 1.8rem); font-weight: 800; color: var(--blue-700); margin-top: 0.6rem; }
+        
+        .school-logo { display: block; width: 160px; max-width: 28%; height: auto; margin-top: 0.8rem; border-radius: 8px; object-fit: contain; }
+        @media (max-width: 899px) { .school-logo { width: 140px; max-width: 160px; } }
+        @media (max-width: 420px) { .school-logo { width: 110px; max-width: 40%; margin-top: 0.6rem; } }
+
+        .loading-indicator { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 2000; flex-direction: column; }
+        .loading-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: white; font-size: 1.2rem; text-align: center; }
+
+        /* --- ESTILOS DEL HALL OF FAME --- */
+        .hall-of-fame { background: var(--panel); border-radius: 12px; padding: 1rem; margin-top: 1.5rem; width: 100%; max-width: 600px; }
+        .hall-of-fame-title { color: var(--blue-700); font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 0.8rem; }
+        .hall-of-fame-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .hall-of-fame-table th { background: var(--blue-600); color: white; padding: 0.5rem; text-align: left; }
+        .hall-of-fame-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom: none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color: rgba(255, 255,255, 0.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding: 1rem; text-align: center; color: var(--blue-700); font-style: italic; }
+        .hall-of-fame-error { color: var(--red); }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        
+        .confetti{ position:fixed; width:10px; height:10px; border-radius:50%; animation: confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall{ 0%{ transform:translate(0, -20px) rotate(0); opacity:1;} 100%{ transform:translate(var(--tx), var(--ty)) rotate(360deg); opacity:0; } }
+
+        @media (min-width:900px){ .board{ grid-template-columns: 300px 1fr; align-items:start; } .panel{ order:1; } .stage{ order:2; } }
+        @media (max-width:899px){ header{ margin-top:1.6rem; } .board{ grid-template-columns:1fr; } .panel{ display:flex; flex-direction:row; align-items:center; justify-content:space-between; padding:.6rem; } .word-display-container{ order:0; width:100%; margin-bottom:.6rem; } .stage{ order:1; } }
+        @media (max-width:420px){ .btn{ min-width:110px; padding:.6rem .9rem; height:44px; } }
+
+    </style>
+</head>
+<body translate="no">
+
+<div class="game-container" translate="no">
+    <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
+        <svg id="svgOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <svg id="svgOff" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+    </button>
+
+    <!-- INICIO -->
+    <section class="screen active" id="startScreen" translate="no">
+        <header>
+            <h1>Changes of states in matter</h1>
+            <div class="subtitle">Identify the changes of matter and states.</div>
+        </header>
+
+        <div class="start-content">
+            <div class="advice-box">
+                <span class="advice-text">Listen to the audio and identify the states of matter: <span class="highlight-keyword">solid</span>, <span class="highlight-keyword">liquid</span> and <span class="highlight-keyword">gas</span>. Also, point the changes of state: <span class="highlight-keyword">fusion</span>, <span class="highlight-keyword">evaporation</span>, <span class="highlight-keyword">condensation</span> and <span class="highlight-keyword">solidification</span>.</span>
+                <strong style="display:block; margin-top:0.5rem; text-align:center;">Good luck!</strong>
+            </div>
+            
+            <button class="btn btn-primary" id="playBtn">Play</button>
+            
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
+            
+            <div class="hall-of-fame" id="hallOfFame">
+              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <table class="hall-of-fame-table">
+                  <thead><tr><th>Posición</th><th>Nombre</th><th>Puntos</th><th>Tiempo</th></tr></thead>
+                  <tbody id="hofTableBody"></tbody>
+              </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- JUEGO 1 -->
+    <section class="screen" id="gameScreen1" translate="no">
+        <header><h1>Changes of state in matter</h1></header>
+        <div class="game-info">
+            <div class="timer" id="timerGame1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
+            <div class="step-counter" id="stepCounter1">0/7</div>
+        </div>
+        <div class="board">
+            <div class="panel">
+                <div class="word-display-container">
+                    <div class="word-display" id="wordDisplay1">...</div>
+                    <button class="btn-play-word" id="playWordBtn1" title="Play audio" aria-label="Play audio">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="stage">
+                <div class="img-wrap" id="imgWrap1">
+                    <img id="bodyImg1" src="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Estados.png" alt="States of matter diagram">
+                    <svg class="poly-area" id="svgOverlay1" viewBox="0 0 519 343" preserveAspectRatio="none"></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JUEGO 2 -->
+    <section class="screen" id="gameScreen2" translate="no">
+        <header><h1>Changes of state in matter. Test</h1></header>
+        <div class="game-info">
+            <div class="timer" id="timerGame2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
+            <div class="step-counter" id="stepCounter2">0/4</div>
+        </div>
+        <div class="test-container" id="testContainer1"></div>
+    </section>
+
+    <!-- JUEGO 3 -->
+    <section class="screen" id="gameScreen3" translate="no">
+        <header><h1>Properties of the states of matter</h1></header>
+        <div class="game-info">
+            <div class="timer" id="timerGame3">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
+            <div class="step-counter" id="stepCounter3">0/6</div>
+        </div>
+        <div class="test-container" id="testContainer2"></div>
+    </section>
+
+    <!-- FINAL -->
+    <section class="screen" id="finalScreen" translate="no">
+        <header><h1 class="final-title">Changes of state in matter</h1></header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            <div class="score-title">Score:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time">Time: <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg" class="subtitle"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Back to menu</button>
+            <span class="credit">Created by Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="School logo" />
+        </div>
+    </section>
+</div>
+
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Game Over!</h3>
+        <p>Your time: <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Name" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Surname" maxlength="20">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
+            <button id="discardScoreBtn" class="btn" style="background:#e6f2ff; color:var(--blue-700);">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* --- CONFIGURACIÓN --- */
+    const SHEET_NAME = "UD5_States";
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+    
+    let soundEnabled = true;
+    let audioUnlocked = false;
+    let isMuted = false;
+    let startTime = 0;
+    let timerInterval = null;
+    let elapsed = 0;
+    let finalScoreVal = 0;
+    let finalTimeVal = 0;
+    
+    let totalHits = 0;
+    let totalAttempts = 0;
+    const TOTAL_INTERACTIONS = 17; // 7 Game1 + 4 Game2 + 6 Game3
+
+    /* --- AUDIOS --- */
+    const audioUrls = {
+        correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+        error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+        tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+        victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+        completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+    };
+    
+    const audioObjects = {};
+    Object.keys(audioUrls).forEach(key => { 
+        const a = new Audio(); a.src = audioUrls[key]; a.preload = 'auto'; audioObjects[key] = a; 
+    });
+
+    let preferredVoice = null;
+
+    function unlockAudioContext() {
+        if (audioUnlocked) return;
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') ctx.resume();
+            const buffer = ctx.createBuffer(1, 1, 22050);
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            source.start(0);
+            audioUnlocked = true;
+        } catch(e) { audioUnlocked = true; }
+    }
+
+    function forceInitTTS() {
+        return new Promise((resolve) => {
+            let voices = speechSynthesis.getVoices();
+            if (voices.length > 0) { selectVoice(voices); resolve(); return; }
+            speechSynthesis.onvoiceschanged = () => { selectVoice(speechSynthesis.getVoices()); resolve(); };
+            setTimeout(() => { if (!preferredVoice) selectVoice(speechSynthesis.getVoices()); resolve(); }, 500);
+        });
+    }
+
+    function selectVoice(voices) {
+        if (!voices) return;
+        let v = voices.find(v => v.name === 'Google UK English');
+        if (!v) v = voices.find(v => v.lang === 'en-GB' && (v.name.includes('Microsoft') || v.name.includes('Natural')));
+        if (!v) v = voices.find(v => v.lang === 'en-GB');
+        if (!v) v = voices[0];
+        preferredVoice = v;
+    }
+
+    function speakText(text) {
+        if (isMuted) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (preferredVoice) utterance.voice = preferredVoice;
+        utterance.lang = 'en-GB';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function playSound(type) {
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects[type];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function toggleSound() {
+        isMuted = !isMuted;
+        document.getElementById('svgOn').style.display = isMuted ? 'none' : 'block';
+        document.getElementById('svgOff').style.display = isMuted ? 'block' : 'none';
+        if (isMuted) window.speechSynthesis.cancel(); else playSound('tap');
+    }
+
+    /* --- LÓGICA GENERAL --- */
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGlobalTimer() {
+        stopTimer();
+        startTime = Date.now();
+        elapsed = 0;
+        timerInterval = setInterval(() => {
+            const now = Date.now();
+            elapsed = (now - startTime) / 1000;
+            const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const s = Math.floor(elapsed % 60).toString().padStart(2, '0');
+            const ms = Math.round((elapsed % 1) * 10);
+            const timeStr = `${m}:${s}.${ms}`;
+            if(document.getElementById('timerGame1')) document.getElementById('timerGame1').textContent = timeStr;
+            if(document.getElementById('timerGame2')) document.getElementById('timerGame2').textContent = timeStr;
+            if(document.getElementById('timerGame3')) document.getElementById('timerGame3').textContent = timeStr;
+        }, 100);
+    }
+
+    function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        const ms = Math.round((sec % 1) * 10);
+        return `${m}:${s}.${ms}`;
+    }
+
+    async function startGame() {
+        playSound('tap');
+        unlockAudioContext();
+        await forceInitTTS();
+        startGlobalTimer();
+        totalHits = 0;
+        totalAttempts = 0;
+        showScreen('gameScreen1');
+        initGame1();
+    }
+
+    /* --- JUEGO 1: POLÍGONOS (COORDENADAS ACTUALIZADAS) --- */
+    const game1Targets = [
+        { word: 'Solid', points: '63,233 44,228 15,224 10,213 22,200 20,137 66,113 123,126 125,192 143,206 145,212 127,225 89,226' },
+        { word: 'Liquid', points: '213,127 221,227 231,236 273,237 285,228 291,125 270,114 233,115' },
+        { word: 'Gas', points: '400,237 333,188 338,155 374,133 438,118 480,136 500,166 481,222' },
+        { word: 'Fusion', points: '246,4 246,96 65,98 62,2' },
+        { word: 'Evaporation', points: '450,2 447,105 266,98 265,5' },
+        { word: 'Condensation', points: '464,336 461,242 286,238 276,264 284,334' },
+        { word: 'Solidification', points: '231,249 70,237 51,254 58,329 234,328' }
+    ];
+    let g1Order = []; let g1Index = 0; let g1Answered = new Set();
+
+    function initGame1() {
+        g1Order = shuffle([...Array(game1Targets.length).keys()]);
+        g1Index = 0; g1Answered.clear();
+        renderPolygons();
+        updateProgress(1, 0, game1Targets.length);
+        setTimeout(() => playWordGame1(), 300);
+    }
+
+    function renderPolygons() {
+        const svg = document.getElementById('svgOverlay1');
+        svg.innerHTML = '';
+        game1Targets.forEach((t, idx) => {
+            const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            poly.setAttribute('points', t.points);
+            poly.classList.add('poly-shape');
+            poly.dataset.idx = idx;
+            poly.addEventListener('click', onPolyClick);
+            svg.appendChild(poly);
+        });
+    }
+
+    function playWordGame1() {
+        if (g1Answered.size === game1Targets.length) { finishGame1(); return; }
+        let idx = g1Order[g1Index];
+        while(g1Answered.has(idx)) {
+            g1Index++; if(g1Index >= g1Order.length) g1Index = 0; idx = g1Order[g1Index];
+        }
+        const word = game1Targets[idx].word;
+        document.getElementById('wordDisplay1').textContent = word;
+        setTimeout(() => speakText(word), 200);
+    }
+
+    function onPolyClick(e) {
+        const idx = parseInt(e.target.dataset.idx);
+        const currentIdx = g1Order[g1Index];
+        window.speechSynthesis.cancel();
+        if (g1Answered.has(currentIdx)) return;
+        totalAttempts++;
+        if (idx === currentIdx) {
+            totalHits++; g1Answered.add(currentIdx);
+            e.target.classList.add('flash-green');
+            playSound('correct');
+            setTimeout(() => {
+                e.target.classList.remove('flash-green');
+                updateProgress(1, g1Answered.size, game1Targets.length);
+                g1Index++;
+                if (g1Answered.size === game1Targets.length) finishGame1(); else playWordGame1();
+            }, 200);
+        } else {
+            e.target.classList.add('flash-red'); playSound('error');
+            const wrap = document.getElementById('imgWrap1');
+            wrap.classList.remove('shake'); void wrap.offsetWidth; wrap.classList.add('shake');
+            setTimeout(() => e.target.classList.remove('flash-red'), 200);
+        }
+    }
+
+    function finishGame1() { showScreen('gameScreen2'); initGame2(); }
+
+    document.getElementById('playWordBtn1').addEventListener('click', () => {
+        const idx = g1Order[g1Index];
+        if (idx !== undefined && !g1Answered.has(idx)) speakText(game1Targets[idx].word);
+    });
+
+    /* --- JUEGO 2: TEST (ICONOS UNIDOS A PALABRAS) --- */
+    const game2Questions = [
+        { q: `Matter turns from solid 🧊 to liquid\u00A0💧`, opts: ["Fusion", "Evaporation", "Solidification", "Condensation"], correct: "Fusion" },
+        { q: `Matter turns from liquid 💧 to gas\u00A0💨`, opts: ["Fusion", "Evaporation", "Solidification", "Condensation"], correct: "Evaporation" },
+        { q: `Matter turns from gas 💨 to liquid\u00A0💧`, opts: ["Fusion", "Evaporation", "Solidification", "Condensation"], correct: "Condensation" },
+        { q: `Matter turns from liquid 💧 to solid\u00A0🧊`, opts: ["Fusion", "Evaporation", "Solidification", "Condensation"], correct: "Solidification" }
+    ];
+    let g2Order = []; let g2Index = 0;
+
+    function initGame2() {
+        g2Order = shuffle([...Array(game2Questions.length).keys()]); g2Index = 0;
+        updateProgress(2, 0, game2Questions.length); renderQuestionGame2();
+    }
+
+    function renderQuestionGame2() {
+        if (g2Index >= game2Questions.length) { finishGame2(); return; }
+        const qData = game2Questions[g2Order[g2Index]];
+        const container = document.getElementById('testContainer1');
+        const shuffledOpts = qData.opts.map(val => ({ val, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ val }) => val);
+        container.innerHTML = `
+            <div class="test-question-box"><div class="test-question-text">${qData.q}</div></div>
+            <div class="test-options-container">
+                ${shuffledOpts.map(opt => `<button class="test-option-btn" data-answer="${opt}">${opt}</button>`).join('')}
+            </div>`;
+        container.querySelectorAll('.test-option-btn').forEach(btn => btn.addEventListener('click', (e) => handleAnswerGame2(e, qData.correct)));
+    }
+
+    function handleAnswerGame2(e, correctAnswer) {
+        const btn = e.target; const answer = btn.dataset.answer;
+        const box = document.querySelector('.test-question-box');
+        totalAttempts++;
+        document.querySelectorAll('.test-option-btn').forEach(b => b.disabled = true);
+        if (answer === correctAnswer) {
+            totalHits++; btn.classList.add('correct'); playSound('correct');
+            setTimeout(() => { g2Index++; updateProgress(2, g2Index, game2Questions.length); renderQuestionGame2(); }, 600);
+        } else {
+            btn.classList.add('incorrect'); playSound('error'); box.classList.add('shake');
+            setTimeout(() => {
+                document.querySelectorAll('.test-option-btn').forEach(b => { if (b.dataset.answer === correctAnswer) b.classList.add('correct'); });
+            }, 300);
+            setTimeout(() => { box.classList.remove('shake'); g2Index++; updateProgress(2, g2Index, game2Questions.length); renderQuestionGame2(); }, 1200);
+        }
+    }
+
+    function finishGame2() { showScreen('gameScreen3'); initGame3(); }
+
+    /* --- JUEGO 3: PROPIEDADES --- */
+    const game3Items = [
+        { state: "Properties of Solids 🧊", props: [ { text: "Fixed shape?", val: true }, { text: "Fixed volume?", val: true } ] },
+        { state: "Properties of Liquids 💧", props: [ { text: "Fixed shape?", val: false }, { text: "Fixed volume?", val: true } ] },
+        { state: "Properties of Gases 💨", props: [ { text: "Fixed shape?", val: false }, { text: "Fixed volume?", val: false } ] }
+    ];
+    let g3Order = []; let g3Index = 0; let g3LocalHits = 0;
+
+    function initGame3() {
+        g3Order = shuffle([...Array(game3Items.length).keys()]); g3Index = 0;
+        updateProgress(3, 0, game3Items.length); renderCardGame3();
+    }
+
+    function renderCardGame3() {
+        if (g3Index >= game3Items.length) { finishGame(); return; }
+        const item = game3Items[g3Order[g3Index]];
+        const container = document.getElementById('testContainer2');
+        g3LocalHits = 0;
+
+        container.innerHTML = `
+            <div class="test-question-box" id="game3Box">
+                <div class="test-question-text">${item.state}</div>
+            </div>
+            <div class="test-options-container">
+                ${item.props.map((p, pIdx) => `
+                    <div class="property-row" id="row-${pIdx}">
+                        <span class="property-label">${p.text}</span>
+                        <div class="btn-group-row">
+                            <button class="btn-game3 yes-btn" data-expected="${p.val}" data-choice="true">✔️ Yes</button>
+                            <button class="btn-game3 no-btn" data-expected="${p.val}" data-choice="false">❌ No</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        container.querySelectorAll('.btn-game3').forEach(btn => btn.addEventListener('click', handlePropClick));
+    }
+
+    function handlePropClick(e) {
+        const btn = e.target;
+        const expected = btn.dataset.expected === 'true'; 
+        const choice = btn.dataset.choice === 'true'; 
+        const isCorrect = (expected === choice);
+        
+        window.speechSynthesis.cancel();
+        totalAttempts++;
+        
+        const group = btn.parentElement;
+        group.querySelectorAll('.btn-game3').forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            totalHits++; g3LocalHits++;
+            playSound('correct');
+            btn.style.transform = 'scale(1.1)';
+            btn.style.boxShadow = '0 0 12px rgba(0,0,0,0.2)';
+            
+            if (g3LocalHits === 2) {
+                setTimeout(() => {
+                    g3Index++;
+                    updateProgress(3, g3Index, game3Items.length);
+                    renderCardGame3();
+                }, 500);
+            }
+        } else {
+            playSound('error');
+            const box = document.getElementById('game3Box');
+            box.classList.add('shake');
+            setTimeout(() => box.classList.remove('shake'), 400);
+            
+            setTimeout(() => {
+                group.querySelectorAll('.btn-game3').forEach(b => {
+                    b.disabled = false;
+                    b.style.transform = 'scale(1)';
+                    b.style.boxShadow = 'none';
+                });
+            }, 500);
+        }
+    }
+
+    /* --- FINALIZAR --- */
+    function finishGame() {
+        window.speechSynthesis.cancel();
+        stopTimer();
+        finalTimeVal = elapsed;
+        finalScoreVal = Math.round((100 / TOTAL_INTERACTIONS) * totalHits);
+        document.getElementById('finalScore').textContent = finalScoreVal;
+        document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+        const trophyBox = document.getElementById('trophyBox');
+        const msg = document.getElementById('finalMsg');
+        if (finalScoreVal === 100) {
+            trophyBox.style.display = 'block';
+            msg.textContent = 'Well done, full marks!';
+            playSound('victory');
+            createConfetti();
+        } else {
+            trophyBox.style.display = 'none';
+            msg.textContent = 'Good job! Keep practising!';
+            playSound('completed');
+        }
+        showScreen('finalScreen');
+        showSubmitModal(finalTimeVal, finalScoreVal);
+    }
+
+    /* --- HALL OF FAME --- */
+    let isHofLoading = false;
+    function loadHallOfFame() {
+        if (isHofLoading) return;
+        isHofLoading = true;
+        const tbody = document.getElementById('hofTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        fetch(`${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success' && data.data) {
+                    const processedData = data.data.map(row => {
+                        const getVal = (keys) => { for(let key of keys) { if(row[key] !== undefined && row[key] !== "") return row[key]; } return null; };
+                        return { Nombre: getVal(["Nombre", "nombre", "name"]), Apellidos: getVal(["Apellidos", "apellidos", "surname"]), Puntuación: getVal(["Puntuación", "puntuación", "score"]), Tiempo: getVal(["Tiempo", "tiempo", "time"]) };
+                    });
+                    const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+                    if (validData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                    } else {
+                        validData.sort((a, b) => {
+                            const scoreA = parseFloat(a.Puntuación) || 0; const scoreB = parseFloat(b.Puntuación) || 0;
+                            if (scoreB !== scoreA) return scoreB - scoreA;
+                            return (parseFloat(a.Tiempo) || 9999) - (parseFloat(b.Tiempo) || 9999);
+                        });
+                        tbody.innerHTML = '';
+                        validData.slice(0, 10).forEach((item, i) => {
+                            const tr = document.createElement('tr');
+                            const tVal = parseFloat(item.Tiempo);
+                            const timeStr = !isNaN(tVal) ? `${Math.floor(tVal / 60).toString().padStart(2,'0')}:${Math.floor(tVal % 60).toString().padStart(2,'0')}.${Math.round((tVal % 1) * 10)}` : item.Tiempo;
+                            tr.innerHTML = `<td>${i + 1}º</td><td>${item.Nombre} ${item.Apellidos}</td><td>${item.Puntuación || 0}</td><td>${timeStr}</td>`;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                } else { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; }
+            })
+            .catch(e => { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; })
+            .finally(() => { isHofLoading = false; });
+    }
+
+    function showSubmitModal(time, score) {
+        document.getElementById('modalTime').textContent = formatTime(time);
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerSurname').value = '';
+        document.getElementById('submitModal').style.display = 'flex';
+        document.getElementById('playerName').focus();
+    }
+
+    function handleSubmitScore() {
+        const btn = document.getElementById('submitScoreBtn');
+        const name = document.getElementById('playerName').value.trim();
+        const surname = document.getElementById('playerSurname').value.trim();
+        if(name && surname) {
+            playSound('tap');
+            btn.textContent = "Enviando..."; btn.disabled = true;
+            fetch(APP_SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: { score: finalScoreVal, time: finalTimeVal, name: name, surname: surname } })
+            }).then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = "Guardar"; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
+            .catch(e => { alert("Error al enviar."); btn.textContent = "Guardar"; btn.disabled = false; });
+        } else { alert("Por favor, rellena nombre y apellido"); }
+    }
+
+    document.getElementById('submitScoreBtn').onclick = handleSubmitScore;
+    document.getElementById('discardScoreBtn').onclick = () => { document.getElementById('submitModal').style.display = 'none'; };
+    document.getElementById('playerSurname').addEventListener('keypress', (e) => { if(e.key==='Enter') handleSubmitScore(); });
+    document.getElementById('playerName').addEventListener('keypress', (e) => { if(e.key==='Enter') document.getElementById('playerSurname').focus(); });
+
+    /* --- HELPERS Y EVENTOS --- */
+    function createConfetti() { for(let i=0;i<100;i++){ setTimeout(()=>{ const c = document.createElement('div'); c.className='confetti'; c.style.left = (Math.random() * window.innerWidth) + 'px'; c.style.top='-10px'; c.style.backgroundColor=['#ff595e','#1982c4','#6a4c93','#ffca3a','#8ac926'][Math.floor(Math.random()*5)]; c.style.setProperty('--tx', ((Math.random() - 0.5) * 200) + 'px'); c.style.setProperty('--ty', (window.innerHeight + 20) + 'px'); document.body.appendChild(c); setTimeout(() => c.remove(), 3000); }, i * 20); } }
+    function shuffle(a){ const arr=[...a]; for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+    function updateProgress(gameNum, current, total) { const fill = document.getElementById(`progressFillGame${gameNum}`); const counter = document.getElementById(`stepCounter${gameNum}`); if(fill) fill.style.width = ((current/total)*100) + '%'; if(counter) counter.textContent = `${current}/${total}`; }
+
+    document.getElementById('playBtn').onclick = startGame;
+    document.getElementById('backToMenuBtn').onclick = () => { playSound('tap'); location.reload(); };
+    document.getElementById('muteBtn').onclick = toggleSound;
+    document.addEventListener('DOMContentLoaded', () => { loadHallOfFame(); });
+
+</script>
+</body>
+</html>

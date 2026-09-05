@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es" translate="no"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google" content="notranslate">
+    <title>Propiedades específicas de la materia</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        /* ====== Reset & base ====== */
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root{
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+        }
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; 
+            display:flex; 
+            justify-content:center; 
+            align-items: flex-start; 
+            padding-top: 20px;
+            padding-bottom: 20px;
+            color:#333; 
+        }
+        .game-container{
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column;
+            margin-bottom: 2rem; 
+        }
+        header{ text-align:center; margin-bottom:.8rem; margin-top:1.5rem; }
+        h1{ color:var(--blue-dark); font-size:clamp(2rem,5.2vw,3.1rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle{ color:var(--blue-700); font-size:clamp(1rem,3.5vw,1.25rem); margin-top:.25rem; }
+        .highlight-keyword{ color:var(--orange); font-weight:800; }
+
+        .btn{ color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size: 1rem; }
+        .btn:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active{ transform:translateY(0); }
+        .btn-primary{ background:var(--orange); }
+        .btn-primary:hover{ background:var(--orange-700); }
+        .btn-blue{ background:var(--blue-600); }
+        .btn-blue:hover{ filter:brightness(.9); }
+        .btn-ghost{ background:#e6f2ff; color:var(--blue-700); }
+
+        .screen{ display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active{ display:flex; }
+        @keyframes fadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+        .game-info{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.4rem 0 1rem; flex-wrap:wrap; }
+        .timer{ font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar{ flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+
+        /* Pantalla Inicio */
+        .start-content{ display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box{ background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image{ max-width: 300px; width: 100%; margin: 0 auto; margin-top: auto; }
+        
+        /* Botón Mute con SVG */
+        .mute-btn{ position:absolute; top:.8rem; right:1rem; background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff; width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; z-index:20; padding: 0; transition: transform 0.1s; }
+        .mute-btn:hover{ transform: scale(1.1); }
+        .mute-btn svg { width: 20px; height: 20px; fill: white; }
+
+        /* --- Pantalla Resumen --- */
+        .theory-content { 
+            padding: 10px; 
+            margin: 10px 0; 
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .theory-main-title {
+            text-align: center;
+            color: var(--blue-dark);
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        .theory-intro {
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .change-block {
+            border-radius: 15px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            background: #e6f2ff; 
+            border: 2px solid var(--blue-600);
+        }
+        .block-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--blue-700);
+        }
+        .block-list {
+            list-style: none;
+            padding-left: 5px;
+        }
+        .block-list li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.5;
+        }
+        .block-list li strong {
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        /* Juego: Emparejar Tarjetas — SIEMPRE 2 columnas, sin scroll horizontal */
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px;
+            margin: 10px 0;
+            flex: 1;
+            align-content: flex-start;
+        }
+        
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .memory-card {
+            background-color: #3498db;
+            color: white;
+            border: 3px solid transparent;
+            border-radius: 10px;
+            padding: 10px 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            min-height: 60px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+            font-weight: bold;
+            user-select: none;
+            word-break: break-word;
+        }
+
+        /* Hover solo si no está seleccionada ni emparejada */
+        .memory-card:hover:not(.selected):not(.matched):not(.flash-error) { 
+            transform: scale(1.02); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+
+        /* Seleccionada: amarillo + pulse */
+        .memory-card.selected { 
+            background-color: #f1c40f; 
+            color: white; 
+            animation: pulse 1s ease-in-out infinite; 
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.02); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Emparejada: verde, estática, sin animación */
+        .memory-card.matched { 
+            background-color: #27ae60; 
+            color: white; 
+            cursor: default; 
+            animation: none; 
+            transform: none; 
+        }
+
+        /* Error: sacudida */
+        .memory-card.flash-error { 
+            animation: shakeRed 0.4s ease-in-out; 
+        }
+
+        @keyframes shakeRed {
+            0% { background-color: #3498db; transform: translateX(0); }
+            15% { background-color: #e74c3c; transform: translateX(-6px); }
+            30% { transform: translateX(6px); }
+            45% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
+            75% { transform: translateX(-3px); }
+            90% { transform: translateX(3px); }
+            100% { background-color: #3498db; transform: translateX(0); }
+        }
+
+        /* Pantalla Final */
+        .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center;}
+        .final-title{ color:var(--blue-dark); font-weight:900; }
+        .big-score{ font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title{ font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time{ color:var(--blue-700); }
+        
+        #trophyBox { display: none; font-size: clamp(4rem, 10vw, 7rem); margin: .5rem 0; text-align: center; align-self: center; animation: bounce 1s ease infinite; color: var(--orange); line-height: 1; }
+        @keyframes bounce { 0%,100%{ transform: translateY(0) scale(1); } 50%{ transform: translateY(-15px) scale(1.1); } }
+        
+        .credit{ color:var(--blue-700); margin-top:1rem; }
+        #finalMsg { font-size: clamp(1.2rem, 4.2vw, 1.8rem); font-weight: 800; color: var(--blue-700); margin-top: 0.6rem; }
+        .school-logo { display: block; width: 160px; max-width: 28%; height: auto; margin-top: 0.8rem; border-radius: 8px; object-fit: contain; }
+        @media (max-width: 899px) { .school-logo { width: 140px; max-width: 160px; } }
+        @media (max-width: 420px) { .school-logo { width: 110px; max-width: 40%; margin-top: 0.6rem; } }
+
+        /* --- ESTILOS DEL HALL OF FAME --- */
+        .hall-of-fame { background: var(--panel); border-radius: 12px; padding: 1rem; margin-top: 1.5rem; width: 100%; max-width: 600px; }
+        .hall-of-fame-title { color: var(--blue-700); font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 0.8rem; }
+        .hall-of-fame-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .hall-of-fame-table th { background: var(--blue-600); color: white; padding: 0.5rem; text-align: left; }
+        .hall-of-fame-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td { border-bottom: none; }
+        .hall-of-fame-table tr:nth-child(even) { background-color: rgba(255, 255,255, 0.5); }
+        .hall-of-fame-error, .hall-of-fame-loading { padding: 1rem; text-align: center; color: var(--blue-700); font-style: italic; }
+        .hall-of-fame-error { color: var(--red); }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        
+        .confetti{ position:fixed; width:10px; height:10px; border-radius:50%; animation: confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall{ 0%{ transform:translate(0, -20px) rotate(0); opacity:1;} 100%{ transform:translate(var(--tx), var(--ty)) rotate(360deg); opacity:0; } }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
+        <svg id="iconSpeaker" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
+        </svg>
+    </button>
+
+    <!-- Pantalla de Inicio -->
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1>Propiedades específicas de la materia</h1>
+            <div class="subtitle">Usamos diferentes materiales para construir objetos según sus propiedades específicas. Estúdialas</div>
+        </header>
+
+        <div class="start-content">
+            <div class="advice-box">
+                <span class="advice-text">En este juego aprenderás a identificar a diferenciar las propiedades específicas de la materia: <span class="highlight-keyword">resistencia</span>, <span class="highlight-keyword">plasticidad</span>, <span class="highlight-keyword">elasticidad</span>, <span class="highlight-keyword">solubilidad</span>, <span class="highlight-keyword">conductividad</span>, <span class="highlight-keyword">comportamiento ante la luz</span> y <span class="highlight-keyword">flotabilidad</span>.
+                <strong style="display:block; margin-top:0.5rem; text-align: center;">¡Ánimo!</strong></span>
+            </div>
+            
+            <button class="btn btn-primary" id="startBtn">Comenzar</button>
+            
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
+            
+            <div class="hall-of-fame" id="hallOfFame">
+              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <table class="hall-of-fame-table">
+                  <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nombre</th>
+                            <th>Puntos</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody"><tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr></tbody>
+              </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantalla Resumen -->
+    <section class="screen" id="summaryScreen">
+        <header>
+            <h1>La materia y sus propiedades específicas</h1>
+        </header>
+        <div class="theory-content">
+            <div class="theory-main-title">Propiedades específicas de los materiales</div>
+            <p class="theory-intro">Para fabricar objetos, usamos distintos materiales dependiendo de sus propiedades; por ejemplo:</p>
+            
+            <div class="change-block">
+                <div class="block-title">Propiedades específicas de la materia</div>
+                <ul class="block-list">
+                    <li><strong>Resistencia:</strong> si es difícil de romper: hormigón, roca, acero…</li>
+                    <li><strong>Plasticidad:</strong> si al deformarlo, mantiene la forma nueva: plastilina, arcilla…</li>
+                    <li><strong>Elasticidad:</strong> si al deformarlo, recupera su forma anterior: elástico, goma…</li>
+                    <li><strong>Solubilidad:</strong> si se disuelve en el agua: azúcar, sal…</li>
+                    <li><strong>Flotabilidad:</strong> si flota en un líquido: madera, corcho…</li>
+                    <li><strong>Conductividad:</strong> si deja pasar la electricidad (conductores: cobre, hierro...) o si no la deja pasar (aislantes: goma, plástico, madera).</li>
+                    <li><strong>Comportamiento ante la luz:</strong> si deja pasar la luz (transparente: cristal), si no la deja pasar (opaco: madera) o si deja pasar parte de la luz (traslúcido: mampara de baño).</li>
+                </ul>
+            </div>
+
+            <div class="play-btn-container" style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" id="playBtn">Jugar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantalla Juego 1 -->
+    <section class="screen" id="game1Screen">
+        <header>
+            <h1>Empareja las propiedades específicas con su definición</h1>
+            <div class="subtitle">Nivel 1/3</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
+            <div class="timer" style="font-size:0.9rem; visibility:hidden;">Placeholder</div>
+        </div>
+        <div class="match-container" id="game1Container"></div>
+    </section>
+
+    <!-- Pantalla Juego 2 -->
+    <section class="screen" id="game2Screen">
+        <header>
+            <h1>Empareja las propiedades específicas con los ejemplos</h1>
+            <div class="subtitle">Nivel 2/3</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
+            <div class="timer" style="font-size:0.9rem; visibility:hidden;">Placeholder</div>
+        </div>
+        <div class="match-container" id="game2Container"></div>
+    </section>
+
+    <!-- Pantalla Juego 3 -->
+    <section class="screen" id="game3Screen">
+        <header>
+            <h1>Empareja las definiciones de propiedades específicas con sus ejemplos</h1>
+            <div class="subtitle">Nivel 3/3</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame3">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
+            <div class="timer" style="font-size:0.9rem; visibility:hidden;">Placeholder</div>
+        </div>
+        <div class="match-container" id="game3Container"></div>
+    </section>
+
+    <!-- Pantalla Final -->
+    <section class="screen" id="finalScreen">
+        <header>
+            <h1 class="final-title">Propiedades específicas de la materia</h1>
+        </header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            
+            <div class="score-title">Puntuación:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg" class="subtitle"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="./Propiedades específicas de la materia_files/Siurot.png" alt="School logo">
+        </div>
+    </section>
+</div>
+
+<!-- Modal de Envío de Puntuación -->
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>¡Juego Terminado!</h3>
+        <p>Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
+            <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* --- 1. CONFIGURACIÓN DE VARIABLES GLOBALES --- */
+    const SHEET_NAME = "UD5_Especificas";
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+    const MIN_INTERACTIONS = 21; 
+    
+    let soundEnabled = true;
+    let audioUnlocked = false;
+    let isMuted = false;
+    let audioContext = null;
+
+    let startTime = 0;
+    let timerInterval = null;
+    let elapsed = 0;
+    let finalTimeVal = 0;
+    let finalScoreVal = 0;
+    let totalAttempts = 0;
+
+    /* --- AUDIOS --- */
+    const audioUrls = {
+        correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+        error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+        tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+        victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+        completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+    };
+    
+    const audioObjects = {};
+    Object.keys(audioUrls).forEach(key => { 
+        const a = new Audio();
+        a.src = audioUrls[key];
+        a.preload = 'auto';
+        audioObjects[key] = a; 
+    });
+
+    /* --- FUNCIONES DE AUDIO --- */
+    function unlockAudioContext() {
+        if (audioUnlocked) return;
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') audioContext.resume();
+            const buffer = audioContext.createBuffer(1, 1, 22050);
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioContext.destination);
+            source.start(0);
+            audioUnlocked = true;
+            isMuted = false;
+        } catch(e) { audioUnlocked = true; }
+    }
+
+    function playSound(type) {
+        if (!soundEnabled || isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects[type];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        isMuted = !soundEnabled;
+        updateMuteIcon();
+        if(soundEnabled) playSound('tap');
+    }
+    
+    function updateMuteIcon() {
+        const iconSpeaker = document.getElementById('iconSpeaker');
+        if (!soundEnabled) {
+            iconSpeaker.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+        } else {
+            iconSpeaker.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+        }
+    }
+
+    /* --- LÓGICA GENERAL --- */
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGlobalTimer() {
+        stopTimer();
+        startTime = Date.now();
+        elapsed = 0;
+        timerInterval = setInterval(() => {
+            elapsed = (Date.now() - startTime) / 1000;
+            updateTimerDisplay('timerGame1', elapsed);
+            updateTimerDisplay('timerGame2', elapsed);
+            updateTimerDisplay('timerGame3', elapsed);
+        }, 100);
+    }
+
+    function stopTimer() {
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+    
+    function updateTimerDisplay(id, time) {
+        const el = document.getElementById(id);
+        if(el) el.textContent = formatTime(time);
+    }
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        const ms = Math.round((sec % 1) * 10);
+        return `${m}:${s}.${ms}`;
+    }
+
+    /* --- FLUJO PRINCIPAL --- */
+    document.getElementById('startBtn').onclick = () => { playSound('tap'); showScreen('summaryScreen'); };
+    document.getElementById('playBtn').onclick = () => { playSound('tap'); startGlobalTimer(); totalAttempts = 0; initGame1(); };
+
+    /* --- DATOS DE JUEGOS --- */
+    const game1Data = [
+        { id: 1, term: 'Resistencia', def: 'Es difícil de romper' },
+        { id: 2, term: 'Elasticidad', def: 'Al deformarlo, recupera su forma' },
+        { id: 3, term: 'Plasticidad', def: 'Al deformarlo, no recupera su forma' },
+        { id: 4, term: 'Conductividad', def: 'Deja pasar la corriente (conductores) o no (aislantes)' },
+        { id: 5, term: 'Solubilidad', def: 'Se disuelve en el agua' },
+        { id: 6, term: 'Comportamiento ante la luz', def: 'Puede ser transparente, opaco o traslúcido' },
+        { id: 7, term: 'Flotabilidad', def: 'Flota sobre un líquido' }
+    ];
+
+    const game2Data = [
+        { id: 1, term: 'Resistencia', def: 'Roca, hormigón…' },
+        { id: 2, term: 'Elasticidad', def: 'Elástico, goma…' },
+        { id: 3, term: 'Plasticidad', def: 'Plastilina, arcilla…' },
+        { id: 4, term: 'Conductividad', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
+        { id: 5, term: 'Solubilidad', def: 'Azúcar o sal en agua' },
+        { id: 6, term: 'Comportamiento ante la luz', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
+        { id: 7, term: 'Flotabilidad', def: 'Madera, corcho…' }
+    ];
+
+    const game3Data = [
+        { id: 1, term: 'Es difícil de romper', def: 'Roca, hormigón…' },
+        { id: 2, term: 'Al deformarlo, recupera su forma', def: 'Elástico, goma…' },
+        { id: 3, term: 'Al deformarlo, no recupera su forma', def: 'Plastilina, arcilla…' },
+        { id: 4, term: 'Deja pasar la corriente o no', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
+        { id: 5, term: 'Se disuelve en el agua', def: 'Azúcar o sal en agua' },
+        { id: 6, term: 'Deja pasar la luz o no', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
+        { id: 7, term: 'Flota sobre un líquido', def: 'Madera, corcho…' }
+    ];
+
+    /* --- LÓGICA DE EMPAREJAMIENTO (BIDIRECCIONAL) --- */
+    function initGame(containerId, data, nextScreenInitFunc, progressId, totalPairs) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        const col1 = document.createElement('div');
+        col1.className = 'column';
+        const col2 = document.createElement('div');
+        col2.className = 'column';
+
+        let terms = data.map(d => ({ text: d.term, pairId: d.id, type: 'term' }));
+        let defs = data.map(d => ({ text: d.def, pairId: d.id, type: 'def' }));
+
+        terms.sort(() => Math.random() - 0.5);
+        defs.sort(() => Math.random() - 0.5);
+
+        terms.forEach(item => col1.appendChild(createCard(item, 'term')));
+        defs.forEach(item => col2.appendChild(createCard(item, 'def')));
+
+        container.appendChild(col1);
+        container.appendChild(col2);
+
+        let selectedCard = null;
+        let matches = 0;
+        updateProgress(progressId, 0);
+
+        container.onclick = (e) => {
+            const target = e.target.closest('.memory-card');
+            if (!target || target.classList.contains('matched')) return;
+
+            /* Caso 1: No hay tarjeta seleccionada → seleccionar esta */
+            if (!selectedCard) {
+                selectedCard = target;
+                selectedCard.classList.add('selected');
+                playSound('tap');
+                return;
+            }
+
+            /* Caso 2: Se pulsa la misma tarjeta → deseleccionar */
+            if (target === selectedCard) {
+                selectedCard.classList.remove('selected');
+                selectedCard = null;
+                return;
+            }
+
+            /* Caso 3: Misma columna → cambiar selección */
+            if (target.dataset.type === selectedCard.dataset.type) {
+                selectedCard.classList.remove('selected');
+                selectedCard = target;
+                selectedCard.classList.add('selected');
+                playSound('tap');
+                return;
+            }
+
+            /* Caso 4: Columna distinta → comprobar pareja */
+            totalAttempts++;
+            const id1 = selectedCard.dataset.pairId;
+            const id2 = target.dataset.pairId;
+            const prevCard = selectedCard;
+
+            if (id1 === id2) {
+                /* Acierto */
+                playSound('correct');
+                prevCard.classList.remove('selected');
+                prevCard.classList.add('matched');
+                target.classList.add('matched');
+                selectedCard = null;
+                matches++;
+                updateProgress(progressId, (matches / totalPairs) * 100);
+
+                if (matches === totalPairs) {
+                    setTimeout(nextScreenInitFunc, 600);
+                }
+            } else {
+                /* Error */
+                playSound('error');
+                prevCard.classList.remove('selected');
+                prevCard.classList.add('flash-error');
+                target.classList.add('flash-error');
+                selectedCard = null;
+
+                setTimeout(() => {
+                    prevCard.classList.remove('flash-error');
+                    target.classList.remove('flash-error');
+                }, 400);
+            }
+        };
+    }
+
+    function createCard(data, type) {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.textContent = data.text;
+        card.dataset.pairId = data.pairId;
+        card.dataset.type = type;
+        return card;
+    }
+
+    function updateProgress(id, pct) {
+        document.getElementById(id).style.width = pct + '%';
+    }
+
+    /* --- NAVEGACIÓN DE JUEGOS --- */
+    function initGame1() {
+        showScreen('game1Screen');
+        initGame('game1Container', game1Data, initGame2, 'progressFillGame1', 7);
+    }
+
+    function initGame2() {
+        showScreen('game2Screen');
+        initGame('game2Container', game2Data, initGame3, 'progressFillGame2', 7);
+    }
+
+    function initGame3() {
+        showScreen('game3Screen');
+        initGame('game3Container', game3Data, finishGame, 'progressFillGame3', 7);
+    }
+
+    /* --- FINALIZAR --- */
+    function calcularPuntuacionFinal() {
+        let score = 100 - ((totalAttempts - MIN_INTERACTIONS) * (100 / MIN_INTERACTIONS));
+        return Math.round(Math.max(0, score));
+    }
+
+    function finishGame() {
+        stopTimer();
+        finalTimeVal = elapsed;
+        finalScoreVal = calcularPuntuacionFinal();
+
+        document.getElementById('finalScore').textContent = finalScoreVal;
+        document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+
+        const trophyBox = document.getElementById('trophyBox');
+        const msg = document.getElementById('finalMsg');
+        
+        if (finalScoreVal === 100) {
+            trophyBox.style.display = 'block';
+            msg.textContent = '¡Enhorabuena, puntuación máxima!';
+            playSound('victory');
+            createConfetti();
+        } else {
+            trophyBox.style.display = 'none';
+            msg.textContent = '¡Buen trabajo! Sigue practicando';
+            playSound('completed');
+        }
+
+        showScreen('finalScreen');
+        showSubmitModal(finalTimeVal, finalScoreVal);
+    }
+
+    /* --- EFECTOS VISUALES --- */
+    function createConfetti() {
+        for(let i=0;i<100;i++){
+            setTimeout(()=>{
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                const x = Math.random() * window.innerWidth;
+                const tx = (Math.random() - 0.5) * 200;
+                c.style.left = x + 'px';
+                c.style.top = '-10px';
+                c.style.backgroundColor = ['#ff595e','#1982c4','#6a4c93','#ffca3a','#8ac926'][Math.floor(Math.random()*5)];
+                c.style.setProperty('--tx', tx + 'px');
+                c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 3000);
+            }, i * 20);
+        }
+    }
+
+    /* --- HALL OF FAME --- */
+    let isHofLoading = false;
+
+    function loadHallOfFame() {
+        if (isHofLoading) return;
+        isHofLoading = true;
+
+        const tbody = document.getElementById('hofTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+
+        const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+
+        const timeoutId = setTimeout(() => {
+            if(isHofLoading) {
+                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>';
+                isHofLoading = false;
+            }
+        }, 8000);
+
+        fetch(url)
+            .then(r => { clearTimeout(timeoutId); if(!r.ok) throw new Error("Network error"); return r.json(); })
+            .then(data => {
+                if (data.status === 'success' && data.data) {
+                    const processedData = data.data.map(row => {
+                        const getVal = (keys) => { for(let key of keys) { if(row[key] !== undefined && row[key] !== "") return row[key]; } return null; };
+                        return {
+                            Nombre: getVal(["Nombre", "nombre", "name"]),
+                            Apellidos: getVal(["Apellidos", "apellidos", "surname"]),
+                            Puntuación: getVal(["Puntuación", "puntuación", "score"]),
+                            Tiempo: getVal(["Tiempo", "tiempo", "time"])
+                        };
+                    });
+
+                    const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+
+                    if (validData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                    } else {
+                        validData.sort((a, b) => {
+                            const sA = parseFloat(a.Puntuación) || 0, sB = parseFloat(b.Puntuación) || 0;
+                            if (sB !== sA) return sB - sA;
+                            return (parseFloat(a.Tiempo) || 9999) - (parseFloat(b.Tiempo) || 9999);
+                        });
+
+                        tbody.innerHTML = '';
+                        validData.slice(0, 10).forEach((item, i) => {
+                            const tr = document.createElement('tr');
+                            const displayName = `${item.Nombre} ${item.Apellidos}`.trim();
+                            let timeStr = item.Tiempo;
+                            if (!isNaN(parseFloat(item.Tiempo))) timeStr = formatTime(parseFloat(item.Tiempo));
+                            tr.innerHTML = `<td>${i + 1}º</td><td>${displayName}</td><td>${item.Puntuación || 0}</td><td>${timeStr}</td>`;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de datos.</td></tr>';
+                }
+            })
+            .catch(e => { clearTimeout(timeoutId); tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; })
+            .finally(() => { isHofLoading = false; });
+    }
+
+    function showSubmitModal(time, score) {
+        document.getElementById('modalTime').textContent = formatTime(time);
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerSurname').value = '';
+        document.getElementById('submitModal').style.display = 'flex';
+        const btn = document.getElementById('submitScoreBtn');
+        btn.textContent = "Guardar";
+        btn.disabled = false;
+        document.getElementById('playerName').focus();
+    }
+
+    function handleSubmitScore() {
+        const btn = document.getElementById('submitScoreBtn');
+        const nameInput = document.getElementById('playerName');
+        const surnameInput = document.getElementById('playerSurname');
+        playSound('tap');
+
+        const payload = { score: finalScoreVal, time: finalTimeVal, name: nameInput.value.trim(), surname: surnameInput.value.trim() };
+
+        if(payload.name && payload.surname) {
+            const originalText = btn.textContent;
+            btn.textContent = "Enviando...";
+            btn.disabled = true;
+
+            fetch(APP_SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
+            })
+            .then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = originalText; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
+            .catch(e => { alert("Error al enviar puntuación."); btn.textContent = originalText; btn.disabled = false; });
+        } else {
+            alert("Por favor, rellena nombre y apellido");
+        }
+    }
+
+    document.getElementById('submitScoreBtn').onclick = handleSubmitScore;
+    document.getElementById('discardScoreBtn').onclick = () => { document.getElementById('submitModal').style.display = 'none'; };
+    document.getElementById('playerName').addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('playerSurname').focus(); });
+    document.getElementById('playerSurname').addEventListener('keypress', function (e) { if (e.key === 'Enter') handleSubmitScore(); });
+    document.getElementById('backToMenuBtn').onclick = () => { playSound('tap'); location.reload(); };
+    document.getElementById('muteBtn').onclick = toggleSound;
+
+    document.addEventListener('DOMContentLoaded', () => { loadHallOfFame(); });
+</script>
+
+</body></html>

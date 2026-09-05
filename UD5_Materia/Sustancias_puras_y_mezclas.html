@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Sustancias puras y mezclas</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
+    <style>
+        /* ====== Reset & base ====== */
+        * { box-sizing: border-box; margin:0; padding:0; }
+        :root{
+            --blue:#001DFF;
+            --blue-dark:#04032B;
+            --blue-700:#1a3a5f;
+            --blue-600:#254fba;
+            --orange:#f59e42;
+            --orange-700:#e67e22;
+            --bg-grad-1:#1a3a5f;
+            --bg-grad-2:#0d2340;
+            --white:#ffffff;
+            --green:#2ecc71;
+            --red:#e74c3c;
+            --panel:#E8EAFF;
+        }
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height:100vh; display:flex; justify-content:center;
+            padding-top: 20px; padding-bottom:20px; color:#333; padding-left:10px; padding-right:10px;
+        }
+        .game-container{
+            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
+            display:flex; flex-direction:column; margin-top: 0;
+        }
+        header{ text-align:center; margin-bottom:.8rem; margin-top:1rem; }
+        h1{ color:var(--blue-dark); font-size:clamp(2rem,5.2vw,3.1rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle{ color:var(--blue-700); font-size:clamp(1rem,3.5vw,1.25rem); margin-top:.25rem; }
+        .highlight-keyword{ color:var(--orange); font-weight:800; }
+
+        /* Buttons */
+        .btn{ color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
+            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
+            display:inline-flex; align-items:center; justify-content:center; font-size: 1rem; }
+        .btn:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active{ transform:translateY(0); }
+        .btn-primary{ background:var(--orange); }
+        .btn-primary:hover{ background:var(--orange-700); color:#fff; }
+        .btn-blue{ background:var(--blue-600); }
+        .btn-blue:hover{ filter:brightness(.9); }
+        .btn-ghost{ background:#e6f2ff; color:var(--blue-700); }
+
+        .screen{ display:none; animation:fadeIn .35s ease; flex-direction: column; flex:1;}
+        .screen.active{ display:flex; }
+        @keyframes fadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+        .game-info{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.4rem 0 1rem; flex-wrap:wrap; }
+        .timer{ font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar{ flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
+
+        /* Pantalla Inicio Estética */
+        .start-content{ display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box{ background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
+            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image{ max-width: 300px; width: 100%; margin: 0 auto; }
+        
+        /* Mute Button - SVG Style */
+        .mute-btn{ 
+            position:absolute; 
+            top:.8rem; 
+            right:1.2rem; 
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-700) 100%); 
+            color:#fff; 
+            border:2px solid #fff; 
+            width:42px; 
+            height:42px; 
+            border-radius:50%; 
+            cursor:pointer; 
+            font-size:1rem; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            z-index:20; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+        .mute-btn:hover { transform: scale(1.1); }
+        .mute-btn svg { width: 22px; height: 22px; fill: white; }
+
+        /* --- NUEVO DISEÑO PANTALLA RESUMEN (TEORÍA) --- */
+        .theory-content { 
+            padding: 10px; 
+            margin: 10px 0; 
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .theory-main-title {
+            text-align: center;
+            color: var(--blue-dark);
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        .theory-intro {
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .change-block {
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .change-block.pure {
+            background: #e6f2ff;
+            border: 2px solid var(--blue-600);
+        }
+        .change-block.mixture {
+            background: #fff3e0;
+            border: 2px solid var(--orange);
+        }
+        .block-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pure .block-title { color: var(--blue-700); }
+        .mixture .block-title { color: var(--orange-700); }
+        
+        .block-desc {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        .example-list {
+            list-style: none;
+            padding: 0;
+        }
+        .example-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .example-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        .pure .example-list li::before { color: var(--blue-600); }
+        .mixture .example-list li::before { color: var(--orange-700); }
+        
+        .example-list strong {
+            color: #000;
+        }
+        .play-btn-container {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        /* --- JUEGO 1: COMPLETAR HUECOS --- */
+        .fill-game-container { display: flex; flex-direction: column; gap: 1rem; padding: 10px; }
+        
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            min-height: 50px;
+            padding: 0.5rem;
+            background: #f0f7ff;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+        }
+        
+        .draggable-word {
+            background-color: var(--white);
+            border: 1px solid var(--blue-600);
+            color: var(--blue-700);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: grab;
+            user-select: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            touch-action: none;
+        }
+        .draggable-word:active { cursor: grabbing; transform: scale(1.05); }
+        .draggable-word.hidden { display: none; }
+        .draggable-word.selected { border-color: var(--orange); box-shadow: 0 0 0 2px var(--orange); }
+
+        .text-paragraph {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            color: #333;
+            text-align: justify;
+            margin-bottom: 1rem;
+        }
+        
+        .dropzone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
+            height: 34px;
+            border: 2px dashed #a0aec0;
+            background-color: #e6fffa;
+            border-radius: 6px;
+            margin: 0 4px;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .dropzone:hover { border-color: var(--orange); background-color: #fffaf0; }
+        .dropzone.filled { border-style: solid; border-color: var(--blue-600); background-color: var(--white); }
+        .dropzone.correct { border-color: var(--green); background-color: #d1fae5; color: var(--green); font-weight: bold; }
+        .dropzone.incorrect { border-color: var(--red); background-color: #fee2e2; color: var(--red); font-weight: bold; animation: shakeRed 0.4s ease-in-out; }
+
+        .placed-word {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--blue-700);
+            font-weight: 600;
+        }
+
+        @keyframes shakeRed {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        /* --- JUEGO 2: INTERFAZ NUEVA (ESTILO SELECTORES) --- */
+        .game2-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            flex: 1;
+        }
+        
+        .image-display {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent; 
+            min-height: 200px;
+            padding: 10px;
+        }
+        .image-display img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+        .image-display img:hover { transform: scale(1.02); }
+        
+        .selectors-container {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            width: 100%;
+            max-width: 500px;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: nowrap;
+        }
+
+        .name-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 0.5rem;
+        }
+        .material-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--blue-dark);
+        }
+        .play-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: var(--blue-600);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s, background-color 0.2s;
+            flex-shrink: 0;
+        }
+        .play-btn:hover {
+            background-color: var(--blue-dark);
+            transform: scale(1.1);
+        }
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+        .play-icon {
+            width: 0; 
+            height: 0; 
+            border-left: 16px solid white;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            margin-left: 3px;
+        }
+        
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 100%;
+            flex: 1;
+            z-index: 50;
+        }
+        .custom-select {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .custom-select__trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--blue-700);
+            height: 50px;
+            line-height: 50px;
+            background: #fff;
+            border: 2px solid var(--blue-600);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .custom-select__trigger:hover {
+            border-color: var(--orange);
+        }
+        .custom-select__trigger::after {
+            content: '';
+            width: 10px; height: 10px;
+            border-right: 2px solid var(--blue-700);
+            border-bottom: 2px solid var(--blue-700);
+            transform: rotate(45deg);
+            margin-top: -5px;
+            transition: transform 0.2s;
+        }
+        
+        .static-btn {
+            background: #fff;
+            border: 2px solid var(--blue-600);
+            border-radius: 10px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.2rem;
+            color: var(--blue-700);
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .custom-options {
+            position: absolute;
+            display: block;
+            bottom: 100%; 
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 2px solid var(--blue-600);
+            border-bottom: 0;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 100;
+            height: auto; 
+            overflow: visible; 
+            transform: translateY(10px);
+            transition: all 0.3s;
+        }
+        
+        .custom-select.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+        
+        .custom-select.open .custom-select__trigger::after {
+             margin-top: 5px; transform: rotate(-135deg);
+        }
+        
+        .custom-option {
+            position: relative;
+            display: block;
+            padding: 0 1.2rem;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--blue-700);
+            line-height: 45px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .custom-option:hover {
+            background-color: #e6f2ff;
+            color: var(--orange);
+        }
+        .custom-option.selected {
+            background-color: var(--panel);
+            color: var(--blue-dark);
+            font-weight: 700;
+        }
+        
+        .custom-select__trigger.correct {
+            border-color: var(--green);
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--green);
+        }
+        .custom-select__trigger.wrong {
+            border-color: var(--red);
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--red);
+            animation: shake 0.3s;
+        }
+        
+        .static-btn.correct {
+            border-color: var(--green);
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--green);
+        }
+        .static-btn.wrong {
+            border-color: var(--red);
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--red);
+            animation: shake 0.3s;
+        }
+
+        .action-area {
+            height: 50px; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* --- JUEGO 3: TEST --- */
+        .test-container { width: 100%; max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; flex: 1; }
+        
+        .test-question-box {
+            background-color: var(--panel);
+            border-radius: 12px;
+            border-left: 5px solid var(--blue);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .test-question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--blue-dark);
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .test-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .test-option-btn {
+            background-color: var(--white);
+            border: 2px solid var(--blue);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--blue-700);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+            width: 100%;
+        }
+        
+        .test-option-btn:hover {
+            transform: scale(1.02);
+            background-color: #f8f9fa;
+        }
+        
+        .test-option-btn.correct {
+            background-color: #d1fae5;
+            border-color: var(--green);
+            color: #065f46;
+        }
+        
+        .test-option-btn.incorrect {
+            background-color: #fee2e2;
+            border-color: var(--red);
+            color: #991b1b;
+            animation: shakeRed 0.4s ease-in-out;
+        }
+        
+        .test-option-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        /* Pantalla Final */
+        .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center;}
+        .final-title{ color:var(--blue-dark); font-weight:900; }
+        .big-score{ font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title{ font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time{ color:var(--blue-700); }
+        
+        #trophyBox { 
+            display: none; 
+            font-size: clamp(4rem, 10vw, 7rem);
+            margin: .5rem 0;
+            text-align: center;
+            align-self: center;
+            animation: bounce 1s ease infinite;
+            color: var(--orange);
+            line-height: 1; 
+        }
+        
+        @keyframes bounce { 
+            0%,100%{ transform: translateY(0) scale(1); } 
+            50%{ transform: translateY(-15px) scale(1.1); } 
+        }
+        
+        .credit{ color:var(--blue-700); margin-top:1rem; }
+        
+        #finalMsg { font-size: clamp(1.2rem, 4.2vw, 1.8rem); font-weight: 800; color: var(--blue-700); margin-top: 0.6rem; }
+        
+        .school-logo { display: block; width: 160px; max-width: 28%; height: auto; margin-top: 0.8rem; border-radius: 8px; object-fit: contain; }
+        @media (max-width: 899px) { .school-logo { width: 140px; max-width: 160px; } }
+        @media (max-width: 420px) { .school-logo { width: 110px; max-width: 40%; margin-top: 0.6rem; } }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        
+        .confetti{ position:fixed; width:10px; height:10px; border-radius:50%; animation: confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall{ 0%{ transform:translate(0, -20px) rotate(0); opacity:1;} 100%{ transform:translate(var(--tx), var(--ty)) rotate(360deg); opacity:0; } }
+
+        /* --- ESTILOS DEL HALL OF FAME --- */
+        .hall-of-fame {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .hall-of-fame-title {
+            color: var(--blue-700);
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .hall-of-fame-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .hall-of-fame-table th {
+            background: var(--blue-600);
+            color: white;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        .hall-of-fame-table td {
+            padding: 0.4rem 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .hall-of-fame-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .hall-of-fame-table tr:nth-child(even) {
+            background-color: rgba(255, 255,255, 0.5);
+        }
+
+        .hall-of-fame-error, .hall-of-fame-loading {
+            padding: 1rem;
+            text-align: center;
+            color: var(--blue-700);
+            font-style: italic;
+        }
+
+        .hall-of-fame-error {
+            color: var(--red);
+        }
+
+        .game-controls { display:flex; gap:10px; justify-content:center; margin-top:1rem; min-height: 48px;}
+        .hidden { display: none !important; }
+        
+        .level-indicator { font-weight: 900; color: var(--blue-700); }
+
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
+        <svg id="speakerIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+            <path class="sound-waves" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    </button>
+
+    <section class="screen active" id="startScreen">
+        <header>
+            <h1>Sustancias puras y mezclas</h1>
+            <div class="subtitle">Sustancias puras y mezclas. Mezclas homogéneas y heterogéneas.</div>
+        </header>
+
+        <div class="start-content">
+            <div class="advice-box">
+                <span class="advice-text">La materia puede presentarse como <span class="highlight-keyword">sustancia pura</span> (un solo componente) o como <span class="highlight-keyword">mezcla</span> (tiene más de un componente)</span>
+                <strong style="display:block; margin-top:0.5rem; text-align:center;">¡Ánimo!</strong>
+            </div>
+            
+            <button class="btn btn-primary" id="playBtn">Comenzar</button>
+            
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
+            
+            <div class="hall-of-fame" id="hallOfFame">
+              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <table class="hall-of-fame-table">
+                  <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nombre</th>
+                            <th>Puntos</th>
+                            <th>Tiempo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody">
+                      </tbody>
+              </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="summaryScreen">
+        <header>
+            <h1>Sustancias puras y mezclas</h1>
+        </header>
+        <div class="theory-content">
+            <div class="theory-main-title">Clasificación de la materia</div>
+            <p class="theory-intro">La materia puede presentarse como sustancias puras o mezclas.</p>
+            
+            <div class="change-block pure">
+                <div class="block-title">
+                    Sustancias puras
+                </div>
+                <div class="block-desc">
+                    Está compuesta por un solo componente. Algunos ejemplos son:
+                </div>
+                <ul class="example-list">
+                    <li><strong>Agua:</strong> compuesta únicamente por moléculas de agua.</li>
+                    <li><strong>Hierro:</strong> elemento puro.</li>
+                    <li><strong>Diamante:</strong> carbono puro.</li>
+                </ul>
+            </div>
+
+            <div class="change-block mixture">
+                <div class="block-title">
+                    Mezclas
+                </div>
+                <div class="block-desc">
+                    Están compuestas por varios componentes.
+                </div>
+                <ul class="example-list">
+                    <li><strong>Homogéneas:</strong> no se distinguen los componentes (batido, agua salada, bronce).</li>
+                    <li><strong>Heterogéneas:</strong> sí se distinguen sus componentes (ensalada, granito).</li>
+                </ul>
+            </div>
+
+            <div class="play-btn-container">
+                <button class="btn btn-primary" id="startGameBtn">Jugar</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="game1Screen">
+        <header>
+            <h1>Sustancias puras y mezclas</h1>
+            <div class="subtitle">Rellena los huecos para completar el texto</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
+        </div>
+        <div class="fill-game-container">
+            <div class="word-bank" id="wordBank"></div>
+            <div id="textContainer"></div>
+            <div class="game-controls">
+                <button class="btn btn-primary" id="checkGame1Btn">Comprobar</button>
+                <button class="btn btn-blue hidden" id="continueFromGame1Btn">Continuar</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="game2Screen" lang="en" translate="no" class="notranslate">
+        <header>
+            <h1>Pure substances and mixtures</h1>
+            <div class="subtitle">Identify the image</div>
+        </header>
+        <div class="game-info">
+            <div class="timer" id="timerGame2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
+            <div class="timer" style="font-size:0.9rem;">Level <span id="levelIndicatorG2">1</span>/12</div>
+        </div>
+
+        <div class="game2-container">
+            <div class="name-display">
+                <div class="material-name" id="materialNameText">Word</div>
+                <button class="play-btn" id="playNameBtn" title="Play audio">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+
+            <div class="image-display">
+                <img src="" alt="Material" id="game2Img">
+            </div>
+
+            <div class="selectors-container">
+                <div class="custom-select-wrapper">
+                    <div class="static-btn" id="staticPure">Pure Substances</div>
+                </div>
+
+                <div class="custom-select-wrapper">
+                    <div class="custom-select" id="selectMixture">
+                        <div class="custom-select__trigger"><span>Mixture</span></div>
+                        <div class="custom-options">
+                            <span class="custom-option" data-value="homo">Homogeneous</span>
+                            <span class="custom-option" data-value="hetero">Heterogeneous</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-area">
+                <button class="btn btn-primary" id="checkBtnG2">Check</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" id="game3Screen">
+        <header>
+            <h1>Elige la opción correcta</h1>
+        </header>
+        <div class="game-info">
+            <div class="level-indicator" id="levelIndicatorG3">Nivel 1/5</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
+            <div class="timer" id="timerGame3">00:00.0</div>
+        </div>
+        
+        <div class="test-container">
+            <div class="test-question-box">
+                <div id="testQuestionText" class="test-question-text"></div>
+            </div>
+            <div id="testOptionsContainer" class="test-options-container"></div>
+        </div>
+    </section>
+
+    <section class="screen" id="finalScreen">
+        <header>
+            <h1 class="final-title">Sustancias puras y mezclas</h1>
+        </header>
+        <div class="results">
+            <div id="trophyBox">🏆</div>
+            
+            <div class="score-title">Puntuación:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg" class="subtitle"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo del colegio" />
+        </div>
+    </section>
+</div>
+
+<div id="submitModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>¡Juego Terminado!</h3>
+        <p>Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
+            <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* --- 1. CONFIGURACIÓN DE VARIABLES GLOBALES --- */
+    const SHEET_NAME = "UD5_Pura_Mezclas";
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrgOJSXFj5Eld0a05sshvuy4epyeEDn9ctwdoUhapm_6BaQNvG1i-ugZUfI9ypCKDrrQ/exec";
+    
+    let soundEnabled = true;
+    let audioUnlocked = false;
+    let isMuted = false;
+
+    let startTime = 0;
+    let timerInterval = null;
+    let elapsed = 0;
+    let timerStopped = false; 
+    
+    let finalScoreVal = 0; 
+    let finalTimeVal = 0; 
+    
+    let gameFlowOrder = ['game1', 'game2', 'game3']; 
+    let currentGameStep = 0;
+
+    let totalCorrectG1 = 0;
+    let totalCorrectG2 = 0;
+    let totalCorrectG3 = 0;
+    const TOTAL_QUESTIONS_G1 = 9;
+    const TOTAL_QUESTIONS_G2 = 12;
+    const TOTAL_QUESTIONS_G3 = 5;
+    const GRAND_TOTAL_QUESTIONS = TOTAL_QUESTIONS_G1 + TOTAL_QUESTIONS_G2 + TOTAL_QUESTIONS_G3;
+
+    // ── PUNTUACIÓN ──────────────────────────────────────────────
+    // Intentos mínimos para un juego perfecto:
+    //   G1: 1 comprobación perfecta
+    //   G2: 12 respuestas correctas (1 intento por elemento)
+    //   G3: 5 respuestas correctas (1 intento por pregunta)
+    //   Total: 18
+    const MIN_ATTEMPTS = 18;
+    let totalAttempts = 0;
+    // ────────────────────────────────────────────────────────────
+
+    /* --- AUDIOS --- */
+    const audioUrls = {
+        correct: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
+        error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
+        tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',
+        victory: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
+        completed: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'
+    };
+    
+    const audioObjects = {};
+    Object.keys(audioUrls).forEach(key => { 
+        const a = new Audio();
+        a.src = audioUrls[key];
+        a.preload = 'auto';
+        audioObjects[key] = a; 
+    });
+
+    function unlockAudioContext() {
+        if (audioUnlocked) return;
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') ctx.resume();
+            const buffer = ctx.createBuffer(1, 1, 22050);
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            source.start(0);
+            audioUnlocked = true;
+        } catch(e) { audioUnlocked = true; }
+    }
+
+    function forceInitTTS() {
+        if (window.speechSynthesis) {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                const utterance = new SpeechSynthesisUtterance('');
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+    }
+
+    function reproducirSonidoTap() {
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects['tap'];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function reproducirSonidoCorrecto() {
+        window.speechSynthesis.cancel();
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects['correct'];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function reproducirSonidoError() {
+        window.speechSynthesis.cancel();
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects['error'];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function reproducirSonidoVictoria() {
+        window.speechSynthesis.cancel();
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects['victory'];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function reproducirSonidoCompletado() {
+        window.speechSynthesis.cancel();
+        if (isMuted) return;
+        if (!audioUnlocked) unlockAudioContext();
+        const a = audioObjects['completed'];
+        if(!a) return;
+        try { a.currentTime = 0; a.play(); } catch(e){}
+    }
+
+    function updateSpeakerIcon() {
+        const speakerIcon = document.getElementById('speakerIcon');
+        if (!speakerIcon) return;
+
+        if (isMuted) {
+            speakerIcon.innerHTML = `
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+                <line x1="20" y1="4" x2="4" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            `;
+        } else {
+            speakerIcon.innerHTML = `
+                <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+                <path class="sound-waves" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            `;
+        }
+    }
+
+    function toggleSound() {
+        isMuted = !isMuted;
+        updateSpeakerIcon();
+        if (!isMuted) reproducirSonidoTap();
+    }
+
+    /* --- LÓGICA GENERAL --- */
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGlobalTimer() {
+        if (timerInterval) return; 
+        
+        if (!timerStopped) {
+            startTime = Date.now();
+            elapsed = 0;
+        } else {
+            startTime = Date.now() - (elapsed * 1000);
+            timerStopped = false;
+        }
+
+        timerInterval = setInterval(() => {
+            const now = Date.now();
+            const delta = (now - startTime) / 1000;
+            elapsed = delta;
+            updateTimerDisplay(elapsed);
+        }, 100);
+    }
+
+    function stopTimerForCheck() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerStopped = true;
+        }
+    }
+
+    function updateTimerDisplay(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        const ms = Math.round((sec % 1) * 10);
+        const timeStr = `${m}:${s}.${ms}`;
+        
+        ['timerGame1','timerGame2', 'timerGame3'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.textContent = timeStr;
+        });
+    }
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        const ms = Math.round((sec % 1) * 10);
+        return `${m}:${s}.${ms}`;
+    }
+
+    function updateProgress(id, pct) {
+        const el = document.getElementById(id);
+        if(el) el.style.width = pct + '%';
+    }
+
+    // ── CÁLCULO DE PUNTUACIÓN ────────────────────────────────────
+    // Fórmula: 100 - ((intentos_realizados - intentos_mínimos) * (100 / intentos_mínimos))
+    // Juego perfecto (18 intentos) → 100 puntos
+    // Cada intento extra resta 100/18 ≈ 5.56 puntos
+    // Mínimo posible: 0 (nunca negativo)
+    function calcularPuntuacionFinal() {
+        const score = 100 - ((totalAttempts - MIN_ATTEMPTS) * (100 / MIN_ATTEMPTS));
+        return Math.max(0, Math.round(score));
+    }
+    // ────────────────────────────────────────────────────────────
+
+    /* --- LÓGICA DE FLUJO DE JUEGOS --- */
+    function initGameSequence() {
+        currentGameStep = 0;
+        totalCorrectG1 = 0;
+        totalCorrectG2 = 0;
+        totalCorrectG3 = 0;
+        totalAttempts = 0;
+        
+        startGlobalTimer();
+        loadNextGame();
+    }
+
+    function loadNextGame() {
+        const gameType = gameFlowOrder[currentGameStep];
+        
+        if (gameType === 'game1') {
+            initGame1();
+            showScreen('game1Screen');
+        } else if (gameType === 'game2') {
+            initGame2();
+            showScreen('game2Screen');
+        } else if (gameType === 'game3') {
+            initGame3();
+            showScreen('game3Screen');
+        }
+    }
+
+    function advanceGameSequence() {
+        currentGameStep++;
+        if (currentGameStep < 3) {
+            loadNextGame();
+        } else {
+            finishGame();
+        }
+    }
+
+    /* --- JUEGO 1: COMPLETAR HUECOS --- */
+    const g1FullText = [
+        "La materia puede presentarse como {sustancias} puras o mezclas.",
+        "Las sustancias puras están compuestas por {un solo componente}, como por ejemplo, agua, hierro, {diamante}, etc.",
+        "Las mezclas están compuestas por {varios componentes}. Existen dos tipos de {mezclas}: homogéneas y heterogéneas.",
+        "    • En las mezclas homogéneas {no se distinguen} sus componentes, como {un batido}, agua salada o bronce.",
+        "    • En las mezclas heterogéneas {sí se distinguen} sus componentes, como {una ensalada} o el granito."
+    ];
+    const g1Answers = ["sustancias", "un solo componente", "diamante", "varios componentes", "mezclas", "no se distinguen", "un batido", "sí se distinguen", "una ensalada"];
+    
+    let selectedWordBankItem = null;
+
+    function initGame1() {
+        const bank = document.getElementById('wordBank');
+        const container = document.getElementById('textContainer');
+        const checkBtn = document.getElementById('checkGame1Btn');
+        const contBtn = document.getElementById('continueFromGame1Btn');
+        
+        bank.innerHTML = '';
+        container.innerHTML = '';
+        checkBtn.classList.remove('hidden');
+        contBtn.classList.add('hidden');
+        totalCorrectG1 = 0;
+        
+        const shuffledAnswers = [...g1Answers].sort(() => Math.random() - 0.5);
+        
+        shuffledAnswers.forEach(word => {
+            const el = document.createElement('div');
+            el.className = 'draggable-word';
+            el.textContent = word;
+            el.draggable = true;
+            el.dataset.word = word;
+            
+            el.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', word);
+                e.dataTransfer.effectAllowed = 'copyMove';
+                selectWordForTap(el);
+            });
+            el.addEventListener('click', () => selectWordForTap(el));
+            bank.appendChild(el);
+        });
+
+        let html = '';
+        g1FullText.forEach(paragraph => {
+            const processedText = paragraph.replace(/{(.*?)}/g, (match, captured) => {
+                return `<span class="dropzone" data-answer="${captured}"></span>`;
+            });
+            html += `<p class="text-paragraph">${processedText}</p><br>`;
+        });
+        container.innerHTML = html;
+
+        document.querySelectorAll('.dropzone').forEach(dz => {
+            dz.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            });
+            dz.addEventListener('drop', handleDrop);
+            dz.addEventListener('click', handleDropzoneClick);
+        });
+        
+        updateProgress('progressFillGame1', 0);
+    }
+
+    function selectWordForTap(el) {
+        if(el.classList.contains('hidden')) return;
+        document.querySelectorAll('.draggable-word').forEach(w => {
+            w.classList.remove('selected');
+            w.style.borderColor = 'var(--blue-600)';
+        });
+        selectedWordBankItem = el;
+        el.classList.add('selected');
+        el.style.borderColor = 'var(--orange)';
+        reproducirSonidoTap();
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        let word = e.dataTransfer.getData('text/plain');
+        if (!word && selectedWordBankItem) {
+            word = selectedWordBankItem.dataset.word;
+        }
+        
+        if (word) {
+            placeWordInDropzone(this, word);
+        }
+        
+        document.querySelectorAll('.draggable-word').forEach(w => {
+            w.classList.remove('selected');
+            w.style.borderColor = 'var(--blue-600)';
+        });
+        selectedWordBankItem = null;
+    }
+
+    function handleDropzoneClick() {
+        if (selectedWordBankItem) {
+            placeWordInDropzone(this, selectedWordBankItem.dataset.word);
+            document.querySelectorAll('.draggable-word').forEach(w => {
+                w.classList.remove('selected');
+                w.style.borderColor = 'var(--blue-600)';
+            });
+            selectedWordBankItem = null;
+        }
+    }
+
+    function placeWordInDropzone(dz, word) {
+        if (dz.hasChildNodes()) return; 
+
+        const bankItem = Array.from(document.querySelectorAll('.draggable-word')).find(el => el.dataset.word === word && !el.classList.contains('hidden'));
+        if (bankItem) bankItem.classList.add('hidden');
+
+        const span = document.createElement('span');
+        span.className = 'placed-word';
+        span.textContent = word;
+        span.dataset.word = word;
+        span.onclick = (e) => {
+            e.stopPropagation(); 
+            returnWordToBank(word);
+            dz.innerHTML = '';
+            dz.classList.remove('filled');
+            reproducirSonidoTap();
+        };
+
+        dz.innerHTML = '';
+        dz.appendChild(span);
+        dz.classList.add('filled');
+        reproducirSonidoTap();
+    }
+
+    function returnWordToBank(word) {
+        const bankItem = Array.from(document.querySelectorAll('.draggable-word')).find(el => el.dataset.word === word);
+        if (bankItem) bankItem.classList.remove('hidden');
+    }
+
+    document.getElementById('checkGame1Btn').onclick = () => {
+        stopTimerForCheck();
+
+        let correctCount = 0;
+        let incorrectCount = 0;
+        const zones = document.querySelectorAll('.dropzone');
+        
+        zones.forEach(z => {
+            const placed = z.querySelector('.placed-word');
+            const expected = z.dataset.answer;
+            
+            z.classList.remove('correct', 'incorrect');
+            
+            if (placed && placed.dataset.word === expected) {
+                z.classList.add('correct');
+                correctCount++;
+            } else {
+                z.classList.add('incorrect');
+                incorrectCount++;
+            }
+        });
+
+        // ── CONTEO G1 ──────────────────────────────────────────
+        // 1 intento base (la comprobación) + 1 extra por cada hueco incorrecto
+        totalAttempts += 1 + incorrectCount;
+        // ───────────────────────────────────────────────────────
+
+        totalCorrectG1 = correctCount;
+        
+        document.getElementById('checkGame1Btn').classList.add('hidden');
+        document.getElementById('continueFromGame1Btn').classList.remove('hidden');
+
+        const pct = (correctCount / TOTAL_QUESTIONS_G1) * 100;
+        updateProgress('progressFillGame1', pct);
+
+        if (correctCount === TOTAL_QUESTIONS_G1) reproducirSonidoCorrecto();
+        else reproducirSonidoError();
+    };
+
+    document.getElementById('continueFromGame1Btn').onclick = () => {
+        startGlobalTimer();
+        advanceGameSequence();
+    };
+
+    /* --- JUEGO 2: INGLÉS (LÓGICA DE SELECTORES MODIFICADA) --- */
+    const g2Data = [
+        { type: 'pure', text: 'Diamond', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Diamante.png' },
+        { type: 'pure', text: 'Water', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/water.png' },
+        { type: 'pure', text: 'Iron', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/iron.png' },
+        { type: 'pure', text: 'Sugar', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Sugar.png' },
+        { type: 'homo', text: 'Milkshake', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/milkshake.png' },
+        { type: 'homo', text: 'Salt water', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Saltwater.png' },
+        { type: 'homo', text: 'Bronze', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Bronze.png' },
+        { type: 'homo', text: 'Yoghurt', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Yoghurt.png' },
+        { type: 'hetero', text: 'Salad', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Salad.png' },
+        { type: 'hetero', text: 'Granite', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/granite.png' },
+        { type: 'hetero', text: 'Pizza', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/pizza.png' },
+        { type: 'hetero', text: 'Oil and water', img: 'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Materia_Eergia/Pure_mixtures/Oil_water.png' }
+    ];
+
+    let g2CurrentIndex = 0;
+    let g2Questions = [];
+    let g2Blocking = false;
+    let g2CurrentSelection = null;
+
+    const selectMixture = document.getElementById('selectMixture');
+    const triggerMixture = selectMixture.querySelector('.custom-select__trigger');
+    const staticPureBtn = document.getElementById('staticPure');
+    const game2Img = document.getElementById('game2Img');
+    const checkBtnG2 = document.getElementById('checkBtnG2');
+
+    function initGame2() {
+        g2Questions = [...g2Data].sort(() => Math.random() - 0.5);
+        g2CurrentIndex = 0;
+        totalCorrectG2 = 0;
+        updateProgress('progressFillGame2', 0);
+        
+        setupG2Listeners();
+        loadNextQuestionG2();
+    }
+
+    function setupG2Listeners() {
+        staticPureBtn.addEventListener('click', () => {
+            if(g2Blocking) return;
+            reproducirSonidoTap();
+            staticPureBtn.classList.remove('correct', 'wrong');
+            triggerMixture.classList.remove('correct', 'wrong');
+            selectMixture.classList.remove('open');
+            triggerMixture.innerHTML = '<span>Mixture</span>';
+            
+            g2CurrentSelection = 'pure';
+            staticPureBtn.style.boxShadow = '0 0 0 3px var(--orange)';
+            triggerMixture.style.boxShadow = 'none';
+        });
+
+        triggerMixture.addEventListener('click', () => {
+            if(g2Blocking) return;
+            reproducirSonidoTap();
+            selectMixture.classList.toggle('open');
+            
+            if(selectMixture.classList.contains('open')) {
+                staticPureBtn.classList.remove('correct', 'wrong');
+                triggerMixture.classList.remove('correct', 'wrong');
+                staticPureBtn.style.boxShadow = 'none';
+            }
+        });
+
+        selectMixture.querySelectorAll('.custom-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                if(g2Blocking) return;
+                
+                selectMixture.classList.remove('open');
+                
+                const value = this.getAttribute('data-value');
+                g2CurrentSelection = value;
+                
+                triggerMixture.innerHTML = this.textContent;
+                
+                staticPureBtn.classList.remove('correct', 'wrong');
+                triggerMixture.classList.remove('correct', 'wrong');
+                staticPureBtn.style.boxShadow = 'none';
+                triggerMixture.style.boxShadow = '0 0 0 3px var(--orange)';
+                
+                reproducirSonidoTap();
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!selectMixture.contains(e.target)) {
+                selectMixture.classList.remove('open');
+            }
+        });
+
+        checkBtnG2.addEventListener('click', checkAnswerG2);
+    }
+
+    function loadNextQuestionG2() {
+        if (g2CurrentIndex >= g2Questions.length) {
+            advanceGameSequence();
+            return;
+        }
+
+        const q = g2Questions[g2CurrentIndex];
+        const txtEl = document.getElementById('materialNameText');
+        const levelEl = document.getElementById('levelIndicatorG2');
+
+        txtEl.textContent = q.text;
+        game2Img.src = q.img;
+        
+        levelEl.textContent = g2CurrentIndex + 1;
+        
+        staticPureBtn.className = 'static-btn';
+        staticPureBtn.style.boxShadow = 'none';
+        triggerMixture.className = 'custom-select__trigger';
+        triggerMixture.style.boxShadow = 'none';
+        triggerMixture.innerHTML = '<span>Mixture</span>';
+        
+        g2CurrentSelection = null;
+        g2Blocking = false;
+        
+        checkBtnG2.style.display = 'inline-flex';
+
+        updateProgress('progressFillGame2', (g2CurrentIndex / TOTAL_QUESTIONS_G2) * 100);
+
+        setTimeout(() => {
+            speakTextEnglish(q.text);
+        }, 100);
+    }
+
+    function checkAnswerG2() {
+        if (g2Blocking || !g2CurrentSelection) {
+            if(!g2CurrentSelection) {
+                staticPureBtn.classList.add('shake-anim');
+                triggerMixture.classList.add('shake-anim');
+                setTimeout(() => {
+                    staticPureBtn.classList.remove('shake-anim');
+                    triggerMixture.classList.remove('shake-anim');
+                }, 400);
+            }
+            return;
+        }
+        
+        g2Blocking = true;
+        stopTimerForCheck();
+        totalAttempts++;
+        
+        const currentQ = g2Questions[g2CurrentIndex];
+        const isCorrect = g2CurrentSelection === currentQ.type;
+        
+        if (isCorrect) {
+            reproducirSonidoCorrecto();
+            totalCorrectG2++;
+            
+            if (g2CurrentSelection === 'pure') {
+                staticPureBtn.classList.add('correct');
+            } else {
+                triggerMixture.classList.add('correct');
+            }
+            
+            g2CurrentIndex++;
+            updateProgress('progressFillGame2', (g2CurrentIndex / TOTAL_QUESTIONS_G2) * 100);
+            
+            setTimeout(() => {
+                startGlobalTimer();
+                loadNextQuestionG2();
+            }, 500);
+            
+        } else {
+            reproducirSonidoError();
+            
+            if (g2CurrentSelection === 'pure') {
+                staticPureBtn.classList.add('wrong');
+            } else {
+                triggerMixture.classList.add('wrong');
+            }
+            
+            setTimeout(() => {
+                staticPureBtn.classList.remove('wrong', 'correct');
+                triggerMixture.classList.remove('wrong', 'correct');
+                
+                staticPureBtn.style.boxShadow = 'none';
+                triggerMixture.style.boxShadow = 'none';
+                triggerMixture.innerHTML = '<span>Mixture</span>';
+                
+                g2CurrentSelection = null;
+                g2Blocking = false;
+                
+                startGlobalTimer();
+            }, 500);
+        }
+    }
+
+    function speakTextEnglish(text) {
+        window.speechSynthesis.cancel();
+        if (isMuted) return;
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-GB';
+        utterance.rate = 0.9;
+
+        const voices = window.speechSynthesis.getVoices();
+        let selectedVoice = voices.find(v => v.name === 'Google UK English');
+        if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-GB' && (v.name.includes('Microsoft') || v.name.includes('Natural')));
+        if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-GB');
+        
+        if (selectedVoice) utterance.voice = selectedVoice;
+        
+        window.speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById('playNameBtn').onclick = function() {
+        const currentQ = g2Questions[g2CurrentIndex];
+        if (currentQ) speakTextEnglish(currentQ.text);
+    };
+
+    /* --- JUEGO 3: TEST --- */
+    const g3Data = [
+        { 
+            question: "Las sustancias puras...", 
+            options: [
+                { text: "Tienen un solo componente", correct: true },
+                { text: "Tienen varios componentes", correct: false },
+                { text: "Son los diferentes tipos de materia", correct: false }
+            ]
+        },
+        { 
+            question: "Las mezclas...", 
+            options: [
+                { text: "Tienen dos componentes", correct: false },
+                { text: "Tienen más de un componente", correct: true },
+                { text: "Pueden tener uno o varios componentes", correct: false }
+            ]
+        },
+        { 
+            question: "En las mezclas homogéneas...", 
+            options: [
+                { text: "Podemos distinguir los componentes", correct: false },
+                { text: "No podemos distinguir los componentes", correct: true },
+                { text: "Son puras o mixtas", correct: false }
+            ]
+        },
+        { 
+            question: "En las mezclas heterogéneas...", 
+            options: [
+                { text: "Sí se distinguen los componentes", correct: true },
+                { text: "No se distinguen los componentes", correct: false }
+            ]
+        },
+        { 
+            question: "La materia puede aparecer como…", 
+            options: [
+                { text: "Sustancias puras o mezclas", correct: true },
+                { text: "Mezclas homogéneas y heterogéneas", correct: false },
+                { text: "Masa y volumen", correct: false },
+                { text: "Materia y mezclas", correct: false }
+            ]
+        }
+    ];
+
+    let g3CurrentIndex = 0;
+    let g3Questions = [];
+    let g3Blocking = false; // evita doble clic mientras se procesa la respuesta
+
+    function initGame3() {
+        g3Questions = [...g3Data].sort(() => Math.random() - 0.5);
+        g3Questions.forEach(q => q.options.sort(() => Math.random() - 0.5));
+        
+        g3CurrentIndex = 0;
+        totalCorrectG3 = 0;
+        g3Blocking = false;
+        updateProgress('progressFillGame3', 0);
+        loadNextQuestionG3();
+    }
+
+    function loadNextQuestionG3() {
+        if (g3CurrentIndex >= g3Questions.length) {
+            advanceGameSequence();
+            return;
+        }
+
+        const q = g3Questions[g3CurrentIndex];
+        const questionTextEl = document.getElementById('testQuestionText');
+        const optionsContainer = document.getElementById('testOptionsContainer');
+        const levelEl = document.getElementById('levelIndicatorG3');
+
+        questionTextEl.textContent = q.question;
+        levelEl.textContent = `Nivel ${g3CurrentIndex + 1}/${TOTAL_QUESTIONS_G3}`;
+        
+        optionsContainer.innerHTML = '';
+        g3Blocking = false;
+
+        q.options.forEach((opt) => {
+            const btn = document.createElement('button');
+            btn.className = 'test-option-btn';
+            btn.textContent = opt.text;
+            btn.onclick = () => handleAnswerG3(btn, opt.correct);
+            optionsContainer.appendChild(btn);
+        });
+
+        updateProgress('progressFillGame3', (g3CurrentIndex / TOTAL_QUESTIONS_G3) * 100);
+    }
+
+    function handleAnswerG3(btnClicked, isCorrect) {
+        // ── Evitar doble clic ──────────────────────────────────
+        if (g3Blocking) return;
+        g3Blocking = true;
+        // ───────────────────────────────────────────────────────
+
+        stopTimerForCheck();
+        totalAttempts++;
+
+        if (isCorrect) {
+            // Respuesta correcta: marcar, avanzar pregunta
+            reproducirSonidoCorrecto();
+            btnClicked.classList.add('correct');
+            // Deshabilitar todos los botones brevemente para feedback visual
+            document.querySelectorAll('.test-option-btn').forEach(b => b.disabled = true);
+            totalCorrectG3++;
+            g3CurrentIndex++;
+
+            setTimeout(() => {
+                startGlobalTimer();
+                loadNextQuestionG3();
+            }, 800);
+
+        } else {
+            // Respuesta incorrecta: marcar el error, permitir reintentar
+            reproducirSonidoError();
+            btnClicked.classList.add('incorrect');
+
+            setTimeout(() => {
+                // Quitar el marcado de error y desbloquear para que pueda elegir otra opción
+                btnClicked.classList.remove('incorrect');
+                btnClicked.disabled = true; // deshabilitar solo la opción fallida
+                g3Blocking = false;
+                startGlobalTimer();
+            }, 800);
+        }
+    }
+
+    /* --- FINALIZAR --- */
+    function finishGame() {
+        window.speechSynthesis.cancel();
+        stopTimerForCheck();
+        finalTimeVal = elapsed;
+        finalScoreVal = calcularPuntuacionFinal();
+
+        document.getElementById('finalScore').textContent = finalScoreVal;
+        document.getElementById('finalTime').textContent = formatTime(finalTimeVal);
+
+        const trophyBox = document.getElementById('trophyBox');
+        const msg = document.getElementById('finalMsg');
+        
+        if (finalScoreVal === 100) {
+            trophyBox.style.display = 'block';
+            msg.textContent = '¡Enhorabuena, puntuación máxima!';
+            reproducirSonidoVictoria();
+            createConfetti();
+        } else {
+            trophyBox.style.display = 'none';
+            msg.textContent = '¡Buen trabajo! Sigue practicando';
+            reproducirSonidoCompletado();
+        }
+
+        showScreen('finalScreen');
+        showSubmitModal(finalTimeVal, finalScoreVal);
+    }
+
+    /* --- EFECTOS VISUALES --- */
+    function createConfetti() {
+        for(let i=0;i<100;i++){
+            setTimeout(()=>{
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                const x = Math.random() * window.innerWidth;
+                const tx = (Math.random() - 0.5) * 200;
+                c.style.left = x + 'px';
+                c.style.top = '-10px';
+                c.style.backgroundColor = ['#ff595e','#1982c4','#6a4c93','#ffca3a','#8ac926'][Math.floor(Math.random()*5)];
+                c.style.setProperty('--tx', tx + 'px');
+                c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 3000);
+            }, i * 20);
+        }
+    }
+
+    /* --- HALL OF FAME --- */
+    let isHofLoading = false;
+
+    function loadHallOfFame() {
+        if (isHofLoading) return;
+        isHofLoading = true;
+
+        const tbody = document.getElementById('hofTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+
+        const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+
+        const fetchPromise = fetch(url, { cache: 'no-store' });
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 8000));
+
+        Promise.race([fetchPromise, timeoutPromise])
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success' && data.data) {
+                    const processedData = data.data.map(row => {
+                        const getVal = (keys) => {
+                            for(let key of keys) {
+                                if(row.hasOwnProperty(key) && row[key] !== "") return row[key];
+                                const realKey = Object.keys(row).find(k => k.toLowerCase() === key.toLowerCase());
+                                if(realKey && row[realKey] !== "") return row[realKey];
+                            }
+                            return null;
+                        };
+                        return {
+                            Nombre: getVal(["Nombre", "nombre", "name"]),
+                            Apellidos: getVal(["Apellidos", "apellidos", "surname"]),
+                            Puntuación: getVal(["Puntuación", "puntuación", "score"]),
+                            Tiempo: getVal(["Tiempo", "tiempo", "time"])
+                        };
+                    });
+
+                    const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
+
+                    if (validData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                    } else {
+                        validData.sort((a, b) => {
+                            const scoreA = parseFloat(a.Puntuación) || 0;
+                            const scoreB = parseFloat(b.Puntuación) || 0;
+                            if (scoreB !== scoreA) return scoreB - scoreA;
+                            const timeA = parseFloat(a.Tiempo) || 9999;
+                            const timeB = parseFloat(b.Tiempo) || 9999;
+                            return timeA - timeB;
+                        });
+
+                        tbody.innerHTML = '';
+                        const top10 = validData.slice(0, 10);
+
+                        for (let i = 0; i < top10.length; i++) {
+                            const item = top10[i];
+                            const tr = document.createElement('tr');
+                            const displayName = `${item.Nombre} ${item.Apellidos}`.trim();
+                            let timeStr = item.Tiempo;
+                            if (!isNaN(parseFloat(item.Tiempo))) {
+                                const tVal = parseFloat(item.Tiempo);
+                                const tm = Math.floor(tVal / 60).toString().padStart(2,'0');
+                                const ts = Math.floor(tVal % 60).toString().padStart(2,'0');
+                                const tms = Math.round((tVal % 1) * 10);
+                                timeStr = `${tm}:${ts}.${tms}`;
+                            }
+                            const points = item.Puntuación || 0;
+
+                            tr.innerHTML = `
+                                <td>${i + 1}º</td>
+                                <td>${displayName}</td>
+                                <td>${points}</td>
+                                <td>${timeStr}</td>
+                            `;
+                            tbody.appendChild(tr);
+                        }
+                    }
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>';
+                }
+            })
+            .catch(e => {
+                console.error("Error HoF:", e);
+                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión o timeout.</td></tr>';
+            })
+            .finally(() => {
+                isHofLoading = false;
+            });
+    }
+
+    function showSubmitModal(time, score) {
+        document.getElementById('modalTime').textContent = formatTime(time);
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerSurname').value = '';
+        document.getElementById('submitModal').style.display = 'flex';
+    }
+
+    document.getElementById('discardScoreBtn').onclick = () => { 
+        reproducirSonidoTap();
+        document.getElementById('submitModal').style.display = 'none'; 
+    };
+
+    document.getElementById('submitScoreBtn').onclick = () => {
+        const btn = document.getElementById('submitScoreBtn');
+        const nameInput = document.getElementById('playerName');
+        const surnameInput = document.getElementById('playerSurname');
+        
+        const payload = {
+            score: finalScoreVal,
+            time: finalTimeVal, 
+            name: nameInput.value.trim(),
+            surname: surnameInput.value.trim()
+        };
+
+        if(payload.name && payload.surname) {
+            reproducirSonidoTap();
+            const originalText = btn.textContent;
+            btn.textContent = "Enviando...";
+            btn.disabled = true;
+
+            fetch(APP_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
+            })
+            .then(() => {
+                document.getElementById('submitModal').style.display = 'none';
+                btn.textContent = originalText;
+                btn.disabled = false;
+                setTimeout(loadHallOfFame, 1500);
+            })
+            .catch(e => {
+                console.error("Error envío:", e);
+                alert("Error al enviar puntuación.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        } else {
+            alert("Por favor, rellena nombre y apellido");
+        }
+    };
+
+    document.getElementById('playerSurname').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            document.getElementById('submitScoreBtn').click();
+        }
+    });
+
+    /* --- EVENTOS --- */
+    document.getElementById('playBtn').onclick = () => { 
+        reproducirSonidoTap(); 
+        unlockAudioContext();
+        forceInitTTS();
+        showScreen('summaryScreen'); 
+    };
+    document.getElementById('startGameBtn').onclick = () => { 
+        reproducirSonidoTap(); 
+        initGameSequence(); 
+    };
+    
+    document.getElementById('backToMenuBtn').onclick = () => { 
+        reproducirSonidoTap(); 
+        location.reload(); 
+    };
+    document.getElementById('muteBtn').onclick = toggleSound;
+
+    /* --- INIT --- */
+    document.addEventListener('DOMContentLoaded', () => { 
+        loadHallOfFame(); 
+        updateSpeakerIcon();
+        if (window.speechSynthesis) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        }
+    });
+
+</script>
+</body>
+</html>
