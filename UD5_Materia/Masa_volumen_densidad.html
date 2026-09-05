@@ -221,7 +221,10 @@
         .hidden { display:none !important; }
         @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
         @media (max-width:520px) {
-            .game2-buttons { grid-template-columns:1fr 1fr; }
+            .game2-buttons { gap:6px; }
+            .game2-buttons .btn { padding:.6rem .3rem; min-height:60px; }
+            .game2-buttons .btn-icon { font-size:clamp(1.3rem,6vw,1.8rem); }
+            .game2-buttons .btn-label { font-size:clamp(.68rem,3vw,.82rem); }
             .text-area { font-size:.98rem; line-height:2.3; }
             .game2-card { height:260px; padding:1rem; }
             .g2-image-container img { max-height:140px; }
@@ -246,7 +249,7 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">Masa, volumen y densidades</h1>
+            <h1 id="startTitle">Masa, volumen y densidad</h1>
             <div class="subtitle" id="startSubtitle">Propiedades de la materia: Masa, volumen y densidad</div>
         </header>
         <div class="start-content">
@@ -275,7 +278,7 @@
     <!-- ===== PANTALLA RESUMEN ===== -->
     <section class="screen" id="summaryScreen">
         <header>
-            <h1 id="summaryTitle">Masa, volumen y densidades</h1>
+            <h1 id="summaryTitle">Masa, volumen y densidad</h1>
         </header>
         <div class="summary-wrapper">
             <div class="summary-container" id="summaryContainer"></div>
@@ -286,7 +289,7 @@
     <!-- ===== PANTALLA JUEGO 1: COMPLETAR HUECOS ===== -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1 id="game1Title">Masa, volumen y densidades</h1>
+            <h1 id="game1Title">Masa, volumen y densidad</h1>
             <div class="subtitle" id="game1Subtitle">Rellena los huecos para completar el texto</div>
         </header>
         <div class="game-info">
@@ -639,18 +642,18 @@ const testData = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'Masa, volumen y densidades',
+        startTitle: 'Masa, volumen y densidad',
         startSubtitle: 'Propiedades de la materia: Masa, volumen y densidad',
         startAdvice: 'Demuestra lo que sabes sobre <span class="highlight-keyword">masa</span>, <span class="highlight-keyword">volumen</span> y <span class="highlight-keyword">densidad</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
-        summaryTitle: 'Masa, volumen y densidades',
+        summaryTitle: 'Masa, volumen y densidad',
         continueBtn: 'Continuar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
         hofLoading: 'Cargando puntuaciones...',
         hofEmpty: '¡Sé el primero en guardar tu puntuación!',
         hofError: 'Error al cargar puntuaciones',
-        game1Title: 'Masa, volumen y densidades',
+        game1Title: 'Masa, volumen y densidad',
         game1Subtitle: 'Rellena los huecos para completar el texto',
         game2Title: 'Masa, volumen o densidad',
         game3Title: 'Elige la opción correcta',
