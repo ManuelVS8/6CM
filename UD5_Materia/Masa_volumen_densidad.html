@@ -142,12 +142,12 @@
         .game2-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; width:100%; max-width:640px;
             margin:0 auto; flex:1; justify-content:flex-start; padding-top:.5rem; }
         .game2-card {
-            background:#fff; border-radius:18px; padding:1.6rem 1.6rem; width:100%;
-            text-align:center; font-size:clamp(1.15rem,3.2vw,1.5rem); color:var(--blue-dark);
-            font-weight:600; line-height:1.5; border:2px solid #e0e0e0;
+            background:#fff; border-radius:18px; padding:1.2rem 1.6rem; width:100%;
+            text-align:center; font-size:clamp(1.1rem,3vw,1.4rem); color:var(--blue-dark);
+            font-weight:600; line-height:1.4; border:2px solid #e0e0e0;
             box-shadow:0 6px 20px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06);
             transition:border-color .2s, box-shadow .2s; position:relative;
-            min-height:170px; display:flex; align-items:center; justify-content:center;
+            height:340px; overflow:hidden; display:flex; align-items:center; justify-content:center;
         }
         .game2-card::before {
             content:''; position:absolute; top:0; left:0; right:0; height:6px;
@@ -157,7 +157,7 @@
         .game2-card.flash-error { border-color:var(--red); animation:shakeAnim .3s ease-in-out; }
         .g2-content { display:flex; flex-direction:column; align-items:center; gap:.9rem; width:100%; }
         .g2-image-container { width:100%; max-width:340px; display:flex; justify-content:center; align-items:center; }
-        .g2-image-container img { width:100%; max-height:230px; object-fit:contain; border-radius:10px;
+        .g2-image-container img { width:100%; max-height:200px; object-fit:contain; border-radius:10px;
             filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
         .game2-buttons { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; width:100%; }
         .game2-buttons .btn { min-width:0; font-size:clamp(.9rem,2.5vw,1.1rem); padding:.9rem .6rem; height:auto;
@@ -223,6 +223,8 @@
         @media (max-width:520px) {
             .game2-buttons { grid-template-columns:1fr 1fr; }
             .text-area { font-size:.98rem; line-height:2.3; }
+            .game2-card { height:260px; padding:1rem; }
+            .g2-image-container img { max-height:140px; }
         }
     </style>
 </head>
@@ -244,12 +246,12 @@
     <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">Masa, volumen y densidad</h1>
-            <div class="subtitle" id="startSubtitle">La materia y sus propiedades:masa, volumen y densidad</div>
+            <h1 id="startTitle">Masa, volumen y densidades</h1>
+            <div class="subtitle" id="startSubtitle">Propiedades de la materia: Masa, volumen y densidad</div>
         </header>
         <div class="start-content">
             <div class="advice-box" id="startAdvice">
-                Demuestra lo que sabes sobre la materia y sus propiedades de <span class="highlight-keyword">masa</span>, <span class="highlight-keyword">volumen</span> y <span class="highlight-keyword">densidad</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
+                Demuestra lo que sabes sobre <span class="highlight-keyword">masa</span>, <span class="highlight-keyword">volumen</span> y <span class="highlight-keyword">densidad</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>
             </div>
             <button class="btn btn-primary" id="playBtn">Comenzar</button>
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
@@ -273,7 +275,7 @@
     <!-- ===== PANTALLA RESUMEN ===== -->
     <section class="screen" id="summaryScreen">
         <header>
-            <h1 id="summaryTitle">La materia y sus propiedades generales</h1>
+            <h1 id="summaryTitle">Masa, volumen y densidades</h1>
         </header>
         <div class="summary-wrapper">
             <div class="summary-container" id="summaryContainer"></div>
@@ -284,7 +286,7 @@
     <!-- ===== PANTALLA JUEGO 1: COMPLETAR HUECOS ===== -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1 id="game1Title">La materia y sus propiedades generales</h1>
+            <h1 id="game1Title">Masa, volumen y densidades</h1>
             <div class="subtitle" id="game1Subtitle">Rellena los huecos para completar el texto</div>
         </header>
         <div class="game-info">
@@ -637,18 +639,18 @@ const testData = {
 ===================================================== */
 const i18n = {
     es: {
-        startTitle: 'La materia. Propiedades generales',
-        startSubtitle: 'La materia y sus propiedades generales: masa y volumen',
-        startAdvice: 'Demuestra lo que sabes sobre la materia y sus propiedades generales de <span class="highlight-keyword">masa</span> y <span class="highlight-keyword">volumen</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+        startTitle: 'Masa, volumen y densidades',
+        startSubtitle: 'Propiedades de la materia: Masa, volumen y densidad',
+        startAdvice: 'Demuestra lo que sabes sobre <span class="highlight-keyword">masa</span>, <span class="highlight-keyword">volumen</span> y <span class="highlight-keyword">densidad</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
         startBtn: 'Comenzar',
-        summaryTitle: 'La materia y sus propiedades generales',
+        summaryTitle: 'Masa, volumen y densidades',
         continueBtn: 'Continuar',
         hofTitle: 'Mejores puntuaciones',
         hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
         hofLoading: 'Cargando puntuaciones...',
         hofEmpty: '¡Sé el primero en guardar tu puntuación!',
         hofError: 'Error al cargar puntuaciones',
-        game1Title: 'La materia y sus propiedades generales',
+        game1Title: 'Masa, volumen y densidades',
         game1Subtitle: 'Rellena los huecos para completar el texto',
         game2Title: 'Masa, volumen o densidad',
         game3Title: 'Elige la opción correcta',
@@ -673,18 +675,18 @@ const i18n = {
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
     },
     en: {
-        startTitle: 'Matter. General properties',
-        startSubtitle: 'Matter and its general properties: mass and volume',
-        startAdvice: 'Show what you know about matter and its general properties: <span class="highlight-keyword">mass</span> and <span class="highlight-keyword">volume</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+        startTitle: 'Mass, volume and density',
+        startSubtitle: 'Properties of matter: Mass, volume and density',
+        startAdvice: 'Show what you know about <span class="highlight-keyword">mass</span>, <span class="highlight-keyword">volume</span> and <span class="highlight-keyword">density</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
         startBtn: 'Start',
-        summaryTitle: 'Matter and its general properties',
+        summaryTitle: 'Mass, volume and density',
         continueBtn: 'Continue',
         hofTitle: 'Best scores',
         hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
         hofLoading: 'Loading scores...',
         hofEmpty: 'Be the first to save your score!',
         hofError: 'Error loading scores',
-        game1Title: 'Matter and its general properties',
+        game1Title: 'Mass, volume and density',
         game1Subtitle: 'Fill in the blanks to complete the text',
         game2Title: 'Mass, volume or density',
         game3Title: 'Choose the correct option',
