@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Órganos y sistemas de las funciones vitales</title>
+<style>
+  :root{
+    --azul-1:#4f7cff;
+    --azul-2:#2c4bd6;
+    --naranja-1:#ff9d42;
+    --naranja-2:#ff6a3d;
+    --blanco:#ffffff;
+    --texto:#1e2a4a;
+    --gris:#7a86a8;
+    --verde:#2fbf71;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(160deg,var(--azul-1),var(--azul-2));
+    font-family:'Segoe UI',system-ui,sans-serif;
+    color:var(--texto);
+    padding:32px;
+  }
+
+  /* ---------- Base: optimizado para pantallas anchas de clase ---------- */
+  .pantalla{
+    background:var(--blanco);
+    border-radius:28px;
+    padding:56px 64px;
+    width:100%;
+    max-width:820px;
+    text-align:center;
+    box-shadow:0 24px 60px rgba(0,0,0,.28);
+  }
+  .pantalla-ancha{max-width:1180px;}
+
+  h1{margin:0 0 8px;font-size:2.3rem;line-height:1.2;}
+
+  .btn{
+    border:none;
+    border-radius:16px;
+    padding:20px 32px;
+    font-size:1.25rem;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:28px;
+    width:100%;
+    transition:transform .15s;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--naranja-1),var(--naranja-2));
+    color:#fff;
+    box-shadow:0 10px 24px rgba(255,106,61,.35);
+  }
+  .btn-secundario{
+    background:#eef1fb;
+    color:var(--azul-2);
+  }
+
+  .aviso{
+    margin-top:16px;
+    font-size:1rem;
+    color:#c0392b;
+    background:#fdecea;
+    border-radius:12px;
+    padding:14px;
+  }
+
+  .progreso{
+    font-weight:700;
+    color:var(--azul-2);
+    margin-bottom:20px;
+    font-size:1.3rem;
+  }
+
+  .tarjeta-wrap{perspective:1400px;}
+  .tarjeta{
+    border-radius:24px;
+    padding:64px 48px;
+    min-height:340px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    cursor:pointer;
+    transition:transform .18s ease, background .25s ease;
+    background:linear-gradient(160deg,#eef2ff,#dbe4ff);
+    border:3px solid #c9d4ff;
+  }
+  .tarjeta.girando{transform:rotateY(90deg);}
+  .tarjeta.estado-1{background:linear-gradient(160deg,#eafff2,#d4f7e2);border-color:#a9ecc4;}
+  .tarjeta.estado-2{background:linear-gradient(160deg,#fff3e6,#ffe3c2);border-color:#ffc98a;}
+
+  .etiqueta{
+    font-size:1.05rem;
+    font-weight:700;
+    letter-spacing:.5px;
+    color:var(--azul-2);
+    background:#dbe4ff;
+    padding:6px 18px;
+    border-radius:24px;
+  }
+  .estado-1 .etiqueta{color:var(--verde);background:#c9f2da;}
+  .estado-2 .etiqueta{color:var(--naranja-2);background:#ffe3c2;}
+
+  .texto{
+    font-size:2rem;
+    font-weight:600;
+    margin:0;
+    line-height:1.4;
+  }
+  .estado-2 .texto{font-size:2.6rem;font-weight:800;}
+
+  .pista{
+    font-size:1.05rem;
+    color:var(--gris);
+    margin:22px 0 0;
+    min-height:22px;
+  }
+
+  .controles{
+    display:flex;
+    gap:14px;
+    margin-top:26px;
+  }
+  .controles .btn{margin-top:0;}
+
+  /* ---------- Árbol de resultados ---------- */
+  .arbol{
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:28px;
+    margin-top:30px;
+    text-align:left;
+  }
+  .funcion-col{flex:1;min-width:0;}
+  .funcion-titulo{
+    text-align:center;
+    font-weight:800;
+    padding:12px 16px;
+    border-radius:16px;
+    color:#fff;
+    margin-bottom:12px;
+    font-size:1.2rem;
+  }
+  .funcion-relacion .funcion-titulo{background:linear-gradient(135deg,#4f7cff,#2c4bd6);}
+  .funcion-nutricion .funcion-titulo{background:linear-gradient(135deg,#3ecf8e,#1f9c5a);}
+  .funcion-reproduccion .funcion-titulo{background:linear-gradient(135deg,#ff9d42,#ff6a3d);}
+  .tronco{width:3px;height:16px;background:#d7dcec;margin:0 auto;}
+  .sistema-caja{
+    border:2px solid #e3e7f7;
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    background:#f8f9ff;
+  }
+  .sistema-nombre{
+    font-size:1rem;
+    font-weight:700;
+    color:var(--azul-2);
+    margin-bottom:8px;
+  }
+  .organo-chip{
+    display:inline-block;
+    background:#fff;
+    border:1px solid #d7dcec;
+    border-radius:24px;
+    padding:6px 14px;
+    font-size:.9rem;
+    margin:4px 5px 0 0;
+    color:var(--texto);
+  }
+
+  /* ---------- Ajustes para pantallas de clase (monitor/proyector/TV) ---------- */
+  @media (min-width:1000px){
+    .pantalla{max-width:960px;padding:72px 80px;}
+    .pantalla-ancha{max-width:1500px;}
+    h1{font-size:3rem;}
+    .tarjeta{min-height:420px;padding:80px 60px;}
+    .texto{font-size:2.6rem;}
+    .estado-2 .texto{font-size:3.3rem;}
+    .etiqueta{font-size:1.3rem;}
+    .progreso{font-size:1.6rem;}
+    .pista{font-size:1.3rem;}
+    .btn{font-size:1.5rem;padding:24px 36px;}
+    .funcion-titulo{font-size:1.5rem;}
+    .sistema-nombre{font-size:1.2rem;}
+    .organo-chip{font-size:1.05rem;padding:8px 16px;}
+  }
+
+  @media (min-width:1700px){
+    .pantalla{max-width:1080px;padding:88px 96px;}
+    .pantalla-ancha{max-width:1700px;}
+    h1{font-size:3.6rem;}
+    .tarjeta{min-height:480px;padding:96px 72px;}
+    .texto{font-size:3.1rem;}
+    .estado-2 .texto{font-size:3.9rem;}
+    .etiqueta{font-size:1.5rem;}
+    .progreso{font-size:1.8rem;}
+    .pista{font-size:1.5rem;}
+    .btn{font-size:1.7rem;padding:26px 40px;}
+  }
+
+  /* ---------- Ajustes para pantallas pequeñas (tablet/móvil) ---------- */
+  @media (max-width:700px){
+    body{padding:16px;}
+    .pantalla{padding:32px 24px;border-radius:22px;}
+    h1{font-size:1.5rem;}
+    .btn{font-size:1.05rem;padding:16px 24px;margin-top:18px;}
+    .tarjeta{min-height:220px;padding:36px 22px;border-radius:20px;}
+    .texto{font-size:1.15rem;}
+    .estado-2 .texto{font-size:1.5rem;}
+    .etiqueta{font-size:.8rem;padding:4px 12px;}
+    .progreso{font-size:1rem;}
+    .pista{font-size:.85rem;}
+    .arbol{flex-direction:column;gap:20px;}
+    .organo-chip{font-size:.75rem;padding:4px 10px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- PANTALLA INICIO -->
+  <div id="pantalla-inicio" class="pantalla">
+    <h1>Órganos y sistemas de las funciones vitales</h1>
+    <button id="btn-comenzar" class="btn btn-primary">Comenzar</button>
+    <p id="aviso-tts" class="aviso" hidden></p>
+  </div>
+
+  <!-- PANTALLA JUEGO -->
+  <div id="pantalla-juego" class="pantalla" hidden>
+    <div class="progreso"><span id="contador">1</span> / <span id="total">23</span></div>
+    <div class="tarjeta-wrap">
+      <div id="tarjeta" class="tarjeta">
+        <span id="etiqueta-estado" class="etiqueta">🇬🇧 ENGLISH</span>
+        <p id="texto-tarjeta" class="texto"></p>
+      </div>
+    </div>
+    <p class="pista" id="pista">Toca la tarjeta para traducir al español</p>
+    <div class="controles">
+      <button id="btn-repetir" class="btn btn-secundario">🔊 Repetir</button>
+      <button id="btn-siguiente" class="btn btn-primary" hidden>Siguiente ▶</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA FIN -->
+  <div id="pantalla-fin" class="pantalla pantalla-ancha" hidden>
+    <h1>Árbol de las funciones vitales</h1>
+    <div id="arbol-resultado" class="arbol"></div>
+    <button id="btn-reiniciar" class="btn btn-primary">Volver a empezar</button>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// DATOS DE LAS TARJETAS — EDITA AQUÍ
+// Cada tarjeta es un objeto con cinco campos:
+//   nombre       -> nombre del órgano/aparato en español (se muestra al final)
+//   funcion_es   -> definición en español (2ª pantalla de la tarjeta)
+//   funcion_en   -> definición en inglés (1ª pantalla de la tarjeta)
+//   sistema      -> aparato/sistema al que pertenece (agrupa las ramas del árbol final)
+//   funcionVital -> "Relación", "Nutrición" o "Reproducción" (rama principal del árbol)
+//
+// Para CAMBIAR una definición: edita el texto entre comillas.
+// Para AÑADIR una tarjeta: copia un bloque { ... } y pégalo antes del ];
+// Para QUITAR una tarjeta: borra su bloque { ... } completo.
+// El orden de este array es el orden base; la app siempre lo mezcla al comenzar.
+// ============================================================
+const CARDS = [
+  { nombre: "TESTÍCULOS", funcion_es: "Producen las células masculinas para la reproducción.", funcion_en: "They produce male cells for reproduction.", sistema: "Aparato reproductor", funcionVital: "Reproducción" },
+  { nombre: "OVARIOS", funcion_es: "Producen las células femeninas para la reproducción.", funcion_en: "They produce female cells for reproduction.", sistema: "Aparato reproductor", funcionVital: "Reproducción" },
+  { nombre: "MÚSCULOS", funcion_es: "Se contraen y se relajan para movernos.", funcion_en: "They contract and relax to move.", sistema: "Aparato locomotor", funcionVital: "Relación" },
+  { nombre: "ESQUELETO", funcion_es: "Sostiene el cuerpo y protege los órganos internos.", funcion_en: "It supports the body and protects internal organs.", sistema: "Aparato locomotor", funcionVital: "Relación" },
+  { nombre: "OJO", funcion_es: "Recibe información sobre colores, tamaños, luz…", funcion_en: "It receives information about colours, sizes and light…", sistema: "Órganos de los sentidos", funcionVital: "Relación" },
+  { nombre: "OLFATO", funcion_es: "Detecta los olores.", funcion_en: "It detects smells.", sistema: "Órganos de los sentidos", funcionVital: "Relación" },
+  { nombre: "CEREBRO", funcion_es: "Es responsable de pensar y de la memoria.", funcion_en: "It is responsible for thinking and memory.", sistema: "Sistema nervioso", funcionVital: "Relación" },
+  { nombre: "NERVIOS", funcion_es: "Envían estímulos y respuestas.", funcion_en: "They send stimuli and responses.", sistema: "Sistema nervioso", funcionVital: "Relación" },
+  { nombre: "ESTÓMAGO", funcion_es: "Mezcla los alimentos con jugos gástricos.", funcion_en: "It mixes food with gastric juices.", sistema: "Aparato digestivo", funcionVital: "Nutrición" },
+  { nombre: "INTESTINO DELGADO", funcion_es: "Pasa los nutrientes y el agua a la sangre.", funcion_en: "It passes nutrients and water from food into the blood.", sistema: "Aparato digestivo", funcionVital: "Nutrición" },
+  { nombre: "HÍGADO", funcion_es: "Ayuda a digerir los alimentos produciendo la bilis.", funcion_en: "It helps digest food by producing bile.", sistema: "Aparato digestivo", funcionVital: "Nutrición" },
+  { nombre: "ESÓFAGO", funcion_es: "Transporta los alimentos desde la faringe hasta el estómago.", funcion_en: "It trasnports food from the pharynx to the stomach.", sistema: "Aparato digestivo", funcionVital: "Nutrición" },
+  { nombre: "FOSAS NASALES", funcion_es: "Dejan entrar el aire en la nariz.", funcion_en: "They let air enter the nose.", sistema: "Aparato respiratorio", funcionVital: "Nutrición" },
+  { nombre: "TRÁQUEA", funcion_es: "Pasa el aire desde la garganta hasta los bronquios.", funcion_en: "It passes air from the throat to the bronchi.", sistema: "Aparato respiratorio", funcionVital: "Nutrición" },
+  { nombre: "BRONQUIOS", funcion_es: "Transportan el aire desde la tráquea hasta los pulmones.", funcion_en: "They transport air from the trachea to the lungs.", sistema: "Aparato respiratorio", funcionVital: "Nutrición" },
+  { nombre: "PULMONES", funcion_es: "Toman oxígeno del aire y expulsan dióxido de carbono.", funcion_en: "They take oxygen from the air and expel carbon dioxide.", sistema: "Aparato respiratorio", funcionVital: "Nutrición" },
+  { nombre: "CORAZÓN", funcion_es: "Bombea la sangre alrededor del cuerpo.", funcion_en: "It pumps blood around the body.", sistema: "Aparato circulatorio", funcionVital: "Nutrición" },
+  { nombre: "VENAS", funcion_es: "Transportan la sangre desde el cuerpo hasta el corazón.", funcion_en: "They transport blood from the body to the heart.", sistema: "Aparato circulatorio", funcionVital: "Nutrición" },
+  { nombre: "ARTERIAS", funcion_es: "Transportan la sangre desde el corazón hasta todo el cuerpo.", funcion_en: "They transport blood from the heart to the body.", sistema: "Aparato circulatorio", funcionVital: "Nutrición" },
+  { nombre: "CAPILARES", funcion_es: "Conectan arterias y venas.", funcion_en: "They connect arteries and veins.", sistema: "Aparato circulatorio", funcionVital: "Nutrición" },
+  { nombre: "RIÑONES", funcion_es: "Limpian la sangre y producen la orina.", funcion_en: "They clean the blood and make urine.", sistema: "Aparato excretor", funcionVital: "Nutrición" },
+  { nombre: "URÉTERES", funcion_es: "Transportan la orina desde los riñones hasta la vejiga.", funcion_en: "They transport urine from the kidneys to the bladder.", sistema: "Aparato excretor", funcionVital: "Nutrición" },
+  { nombre: "URETRA", funcion_es: "Transporta la orina desde la vejiga hasta el exterior del cuerpo.", funcion_en: "It transports urine from the bladder out of the body.", sistema: "Aparato excretor", funcionVital: "Nutrición" },
+  { nombre: "VEJIGA", funcion_es: "Almacena la orina hasta que sale del cuerpo.", funcion_en: "It stores urine until it leaves the body.", sistema: "Aparato excretor", funcionVital: "Nutrición" }
+];
+
+// ============================================================
+// EFECTOS DE SONIDO (repositorio ManuelVS8/Efectos_audio)
+// ============================================================
+const AUDIO_BASE = 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/main/';
+const SONIDOS = {
+  tap: AUDIO_BASE + 'Tap.mp3',
+  correcto: AUDIO_BASE + 'Correcto.mp3',
+  siguiente: AUDIO_BASE + 'Pop.mp3',
+  completado: AUDIO_BASE + 'Completado.mp3'
+};
+
+function reproducirSonido(nombre){
+  try{
+    const audio = new Audio(SONIDOS[nombre]);
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
+  }catch(e){}
+}
+
+// ============================================================
+// LÓGICA DE LA APP (normalmente no hace falta tocar esto)
+// ============================================================
+const pantallaInicio = document.getElementById('pantalla-inicio');
+const pantallaJuego  = document.getElementById('pantalla-juego');
+const pantallaFin    = document.getElementById('pantalla-fin');
+const arbolResultado = document.getElementById('arbol-resultado');
+
+const btnComenzar  = document.getElementById('btn-comenzar');
+const avisoTts     = document.getElementById('aviso-tts');
+
+const contadorEl   = document.getElementById('contador');
+const totalEl      = document.getElementById('total');
+const tarjetaEl    = document.getElementById('tarjeta');
+const etiquetaEl   = document.getElementById('etiqueta-estado');
+const textoEl      = document.getElementById('texto-tarjeta');
+const pistaEl      = document.getElementById('pista');
+const btnRepetir   = document.getElementById('btn-repetir');
+const btnSiguiente = document.getElementById('btn-siguiente');
+const btnReiniciar = document.getElementById('btn-reiniciar');
+
+totalEl.textContent = CARDS.length;
+
+let orden = [];
+let indiceActual = 0;
+let estadoActual = 0; // 0 = inglés, 1 = español, 2 = nombre
+let vocesCargadas = false;
+
+function barajar(array){
+  const copia = [...array];
+  for(let i = copia.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+function prepararVoces(){
+  return new Promise((resolve) => {
+    if(!('speechSynthesis' in window)){
+      resolve(false);
+      return;
+    }
+    const voces = speechSynthesis.getVoices();
+    if(voces.length > 0){
+      vocesCargadas = true;
+      resolve(true);
+      return;
+    }
+    speechSynthesis.onvoiceschanged = () => {
+      vocesCargadas = true;
+      resolve(true);
+    };
+    // por si el evento nunca llega
+    setTimeout(() => resolve(vocesCargadas), 1200);
+  });
+}
+
+function elegirVoz(idioma){
+  const voces = speechSynthesis.getVoices();
+  const exacta = voces.find(v => v.lang.toLowerCase() === idioma.toLowerCase());
+  if(exacta) return exacta;
+  const prefijo = idioma.slice(0,2).toLowerCase();
+  return voces.find(v => v.lang.toLowerCase().startsWith(prefijo)) || null;
+}
+
+function hablar(texto, idioma){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(texto);
+  utter.lang = idioma;
+  const voz = elegirVoz(idioma);
+  if(voz) utter.voice = voz;
+  utter.rate = 0.7;
+  utter.volume = 1;
+  speechSynthesis.speak(utter);
+}
+
+function datosEstado(carta, estado){
+  if(estado === 0) return { etiqueta: '🇬🇧 ENGLISH', texto: carta.funcion_en, idioma: 'en-GB' };
+  if(estado === 1) return { etiqueta: '🇪🇸 ESPAÑOL', texto: carta.funcion_es, idioma: 'es-ES' };
+  return { etiqueta: 'Respuesta:', texto: carta.nombre, idioma: 'es-ES' };
+}
+
+function mostrarTarjeta(animar){
+  const carta = CARDS[orden[indiceActual]];
+  const datos = datosEstado(carta, estadoActual);
+
+  const actualizar = () => {
+    tarjetaEl.classList.remove('estado-1', 'estado-2');
+    if(estadoActual === 1) tarjetaEl.classList.add('estado-1');
+    if(estadoActual === 2) tarjetaEl.classList.add('estado-2');
+    etiquetaEl.textContent = datos.etiqueta;
+    textoEl.textContent = datos.texto;
+    tarjetaEl.classList.remove('girando');
+    setTimeout(() => hablar(datos.texto, datos.idioma), 300);
+  };
+
+  if(animar){
+    tarjetaEl.classList.add('girando');
+    setTimeout(actualizar, 180);
+  } else {
+    actualizar();
+  }
+
+  contadorEl.textContent = indiceActual + 1;
+  pistaEl.textContent = estadoActual === 2
+    ? 'Pulsa "Siguiente" para continuar'
+    : 'Toca la tarjeta para traducir al español';
+  btnSiguiente.hidden = estadoActual !== 2;
+}
+
+function irSiguienteCarta(){
+  indiceActual++;
+  if(indiceActual >= orden.length){
+    construirArbol();
+    pantallaJuego.hidden = true;
+    pantallaFin.hidden = false;
+    reproducirSonido('completado');
+    return;
+  }
+  estadoActual = 0;
+  mostrarTarjeta(false);
+}
+
+// ============================================================
+// ÁRBOL DE RESULTADOS — agrupa las tarjetas por sistema y función vital
+// ============================================================
+const ORDEN_FUNCIONES = ['Nutrición', 'Relación', 'Reproducción'];
+const CLASE_FUNCION = { 'Relación': 'funcion-relacion', 'Nutrición': 'funcion-nutricion', 'Reproducción': 'funcion-reproduccion' };
+
+function construirArbol(){
+  const grupos = {};
+  CARDS.forEach(carta => {
+    if(!grupos[carta.funcionVital]) grupos[carta.funcionVital] = {};
+    if(!grupos[carta.funcionVital][carta.sistema]) grupos[carta.funcionVital][carta.sistema] = [];
+    grupos[carta.funcionVital][carta.sistema].push(carta.nombre);
+  });
+
+  arbolResultado.innerHTML = '';
+
+  ORDEN_FUNCIONES.forEach(funcion => {
+    if(!grupos[funcion]) return;
+
+    const columna = document.createElement('div');
+    columna.className = 'funcion-col ' + CLASE_FUNCION[funcion];
+
+    const titulo = document.createElement('div');
+    titulo.className = 'funcion-titulo';
+    titulo.textContent = funcion;
+    columna.appendChild(titulo);
+
+    const tronco = document.createElement('div');
+    tronco.className = 'tronco';
+    columna.appendChild(tronco);
+
+    Object.keys(grupos[funcion]).forEach(sistema => {
+      const caja = document.createElement('div');
+      caja.className = 'sistema-caja';
+
+      const nombreSistema = document.createElement('div');
+      nombreSistema.className = 'sistema-nombre';
+      nombreSistema.textContent = sistema;
+      caja.appendChild(nombreSistema);
+
+      grupos[funcion][sistema].forEach(nombreOrgano => {
+        const chip = document.createElement('span');
+        chip.className = 'organo-chip';
+        chip.textContent = nombreOrgano;
+        caja.appendChild(chip);
+      });
+
+      columna.appendChild(caja);
+    });
+
+    arbolResultado.appendChild(columna);
+  });
+}
+
+tarjetaEl.addEventListener('click', () => {
+  if(estadoActual >= 2) return;
+  estadoActual++;
+  reproducirSonido(estadoActual === 2 ? 'correcto' : 'tap');
+  mostrarTarjeta(true);
+});
+
+btnRepetir.addEventListener('click', () => {
+  const carta = CARDS[orden[indiceActual]];
+  const datos = datosEstado(carta, estadoActual);
+  hablar(datos.texto, datos.idioma);
+});
+
+btnSiguiente.addEventListener('click', () => {
+  reproducirSonido('siguiente');
+  irSiguienteCarta();
+});
+
+btnReiniciar.addEventListener('click', () => {
+  pantallaFin.hidden = true;
+  pantallaInicio.hidden = false;
+});
+
+btnComenzar.addEventListener('click', async () => {
+  btnComenzar.disabled = true;
+  btnComenzar.textContent = 'Cargando voces...';
+
+  const ok = await prepararVoces();
+  if(!ok){
+    avisoTts.hidden = false;
+    avisoTts.textContent = 'Este navegador no tiene voces disponibles para leer las tarjetas en voz alta. La actividad seguirá funcionando sin audio.';
+  }
+
+  orden = barajar(CARDS.map((_, i) => i));
+  indiceActual = 0;
+  estadoActual = 0;
+
+  pantallaInicio.hidden = true;
+  pantallaJuego.hidden = false;
+  mostrarTarjeta(false);
+
+  btnComenzar.disabled = false;
+  btnComenzar.textContent = 'Comenzar';
+});
+</script>
+</body>
+</html>
