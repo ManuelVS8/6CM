@@ -230,6 +230,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -434,6 +435,12 @@ const matchData = {
             { id:1, term:"Recovery phase", def:"The walls of the uterus grow back" },
             { id:2, term:"Ovulation", def:"An ovary releases an egg into the fallopian tubes" },
             { id:3, term:"Waiting phase", def:"The uterus is ready to receive the embryo" }
+        ],
+        ar: [
+            { id:0, term:"الحيض", def:"تنفصل جدران الرحم ويحدث النزيف" },
+            { id:1, term:"مرحلة التعافي", def:"تتجدد جدران الرحم من جديد" },
+            { id:2, term:"الإباضة", def:"يُطلق أحد المبيضين بويضة نحو قناتَي فالوب" },
+            { id:3, term:"مرحلة الانتظار", def:"يستعد الرحم لاستقبال الجنين المضغي" }
         ]
     },
     2: {
@@ -448,6 +455,12 @@ const matchData = {
             { id:1, term:"Days 6 to 13", def:"The walls of the uterus grow back" },
             { id:2, term:"Day 14", def:"An ovary releases an egg into the fallopian tubes" },
             { id:3, term:"Days 15 to 28", def:"The uterus is ready to receive the embryo" }
+        ],
+        ar: [
+            { id:0, term:"الأيام 1 إلى 5", def:"تنفصل جدران الرحم ويحدث النزيف" },
+            { id:1, term:"الأيام 6 إلى 13", def:"تتجدد جدران الرحم من جديد" },
+            { id:2, term:"اليوم 14", def:"يُطلق أحد المبيضين بويضة نحو قناتَي فالوب" },
+            { id:3, term:"الأيام 15 إلى 28", def:"يستعد الرحم لاستقبال الجنين المضغي" }
         ]
     },
     3: {
@@ -462,6 +475,12 @@ const matchData = {
             { id:1, term:"Recovery phase", def:"Days 6 to 13" },
             { id:2, term:"Ovulation", def:"Day 14" },
             { id:3, term:"Waiting phase", def:"Days 15 to 28" }
+        ],
+        ar: [
+            { id:0, term:"الحيض", def:"الأيام 1 إلى 5" },
+            { id:1, term:"مرحلة التعافي", def:"الأيام 6 إلى 13" },
+            { id:2, term:"الإباضة", def:"اليوم 14" },
+            { id:3, term:"مرحلة الانتظار", def:"الأيام 15 إلى 28" }
         ]
     }
 };
@@ -481,6 +500,12 @@ const gridImageData = {
         { text:"Recovery phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Recuperaci%C3%B3n.png" },
         { text:"Ovulation phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Ovulacion.png" },
         { text:"Waiting phase", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/endometrio.png" }
+    ],
+    ar: [
+        { text:"مرحلة الحيض", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/MESTRUACION.png" },
+        { text:"مرحلة التعافي", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Recuperaci%C3%B3n.png" },
+        { text:"مرحلة الإباضة", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/Ovulacion.png" },
+        { text:"مرحلة الانتظار", img:"https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD3_Reporductor/Imagen/endometrio.png" }
     ]
 };
 
@@ -513,6 +538,12 @@ const hotspotPolyData = {
         { text:"Recovery phase", startDay:5, endDay:13 },
         { text:"Ovulation phase", startDay:13, endDay:14 },
         { text:"Waiting phase", startDay:14, endDay:28 }
+    ],
+    ar: [
+        { text:"مرحلة الحيض", startDay:0, endDay:5 },
+        { text:"مرحلة التعافي", startDay:5, endDay:13 },
+        { text:"مرحلة الإباضة", startDay:13, endDay:14 },
+        { text:"مرحلة الانتظار", startDay:14, endDay:28 }
     ]
 };
 
@@ -553,6 +584,12 @@ const orderData = {
         "The walls of the uterus grow back.",
         "An ovary releases an egg into the fallopian tubes.",
         "The uterus is ready to receive the embryo."
+    ],
+    ar: [
+        "تنفصل جدران الرحم ويحدث النزيف.",
+        "تتجدد جدران الرحم من جديد.",
+        "يُطلق أحد المبيضين بويضة نحو قناتَي فالوب.",
+        "يستعد الرحم لاستقبال الجنين المضغي."
     ]
 };
 
@@ -576,6 +613,15 @@ const summaryData = {
             { term:"Recovery phase (Days 6 to 13)", def:"The walls of the uterus grow back." },
             { term:"Ovulation (Day 14)", def:"An ovary releases an egg into the fallopian tubes." },
             { term:"Waiting phase (Days 15 to 28)", def:"The uterus is ready to receive the embryo. If there is no fertilization, menstruation begins again." }
+        ]
+    },
+    ar: {
+        intro: "تحدث الدورة الشهرية، المعروفة أيضًا بالحيض أو العادة الشهرية، كل 28 يومًا تقريبًا، عندما يطرح الرحم بطانته لعدم حدوث حمل. وتمر بأربع مراحل:",
+        items: [
+            { term:"الحيض (الأيام 1 إلى 5)", def:"تنفصل جدران الرحم ويحدث النزيف." },
+            { term:"مرحلة التعافي (الأيام 6 إلى 13)", def:"تتجدد جدران الرحم من جديد." },
+            { term:"الإباضة (اليوم 14)", def:"يُطلق أحد المبيضين بويضة نحو قناتَي فالوب." },
+            { term:"مرحلة الانتظار (الأيام 15 إلى 28)", def:"يستعد الرحم لاستقبال الجنين المضغي. وإذا لم يحدث إخصاب، يبدأ الحيض من جديد." }
         ]
     }
 };
@@ -615,7 +661,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Menstruation',
@@ -648,7 +695,42 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الحيض',
+        startSubtitle: 'الدورة الشهرية. نضج الجهاز التناسلي الأنثوي',
+        startAdvice: 'الحيض أو <span class="highlight-keyword">الدورة الشهرية</span> هو <span class="highlight-keyword">النزيف</span> الشهري الذي يحدث كل <span class="highlight-keyword">28 يومًا</span>، عندما يطرح الرحم بطانته لعدم حدوث حمل.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الحيض:',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'مراحل الحيض',
+        game2Title: 'أيام الدورة الشهرية',
+        game3Title: 'مراحل وأيام الدورة الشهرية',
+        game4Title: 'حدّد الألوان التي تشير إلى كل مرحلة',
+        findLabel: 'ابحث عن:',
+        game5Title: 'مراحل الدورة الشهرية',
+        game6Title: 'رتّب مراحل الحيض',
+        checkBtn: 'تحقّق',
+        finalTitle: 'الدورة الشهرية',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -708,7 +790,9 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -722,7 +806,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -797,6 +881,10 @@ function applyLanguage(lang) {
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
     document.getElementById('checkPhasesBtn6').innerHTML = t.checkBtn;
+    const btnW4 = document.getElementById('btnPlayWord4');
+    if (btnW4) btnW4.title = t.listenTitle;
+    const btnW5 = document.getElementById('btnPlayWord5');
+    if (btnW5) btnW5.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();

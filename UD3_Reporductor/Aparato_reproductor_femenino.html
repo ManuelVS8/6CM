@@ -188,6 +188,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -356,6 +357,14 @@ const game1Data = {
         { id:3, term:"Vagina", def:"Internal duct that connects the uterus to the vulva" },
         { id:4, term:"Vulva", def:"External part that protects the entrance to the vagina" },
         { id:5, term:"Egg", def:"Female reproductive cell" }
+    ],
+    ar: [
+        { id:0, term:"المبيضان", def:"أعضاء تنتج البويضات وتخزّنها" },
+        { id:1, term:"قناتا فالوب", def:"قناتان تصلان المبيضين بالرحم" },
+        { id:2, term:"الرحم", def:"عضو ينمو فيه الجنين أثناء الحمل" },
+        { id:3, term:"المهبل", def:"قناة داخلية تصل الرحم بالفرج" },
+        { id:4, term:"الفرج", def:"الجزء الخارجي الذي يحمي مدخل المهبل" },
+        { id:5, term:"البويضة", def:"الخلية التناسلية الأنثوية" }
     ]
 };
 
@@ -379,6 +388,13 @@ const hotspotData = {
             { text:"Vagina", coords:[717,692,875,841] },
             { text:"Vulva", coords:[567,866,723,1014] },
             { text:"Ovaries", coords:[80,531,239,681] }
+        ],
+        ar: [
+            { text:"قناتا فالوب", coords:[424,32,587,184] },
+            { text:"الرحم", coords:[707,496,869,646] },
+            { text:"المهبل", coords:[717,692,875,841] },
+            { text:"الفرج", coords:[567,866,723,1014] },
+            { text:"المبيضان", coords:[80,531,239,681] }
         ]
     },
     3: {
@@ -395,6 +411,13 @@ const hotspotData = {
             { text:"Internal duct that connects the uterus to the vulva", coords:[717,692,875,841] },
             { text:"External part that protects the entrance to the vagina", coords:[567,866,723,1014] },
             { text:"Organs that produce and store the eggs", coords:[80,531,239,681] }
+        ],
+        ar: [
+            { text:"قناتان تصلان المبيضين بالرحم", coords:[424,32,587,184] },
+            { text:"عضو ينمو فيه الجنين أثناء الحمل", coords:[707,496,869,646] },
+            { text:"قناة داخلية تصل الرحم بالفرج", coords:[717,692,875,841] },
+            { text:"الجزء الخارجي الذي يحمي مدخل المهبل", coords:[567,866,723,1014] },
+            { text:"أعضاء تنتج البويضات وتخزّنها", coords:[80,531,239,681] }
         ]
     }
 };
@@ -418,6 +441,14 @@ const summaryData = {
         { term:"Vagina", def:"Internal duct that connects the uterus to the vulva." },
         { term:"Vulva", def:"External part that protects the entrance to the vagina." },
         { term:"Egg", def:"Female reproductive cell." }
+    ],
+    ar: [
+        { term:"المبيضان", def:"أعضاء تنتج البويضات وتخزّنها." },
+        { term:"قناتا فالوب", def:"قناتان تصلان المبيضين بالرحم." },
+        { term:"الرحم", def:"عضو ينمو فيه الجنين أثناء الحمل." },
+        { term:"المهبل", def:"قناة داخلية تصل الرحم بالفرج." },
+        { term:"الفرج", def:"الجزء الخارجي الذي يحمي مدخل المهبل." },
+        { term:"البويضة", def:"الخلية التناسلية الأنثوية." }
     ]
 };
 
@@ -452,7 +483,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Female Reproductive System',
@@ -481,7 +513,38 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الجهاز التناسلي الأنثوي',
+        startSubtitle: 'أعضاء الجهاز التناسلي الأنثوي',
+        startAdvice: 'يتولى <span class="highlight-keyword">الجهاز التناسلي الأنثوي</span> مهمة التكاثر. تعرّف على أهم <span class="highlight-keyword">الأعضاء</span> التي يتكوّن منها.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'يتكوّن الجهاز التناسلي الأنثوي من الأعضاء التالية:',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'وظيفة أعضاء الجهاز التناسلي الأنثوي',
+        game1Subtitle: 'اربط كل عضو بوظيفته',
+        game2Title: 'حدّد أعضاء الجهاز التناسلي الأنثوي.',
+        game3Title: 'حدّد أعضاء الجهاز التناسلي.',
+        finalTitle: 'الجهاز التناسلي الأنثوي',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -536,7 +599,9 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -550,7 +615,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -621,6 +686,10 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW2 = document.getElementById('btnPlayWord2');
+    if (btnW2) btnW2.title = t.listenTitle;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();

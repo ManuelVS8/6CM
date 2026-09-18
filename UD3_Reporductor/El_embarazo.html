@@ -230,6 +230,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -388,6 +389,14 @@ const game1Data = {
         "The organs form and the embryo starts being called a foetus",
         "The foetus keeps developing and growing",
         "After 9 months, birth takes place and the baby is born"
+    ],
+    ar: [
+        "يتحد الحيوان المنوي بالبويضة مكوّنَين اللاقحة (الزيجوت)",
+        "تنقسم اللاقحة ويتكوّن الجنين المضغي",
+        "ينغرس الجنين المضغي في الرحم ويبدأ في النمو",
+        "تتكوّن الأعضاء ويُصبح الجنين المضغي جنينًا كاملاً",
+        "يستمر الجنين في النمو والتطور",
+        "بعد 9 أشهر تحدث الولادة ويُولد الطفل"
     ]
 };
 
@@ -412,6 +421,15 @@ const game2Data = {
         { id:4, term:"Foetus", def:"Stage in which the main organs are already formed" },
         { id:5, term:"Umbilical cord", def:"Duct that carries oxygen and nutrients to the foetus" },
         { id:6, term:"Birth", def:"The moment the baby is born" }
+    ],
+    ar: [
+        { id:0, term:"الحيوان المنوي", def:"الخلية التناسلية الذكرية" },
+        { id:1, term:"البويضة", def:"الخلية التناسلية الأنثوية" },
+        { id:2, term:"اللاقحة", def:"خلية تتكوّن من اتحاد الحيوان المنوي بالبويضة" },
+        { id:3, term:"الجنين المضغي", def:"مرحلة تتكوّن فيها الأعضاء الرئيسية" },
+        { id:4, term:"الجنين", def:"مرحلة تكون فيها الأعضاء الرئيسية قد تكوّنت بالفعل" },
+        { id:5, term:"الحبل السري", def:"قناة تنقل الأكسجين والعناصر الغذائية إلى الجنين" },
+        { id:6, term:"الولادة", def:"اللحظة التي يُولد فيها الطفل" }
     ]
 };
 
@@ -434,6 +452,14 @@ const game3Data = {
         { text:"Embryo", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Embri%C3%B3n.png" },
         { text:"Foetus", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Feto.png" },
         { text:"Birth", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Parto.png" }
+    ],
+    ar: [
+        { text:"الحيوان المنوي", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Espermatozoide.png" },
+        { text:"البويضة", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/%C3%93vulo.png" },
+        { text:"اللاقحة", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Cigoto.png" },
+        { text:"الجنين المضغي", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Embri%C3%B3n.png" },
+        { text:"الجنين", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Feto.png" },
+        { text:"الولادة", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Embarazo/Parto.png" }
     ]
 };
 
@@ -484,6 +510,28 @@ const summaryData = {
                 "After 9 months, the baby is born through the vagina or by caesarean section."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "الإخصاب:",
+            items: [
+                "يحدث في قناتَي فالوب، عندما يتحد حيوان منوي مع بويضة مكوّنَين خلية واحدة تُسمى اللاقحة (الزيجوت)."
+            ]
+        },
+        {
+            heading: "الحمل:",
+            items: [
+                "يستمر 9 أشهر ويمر بمرحلتين: الجنين المضغي والجنين.",
+                "تبدأ اللاقحة بالانقسام ويتكوّن الجنين المضغي. ثم ينغرس في الرحم.",
+                "في الأسبوع التاسع، تكون الأعضاء الرئيسية قد تكوّنت ويُصبح الجنين المضغي جنينًا كاملاً."
+            ]
+        },
+        {
+            heading: "الولادة:",
+            items: [
+                "بعد 9 أشهر، يُولد الطفل عبر المهبل أو بعملية قيصرية."
+            ]
+        }
     ]
 };
 
@@ -522,7 +570,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Pregnancy and Birth',
@@ -555,7 +604,42 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الحمل والولادة',
+        startSubtitle: 'مراحل التكاثر البشري',
+        startAdvice: 'من خلال هذه اللعبة ستتعلّم مراحل التكاثر البشري: <span class="highlight-keyword">الإخصاب</span>، و<span class="highlight-keyword">الحمل</span>، و<span class="highlight-keyword">الولادة</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'التكاثر البشري',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'التكاثر البشري',
+        game1Subtitle: 'رتّب المراحل',
+        game2Title: 'الحمل',
+        game2Subtitle: 'اربط كل عنصر بتعريفه',
+        game3Title: 'حدّد صور التكاثر البشري',
+        game3Eyebrow: 'ابحث عن:',
+        checkBtn: 'تحقّق',
+        continueGameBtn: 'متابعة',
+        finalTitle: 'التكاثر البشري',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -614,7 +698,9 @@ function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
     const langCode = lang === 'es' ? 'es-ES' : 'en-GB';
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -628,7 +714,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -702,6 +788,8 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
     
     if (currentScreen === 'summary') {
         buildSummary();
@@ -768,12 +856,14 @@ function buildSummary() {
     
     const keywords = currentLang === 'es' 
         ? ['trompas de Falopio', 'óvulo', 'espermatozoide', 'cigoto', 'embrión', 'útero', 'feto', 'vagina', 'cesárea']
+        : currentLang === 'ar'
+        ? ['قناتَي فالوب', 'عملية قيصرية', 'الجنين المضغي', 'اللاقحة', 'الحيوان المنوي', 'البويضة', 'الجنين', 'الرحم', 'المهبل']
         : ['Fallopian tubes', 'egg', 'sperm', 'zygote', 'embryo', 'uterus', 'foetus', 'vagina', 'caesarean section'];
     
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, `<span class="keyword">${kw}</span>`);
         });
         return result;

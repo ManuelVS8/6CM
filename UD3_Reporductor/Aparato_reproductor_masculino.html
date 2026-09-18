@@ -188,6 +188,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -358,6 +359,15 @@ const game1Data = {
         { id:4, term:"Seminal vesicle", def:"Produces fluid that makes up semen" },
         { id:5, term:"Urethra", def:"Duct that expels sperm and urine" },
         { id:6, term:"Sperm", def:"Male reproductive cell" }
+    ],
+    ar: [
+        { id:0, term:"القضيب", def:"العضو الذي تخرج منه الحيوانات المنوية والبول" },
+        { id:1, term:"الخصيتان", def:"تنتجان الحيوانات المنوية" },
+        { id:2, term:"الأسهر", def:"تنقل الحيوانات المنوية" },
+        { id:3, term:"البروستاتا", def:"تنتج سائلًا يغذّي الحيوانات المنوية" },
+        { id:4, term:"الحويصلة المنوية", def:"تنتج سائلًا يُكوّن السائل المنوي" },
+        { id:5, term:"الإحليل", def:"قناة تطرد الحيوانات المنوية والبول" },
+        { id:6, term:"الحيوان المنوي", def:"الخلية التناسلية الذكرية" }
     ]
 };
 
@@ -385,6 +395,15 @@ const hotspotData = {
             { text:"Urethra", coords:[623,833,776,990] },
             { text:"Penis", coords:[182,836,335,994] },
             { text:"Prostate", coords:[82,428,237,583] }
+        ],
+        ar: [
+            { text:"المثانة", coords:[391,38,546,192] },
+            { text:"الأسهر", coords:[717,67,870,219] },
+            { text:"الحويصلة المنوية", coords:[717,378,872,535] },
+            { text:"الخصيتان", coords:[688,630,843,787] },
+            { text:"الإحليل", coords:[623,833,776,990] },
+            { text:"القضيب", coords:[182,836,335,994] },
+            { text:"البروستاتا", coords:[82,428,237,583] }
         ]
     },
     3: {
@@ -405,6 +424,15 @@ const hotspotData = {
             { text:"Duct through which urine and sperm are expelled", coords:[623,833,776,990] },
             { text:"Organ through which urine and sperm are expelled", coords:[182,836,335,994] },
             { text:"Produces fluid that nourishes the sperm", coords:[82,428,237,583] }
+        ],
+        ar: [
+            { text:"تخزّن البول", coords:[391,38,546,192] },
+            { text:"تنقل الحيوانات المنوية من الخصيتين إلى البروستاتا", coords:[717,67,870,219] },
+            { text:"تنتج سائلًا يُكوّن السائل المنوي", coords:[717,378,872,535] },
+            { text:"تنتجان الحيوانات المنوية", coords:[688,630,843,787] },
+            { text:"قناة يُطرد عبرها البول والحيوانات المنوية", coords:[623,833,776,990] },
+            { text:"عضو يُطرد عبره البول والحيوانات المنوية", coords:[182,836,335,994] },
+            { text:"تنتج سائلًا يغذّي الحيوانات المنوية", coords:[82,428,237,583] }
         ]
     }
 };
@@ -430,6 +458,15 @@ const summaryData = {
         { term:"Seminal vesicle", def:"Produces fluid that makes up semen." },
         { term:"Urethra", def:"Duct through which sperm and urine are expelled." },
         { term:"Sperm", def:"Male reproductive cell." }
+    ],
+    ar: [
+        { term:"القضيب", def:"العضو الذي تخرج منه الحيوانات المنوية والبول." },
+        { term:"الخصيتان", def:"أعضاء تنتج الحيوانات المنوية." },
+        { term:"الأسهر", def:"تنقل الحيوانات المنوية من الخصيتين إلى البروستاتا." },
+        { term:"البروستاتا", def:"تنتج سائلًا يغذّي الحيوانات المنوية." },
+        { term:"الحويصلة المنوية", def:"تنتج سائلًا يُكوّن السائل المنوي." },
+        { term:"الإحليل", def:"قناة يُطرد عبرها الحيوانات المنوية والبول." },
+        { term:"الحيوان المنوي", def:"الخلية التناسلية الذكرية." }
     ]
 };
 
@@ -464,7 +501,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Male Reproductive System',
@@ -493,7 +531,38 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الجهاز التناسلي الذكري',
+        startSubtitle: 'أعضاء الجهاز التناسلي الذكري',
+        startAdvice: 'يتولى <span class="highlight-keyword">الجهاز التناسلي الذكري</span> مهمة التكاثر. تعرّف على أهم <span class="highlight-keyword">الأعضاء</span> التي يتكوّن منها.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'يتكوّن الجهاز التناسلي الذكري من الأعضاء التالية:',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'وظيفة أعضاء الجهاز التناسلي الذكري',
+        game1Subtitle: 'اربط كل عضو بوظيفته',
+        game2Title: 'حدّد أعضاء الجهاز التناسلي.',
+        game3Title: 'حدّد أعضاء الجهاز التناسلي.',
+        finalTitle: 'الجهاز التناسلي الذكري',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -548,7 +617,9 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -562,7 +633,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -633,6 +704,10 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW2 = document.getElementById('btnPlayWord2');
+    if (btnW2) btnW2.title = t.listenTitle;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();
