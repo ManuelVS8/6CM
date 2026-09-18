@@ -189,6 +189,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -356,6 +357,15 @@ const game2Data = {
         "The oxygen in the air passes into the blood and the carbon dioxide in the blood passes into the air.",
         "The diaphragm relaxes and the lungs contract.",
         "The air with carbon dioxide follows the reverse path and exits to the outside."
+    ],
+    ar: [
+        "ينقبض الحجاب الحاجز وتنتفخ الرئتان.",
+        "يدخل الهواء عبر فتحتَي الأنف أو الفم.",
+        "يمر عبر البلعوم والحنجرة والقصبة الهوائية والشعب الهوائية حتى يصل إلى الرئتين.",
+        "في الرئتين، يمر الهواء عبر القصيبات الهوائية ويصل إلى الحويصلات الهوائية.",
+        "ينتقل الأكسجين من الهواء إلى الدم، وينتقل ثاني أكسيد الكربون من الدم إلى الهواء.",
+        "يرتخي الحجاب الحاجز وتنقبض الرئتان.",
+        "يسلك الهواء المحمَّل بثاني أكسيد الكربون الطريق العكسي ويخرج إلى الخارج."
     ]
 };
 const game2Total = 7;
@@ -365,7 +375,8 @@ const game2Total = 7;
 ===================================================== */
 const summaryIntroText = {
     es: "La respiración consta de tres momentos:",
-    en: "Breathing consists of three stages:"
+    en: "Breathing consists of three stages:",
+    ar: "تتكوّن عملية التنفّس من ثلاث مراحل:"
 };
 
 const summaryData = {
@@ -414,6 +425,29 @@ const summaryData = {
                 "The air with carbon dioxide follows the reverse path and exits through the mouth or nose."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "1. الشهيق:",
+            items: [
+                "ينقبض الحجاب الحاجز وتنتفخ الرئتان.",
+                "يدخل الهواء عبر فتحتَي الأنف أو الفم ويمر عبر البلعوم والحنجرة والقصبة الهوائية والشعب الهوائية حتى يصل إلى الرئتين.",
+                "في الرئتين، يمر الهواء عبر الشعب الهوائية والقصيبات الهوائية ويصل إلى الحويصلات الهوائية."
+            ]
+        },
+        {
+            heading: "2. تبادل الغازات:",
+            items: [
+                "في الحويصلات الهوائية، ينتقل الأكسجين من الهواء إلى الدم، وينتقل ثاني أكسيد الكربون من الدم إلى الهواء ليُطرد."
+            ]
+        },
+        {
+            heading: "3. الزفير:",
+            items: [
+                "يرتخي الحجاب الحاجز وتنقبض الرئتان.",
+                "يسلك الهواء المحمَّل بثاني أكسيد الكربون الطريق العكسي ويخرج من الفم أو الأنف."
+            ]
+        }
     ]
 };
 
@@ -447,7 +481,9 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        game1Title: 'Identify the parts of the respiratory system',
+        listenTitle: 'Listen'
     },
     en: {
         startTitle: 'Respiratory System',
@@ -475,7 +511,39 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        game1Title: 'Identify the parts of the respiratory system',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الجهاز التنفسي',
+        startSubtitle: 'أعضاء ووظيفة الجهاز التنفسي',
+        startAdvice: 'من خلال <span class="highlight-keyword">التنفّس</span> نحصل على <span class="highlight-keyword">الأكسجين</span> الذي يحتاجه جسمنا ونطرد <span class="highlight-keyword">ثاني أكسيد الكربون</span>. تعلَّم مع هذه اللعبة.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الجهاز التنفسي',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game2Title: 'كيف يعمل الجهاز التنفسي؟',
+        game2Subtitle: 'رتّب المراحل',
+        checkBtn: 'تحقّق',
+        finalTitle: 'الجهاز التنفسي',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        game1Title: 'الجهاز التنفسي',
+        listenTitle: 'استماع'
     }
 };
 
@@ -532,7 +600,9 @@ function getBestVoice(lang) {
     try {
         const voices = window.speechSynthesis.getVoices();
         if (!voices.length) return null;
-        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+            : lang === 'ar' ? ['Google','Natural','Microsoft']
+            : ['Google UK','Natural','Microsoft'];
         for (let p of prefer) {
             for (let v of voices) {
                 if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -547,7 +617,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -599,6 +669,10 @@ function applyLanguage(lang) {
     document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
     document.getElementById('continueBtn').innerHTML = t.continueBtn;
     document.getElementById('game2Title').innerHTML = t.game2Title;
+    const g1Title = document.getElementById('game1Title');
+    if (g1Title) g1Title.innerHTML = t.game1Title;
+    const g1Listen = document.getElementById('btnPlayWord');
+    if (g1Listen) g1Listen.title = t.listenTitle;
     document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
     document.getElementById('checkPhasesBtn').innerHTML = t.checkBtn;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
@@ -673,12 +747,14 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['dióxido de carbono','fosas nasales','bronquiolos','bronquios','diafragma','pulmones','alvéolos','faringe','laringe','tráquea','oxígeno','sangre']
+        : currentLang === 'ar'
+        ? ['ثاني أكسيد الكربون','القصيبات الهوائية','الشعب الهوائية','الحويصلات الهوائية','الحجاب الحاجز','القصبة الهوائية','فتحتَي الأنف','الحنجرة','البلعوم','الأكسجين','الرئتين','الدم']
         : ['carbon dioxide','bronchioles','diaphragm','nostrils','alveoli','pharynx','trachea','bronchi','larynx','oxygen','lungs','blood'];
 
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, (match) => `<span class="keyword">${match}</span>`);
         });
         return result;

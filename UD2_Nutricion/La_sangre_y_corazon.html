@@ -204,6 +204,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -360,6 +361,13 @@ const game1Data = {
         { id:2, term:"White blood cells", def:"Protect us against microorganisms" },
         { id:3, term:"Platelets", def:"Seal haemorrhages by forming clots" },
         { id:4, term:"Plasma", def:"Liquid that contains blood cells and other substances" }
+    ],
+    ar: [
+        { id:0, term:"الدم", def:"سائل أحمر ينقل العناصر الغذائية ومواد الفضلات" },
+        { id:1, term:"خلايا الدم الحمراء", def:"تنقل الأكسجين وثاني أكسيد الكربون" },
+        { id:2, term:"خلايا الدم البيضاء", def:"تحمينا من الكائنات الدقيقة" },
+        { id:3, term:"الصفائح الدموية", def:"توقف النزيف بتكوين الجلطات" },
+        { id:4, term:"البلازما", def:"سائل يحتوي على خلايا الدم ومواد أخرى" }
     ]
 };
 const game1TotalPairs = 5;
@@ -389,6 +397,17 @@ const game2Data = {
         { text:"Right ventricle", coords:[72,595,177,694] },
         { text:"Right atrium", coords:[25,446,131,543] },
         { text:"Superior vena cava", coords:[38,56,143,153] }
+    ],
+    ar: [
+        { text:"الشريان الأورطي", coords:[631,17,736,113] },
+        { text:"الشريان الرئوي", coords:[732,120,840,219] },
+        { text:"الأوردة الرئوية", coords:[799,250,906,345] },
+        { text:"الأذين الأيسر", coords:[748,401,853,498] },
+        { text:"البطين الأيسر", coords:[755,643,861,739] },
+        { text:"الوريد الأجوف السفلي", coords:[61,743,167,840] },
+        { text:"البطين الأيمن", coords:[72,595,177,694] },
+        { text:"الأذين الأيمن", coords:[25,446,131,543] },
+        { text:"الوريد الأجوف العلوي", coords:[38,56,143,153] }
     ]
 };
 const game2ImgWidth = 930;
@@ -412,6 +431,14 @@ const game3Data = {
         "Blood returns to the heart through the pulmonary veins",
         "Blood passes to the left atrium and left ventricle",
         "Blood leaves the heart through the aorta artery"
+    ],
+    ar: [
+        "يصل الدم إلى القلب عبر الوريدين الأجوفين العلوي والسفلي",
+        "ينتقل الدم إلى الأذين الأيمن ثم البطين الأيمن",
+        "يخرج الدم عبر الشريان الرئوي متجهًا إلى الرئتين",
+        "يعود الدم إلى القلب عبر الأوردة الرئوية",
+        "ينتقل الدم إلى الأذين الأيسر ثم البطين الأيسر",
+        "يخرج الدم من القلب عبر الشريان الأورطي"
     ]
 };
 const game3Total = 6;
@@ -465,6 +492,29 @@ const summaryData = {
                 "A yellowish liquid that carries red blood cells, white blood cells and platelets, as well as nutrients and other substances."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "الدم:",
+            items: [
+                "الدم سائل أحمر يوزّع الأكسجين والعناصر الغذائية في الجسم ويجمع الفضلات.",
+                "يتكوّن من خلايا الدم والبلازما."
+            ]
+        },
+        {
+            heading: "خلايا الدم:",
+            items: [
+                "خلايا الدم الحمراء: تنقل بشكل رئيسي الأكسجين وثاني أكسيد الكربون.",
+                "خلايا الدم البيضاء: تحمينا من الكائنات الدقيقة.",
+                "الصفائح الدموية: توقف النزيف عند تمزّق الأوعية الدموية."
+            ]
+        },
+        {
+            heading: "البلازما:",
+            items: [
+                "سائل أصفر اللون ينقل خلايا الدم الحمراء والبيضاء والصفائح الدموية، إضافة إلى العناصر الغذائية ومواد أخرى."
+            ]
+        }
     ]
 };
 
@@ -501,7 +551,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Blood and the Heart',
@@ -532,7 +583,40 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الدم والقلب',
+        startSubtitle: '',
+        startAdvice: 'تعرّف على <span class="highlight-keyword">أجزاء القلب</span>، و<span class="highlight-keyword">مكوّنات الدم</span>، وادرس <span class="highlight-keyword">الدورة الدموية الرئوية</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الدم والقلب',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'الدم ومكوّناته',
+        game1Subtitle: 'اربط كل عنصر بتعريفه',
+        game2Title: 'أجزاء القلب',
+        game3Title: 'الدورة الدموية الرئوية',
+        game3Subtitle: 'رتّب المراحل',
+        checkBtn: 'تحقّق',
+        finalTitle: 'الدم والقلب',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -593,7 +677,9 @@ function getBestVoice(lang) {
     try {
         const voices = window.speechSynthesis.getVoices();
         if (!voices.length) return null;
-        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+            : lang === 'ar' ? ['Google','Natural','Microsoft']
+            : ['Google UK','Natural','Microsoft'];
         for (let p of prefer) {
             for (let v of voices) {
                 if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -608,7 +694,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -681,6 +767,8 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const g2Listen = document.getElementById('btnPlayWord2');
+    if (g2Listen) g2Listen.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();
@@ -747,12 +835,14 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['dióxido de carbono','células sanguíneas','vasos sanguíneos','glóbulos blancos','glóbulos rojos','microorganismos','hemorragias','nutrientes','plaquetas','desechos','oxígeno','plasma','sangre']
+        : currentLang === 'ar'
+        ? ['ثاني أكسيد الكربون','خلايا الدم البيضاء','خلايا الدم الحمراء','الأوعية الدموية','الكائنات الدقيقة','الصفائح الدموية','خلايا الدم','النزيف','العناصر الغذائية','الأكسجين','البلازما','الفضلات','الدم']
         : ['white blood cells','red blood cells','carbon dioxide','microorganisms','blood vessels','haemorrhages','blood cells','nutrients','platelets','oxygen','plasma','waste','blood'];
 
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, (match) => `<span class="keyword">${match}</span>`);
         });
         return result;

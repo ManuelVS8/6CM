@@ -187,6 +187,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -364,6 +365,15 @@ const game2Data = {
         "The nutrients are separated and pass into the blood",
         "The waste passes into the large intestine, where water is absorbed",
         "The waste turns into faeces and is expelled through the anus"
+    ],
+    ar: [
+        "يدخل الطعام إلى الفم، وبمساعدة الأسنان واللعاب تتكوّن كتلة الطعام (اللقمة)",
+        "تمر اللقمة عبر المريء وتصل إلى المعدة",
+        "تختلط اللقمة بعصارات المعدة ويتكوّن الكيموس",
+        "ينتقل الكيموس إلى الأمعاء الدقيقة ويختلط بعصارات الكبد والبنكرياس ويتكوّن الكيلوس",
+        "تُفصل العناصر الغذائية وتنتقل إلى الدم",
+        "تنتقل الفضلات إلى الأمعاء الغليظة حيث يُمتص الماء",
+        "تتحول الفضلات إلى براز ويُطرد عبر فتحة الشرج"
     ]
 };
 const game2Total = 7;
@@ -373,7 +383,8 @@ const game2Total = 7;
 ===================================================== */
 const summaryIntroText = {
     es: "El aparato digestivo está formado por el tubo digestivo y las glándulas anejas: glándulas salivales, hígado y páncreas.",
-    en: "The digestive system is made up of the digestive tract and the accessory glands: salivary glands, liver and pancreas."
+    en: "The digestive system is made up of the digestive tract and the accessory glands: salivary glands, liver and pancreas.",
+    ar: "يتكوّن الجهاز الهضمي من القناة الهضمية والغدد الملحقة بها: الغدد اللعابية، والكبد، والبنكرياس."
 };
 
 const summaryData = {
@@ -422,6 +433,29 @@ const summaryData = {
                 "In the large intestine, water is absorbed and faeces are formed, which are expelled through the anus."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "الابتلاع والنقل:",
+            items: [
+                "يدخل الطعام عبر الفم. وبمساعدة الأسنان واللسان واللعاب تتكوّن كتلة الطعام (اللقمة).",
+                "تمر اللقمة عبر البلعوم والمريء حتى تصل إلى المعدة."
+            ]
+        },
+        {
+            heading: "الهضم:",
+            items: [
+                "في المعدة، تختلط اللقمة بالعصارات المعدية وتتكوّن عجينة تُسمى الكيموس.",
+                "ينتقل الكيموس إلى الأمعاء الدقيقة ويختلط بالصفراء وعصارة البنكرياس والعصارات المعوية ويتكوّن الكيلوس."
+            ]
+        },
+        {
+            heading: "الامتصاص والطرح:",
+            items: [
+                "في الأمعاء الدقيقة تُمتص العناصر الغذائية وتنتقل إلى الدم. وتنتقل الفضلات إلى الأمعاء الغليظة.",
+                "في الأمعاء الغليظة يُمتص الماء ويتكوّن البراز، الذي يُطرد عبر فتحة الشرج."
+            ]
+        }
     ]
 };
 
@@ -456,7 +490,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Digestive System',
@@ -485,7 +520,38 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'الجهاز الهضمي',
+        startSubtitle: 'أعضاء ووظيفة الجهاز الهضمي',
+        startAdvice: 'يتولى الجهاز الهضمي <span class="highlight-keyword">هضم</span> الطعام وامتصاص <span class="highlight-keyword">العناصر الغذائية</span>، لينقلها إلى الدم فتصل إلى كل أجزاء الجسم<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الجهاز الهضمي',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'حدّد أجزاء الجهاز الهضمي',
+        game2Title: 'كيف يعمل الجهاز الهضمي؟',
+        game2Subtitle: 'رتّب المراحل',
+        checkBtn: 'تحقّق',
+        finalTitle: 'الجهاز الهضمي',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -542,7 +608,9 @@ function getBestVoice(lang) {
     try {
         const voices = window.speechSynthesis.getVoices();
         if (!voices.length) return null;
-        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+            : lang === 'ar' ? ['Google','Natural','Microsoft']
+            : ['Google UK','Natural','Microsoft'];
         for (let p of prefer) {
             for (let v of voices) {
                 if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -557,7 +625,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -608,6 +676,10 @@ function applyLanguage(lang) {
     document.getElementById('playBtn').innerHTML = t.startBtn;
     document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
     document.getElementById('continueBtn').innerHTML = t.continueBtn;
+    const g1Title = document.getElementById('game1Title');
+    if (g1Title) g1Title.innerHTML = t.game1Title;
+    const g1Listen = document.getElementById('btnPlayWord');
+    if (g1Listen) g1Listen.title = t.listenTitle;
     document.getElementById('game2Title').innerHTML = t.game2Title;
     document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
     document.getElementById('checkPhasesBtn').innerHTML = t.checkBtn;
@@ -682,12 +754,14 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['glándulas salivales','jugos intestinales','intestino delgado','jugo pancreático','bolo alimenticio','intestino grueso','jugos gástricos','tubo digestivo','nutrientes','páncreas','estómago','desechos','faringe','esófago','hígado','sangre','quimo','quilo','bilis','heces','agua','ano']
+        : currentLang === 'ar'
+        ? ['العصارات المعوية','عصارة البنكرياس','الغدد اللعابية','الأمعاء الدقيقة','الأمعاء الغليظة','القناة الهضمية','العصارات المعدية','البنكرياس','المعدة','البلعوم','المريء','الكبد','الفضلات','العناصر الغذائية','الدم','الكيموس','الكيلوس','الصفراء','البراز','الماء']
         : ['intestinal juices','pancreatic juice','salivary glands','small intestine','large intestine','digestive tract','gastric juices','food bolus','oesophagus','nutrients','pancreas','stomach','pharynx','faeces','waste','liver','blood','chyme','chyle','water','bile','anus'];
 
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, (match) => `<span class="keyword">${match}</span>`);
         });
         return result;
