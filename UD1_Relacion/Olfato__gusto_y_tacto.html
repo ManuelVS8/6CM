@@ -27,7 +27,7 @@
             --pastel-green:#e1f5ea;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -228,6 +228,7 @@
         <div class="lang-pill">
             <button id="btnLangEs" class="active-lang" title="Español" onclick="applyLanguage('es')">🇪🇸</button>
             <button id="btnLangEn" title="English" onclick="applyLanguage('en')">🇬🇧</button>
+            <button id="btnLangAr" title="العربية" onclick="applyLanguage('ar')">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido" onclick="toggleSound()">
             <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -514,6 +515,23 @@ const gameDataI18n = {
             { text:"Epidermis", type:"tacto" },
             { text:"Dermis", type:"tacto" }
         ]
+    },
+    ar: {
+        olfato: [ { text:"فتحتا الأنف" }, { text:"الغشاء المخاطي الشمي" }, { text:"الأعصاب الشمية" } ],
+        gusto:  [ { text:"اللسان" }, { text:"براعم التذوق" }, { text:"الأعصاب الذوقية" } ],
+        tacto:  [ { text:"أعصاب اللمس" }, { text:"الغدة العرقية" }, { text:"البشرة" }, { text:"الأدمة" } ],
+        clasificacion: [
+            { text:"فتحتا الأنف", type:"olfato" },
+            { text:"الغشاء المخاطي الشمي", type:"olfato" },
+            { text:"الأعصاب الشمية", type:"olfato" },
+            { text:"اللسان", type:"gusto" },
+            { text:"براعم التذوق", type:"gusto" },
+            { text:"الأعصاب الذوقية", type:"gusto" },
+            { text:"أعصاب اللمس", type:"tacto" },
+            { text:"الغدة العرقية", type:"tacto" },
+            { text:"البشرة", type:"tacto" },
+            { text:"الأدمة", type:"tacto" }
+        ]
     }
 };
 
@@ -600,6 +618,46 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الشم والذوق واللمس',
+        startSubtitle: 'حدد الأعضاء المشاركة في هذه الحواس',
+        startAdvice: 'راجع وتعلم الأجزاء الرئيسية لحاسة <span class="highlight-keyword">الشم</span> و<span class="highlight-keyword">الذوق</span> و<span class="highlight-keyword">اللمس</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        summaryTitle: 'الشم والذوق واللمس',
+        sumOlfatoTitle: 'الشم', sumGustoTitle: 'الذوق', sumTactoTitle: 'اللمس',
+        sumOlfatoP1: 'تستقبل المواد العطرية الموجودة في الهواء.',
+        sumOlfatoOrganLabel: 'العضو:', sumOlfatoOrgan: 'عضو حاسة الشم هو الأنف.',
+        sumOlfatoP3: 'يدخل الهواء عبر فتحتي الأنف ويصل إلى الغشاء المخاطي الشمي. يرسل هذا الغشاء المعلومة إلى الدماغ عبر الأعصاب الشمية.',
+        sumGustoP1: 'تستقبل نكهات الطعام: الحلو والمالح والمر والحامض والأومامي.',
+        sumGustoOrganLabel: 'العضو:', sumGustoOrgan: 'العضو الرئيسي هو اللسان، حيث توجد براعم التذوق.',
+        sumGustoP3: 'تستقبل براعم التذوق النكهات وترسلها إلى الدماغ عبر الأعصاب الذوقية.',
+        sumTactoP1: 'تستقبل أحاسيس مثل الحرارة والملمس والشكل والصلابة. كما تستقبل الألم.',
+        sumTactoOrganLabel: 'العضو:', sumTactoOrgan: 'عضو حاسة اللمس هو الجلد، المغطى بأعصاب اللمس.',
+        sumTactoP3: 'ترسل هذه الأعصاب المعلومة إلى الدماغ.',
+        startGameBtn: 'ابدأ اللعبة',
+        game1Title: 'حدد أجزاء حاسة الشم',
+        game2Title: 'حدد أجزاء حاسة الذوق',
+        game3Title: 'حدد أجزاء حاسة اللمس',
+        game4Title: 'صنّف العناصر حسب الحاسة المناسبة',
+        boxOlfatoTitle: 'الشم', boxGustoTitle: 'الذوق', boxTactoTitle: 'اللمس',
+        checkBtn: 'تحقق', continueBtn: 'متابعة',
+        finalTitle: 'الشم والذوق واللمس',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -678,6 +736,12 @@ function getBestVoice(lang) {
         v = voices.find(voice => voice.lang === 'es-ES' || voice.lang.startsWith('es'));
         if (v) return v;
         return null;
+    } else if (lang === 'ar') {
+        let v = voices.find(voice => voice.lang.startsWith('ar') && (voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'ar-SA' || voice.lang.startsWith('ar'));
+        if (v) return v;
+        return null;
     } else {
         let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en'));
         if (v) return v;
@@ -693,8 +757,8 @@ function speakText(text, lang) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang === 'en' ? 'en-GB' : 'es-ES';
-    const voice = getBestVoice(lang === 'en' ? 'en' : 'es');
+    u.lang = lang === 'en' ? 'en-GB' : lang === 'ar' ? 'ar-SA' : 'es-ES';
+    const voice = getBestVoice(lang === 'en' ? 'en' : lang === 'ar' ? 'ar' : 'es');
     if (voice) u.voice = voice;
     u.rate = 0.85;
     window.speechSynthesis.speak(u);
@@ -710,6 +774,7 @@ function applyLanguage(lang) {
 
     document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
     document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
+    document.getElementById('btnLangAr').classList.toggle('active-lang', lang === 'ar');
 
     document.getElementById('startTitle').textContent = t.startTitle;
     document.getElementById('startSubtitle').textContent = t.startSubtitle;
@@ -786,6 +851,7 @@ function applyLanguage(lang) {
 
 document.getElementById('btnLangEs').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
 document.getElementById('btnLangEn').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+document.getElementById('btnLangAr').onclick = () => { reproducirSonidoTap(); applyLanguage('ar'); };
 
 /* ====================================================
    SONIDO ON/OFF

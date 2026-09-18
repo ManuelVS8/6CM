@@ -23,7 +23,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -202,6 +202,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -375,6 +376,12 @@ const game1Pairs = {
         dendritas: { term: "Dendrites",         def: "Receive information from other cells" },
         axon:      { term: "Axon",              def: "Transmits information to other cells" },
         botones:   { term: "Axon terminals",    def: "Endings of the axon that connect to other cells" }
+    },
+    ar: {
+        neuronas:  { term: "الخلايا العصبية",    def: "خلايا الجهاز العصبي" },
+        dendritas: { term: "التغصنات",           def: "تستقبل المعلومة من الخلايا الأخرى" },
+        axon:      { term: "المحور العصبي",      def: "ينقل المعلومة إلى الخلايا الأخرى" },
+        botones:   { term: "أزرار المحور العصبي", def: "نهايات المحور العصبي التي تتصل بالخلايا الأخرى" }
     }
 };
 const game1Order = ['neuronas', 'dendritas', 'axon', 'botones'];
@@ -384,16 +391,17 @@ const game1Order = ['neuronas', 'dendritas', 'axon', 'botones'];
 ===================================================== */
 const game2Labels = {
     es: { botones:"Botones del axón", axon:"Axón", dendritas:"Dendritas" },
-    en: { botones:"Axon terminals", axon:"Axon", dendritas:"Dendrites" }
+    en: { botones:"Axon terminals", axon:"Axon", dendritas:"Dendrites" },
+    ar: { botones:"أزرار المحور العصبي", axon:"المحور العصبي", dendritas:"التغصنات" }
 };
 
 /* ====================================================
    DATOS: JUEGO 3 - SEÑALAR PARTES (FUNCIONES)
 ===================================================== */
 const game3Functions = [
-    { box:'botones',   es:'Terminaciones del axón que se conectan a otras células',  en:'Endings of the axon that connect to other cells' },
-    { box:'axon',      es:'Transmite información a otras células',                   en:'Transmits information to other cells' },
-    { box:'dendritas', es:'Reciben información de otras células',                    en:'Receive information from other cells' }
+    { box:'botones',   es:'Terminaciones del axón que se conectan a otras células',  en:'Endings of the axon that connect to other cells', ar:'نهايات المحور العصبي التي تتصل بالخلايا الأخرى' },
+    { box:'axon',      es:'Transmite información a otras células',                   en:'Transmits information to other cells', ar:'ينقل المعلومة إلى الخلايا الأخرى' },
+    { box:'dendritas', es:'Reciben información de otras células',                    en:'Receive information from other cells', ar:'تستقبل المعلومة من الخلايا الأخرى' }
 ];
 
 /* ====================================================
@@ -419,6 +427,17 @@ const summaryData = {
                 "Dendrites: part of the neuron that receives information from other cells.",
                 "Axon: part of the neuron that transmits information to other cells.",
                 "Axon terminals: endings of the axon that connect to other cells."
+            ]
+        }
+    ],
+    ar: [
+        {
+            heading: "الخلايا العصبية",
+            intro: "الخلايا العصبية: هي خلايا الجهاز العصبي التي تستقبل وتنقل النبضات العصبية. تتكون من ثلاثة أجزاء:",
+            items: [
+                "التغصنات: جزء من الخلية العصبية يستقبل المعلومة من الخلايا الأخرى.",
+                "المحور العصبي: جزء من الخلية العصبية ينقل المعلومة إلى الخلايا الأخرى.",
+                "أزرار المحور العصبي: نهايات المحور العصبي التي تتصل بالخلايا الأخرى."
             ]
         }
     ]
@@ -483,6 +502,34 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الخلايا العصبية',
+        startSubtitle: 'الخلايا العصبية، ناقلات النبضات العصبية',
+        startAdvice: 'الخلايا العصبية هي الخلايا المسؤولة عن نقل النبضات العصبية وتربط <span class="highlight-keyword">الحواس</span> و<span class="highlight-keyword">الجهاز العصبي المركزي</span> و<span class="highlight-keyword">الجهاز الحركي</span>. أجزاؤها هي <span class="highlight-keyword">التغصنات</span> و<span class="highlight-keyword">المحور العصبي</span> و<span class="highlight-keyword">أزرار المحور العصبي</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الخلايا العصبية',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'الخلية العصبية وأجزاؤها',
+        game2Title: 'أجزاء الخلية العصبية',
+        game3Title: 'وظيفة أجزاء الخلية',
+        finalTitle: 'الخلايا العصبية',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -538,7 +585,7 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : lang === 'ar' ? ['Google العربية','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -552,7 +599,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);

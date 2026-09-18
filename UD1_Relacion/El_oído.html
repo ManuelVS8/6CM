@@ -26,7 +26,7 @@
             --pastel-purple:#f3e5f5;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -225,6 +225,7 @@
         <div class="lang-pill">
             <button id="btnLangEs" class="active-lang" title="Español" onclick="applyLanguage('es')">🇪🇸</button>
             <button id="btnLangEn" title="English" onclick="applyLanguage('en')">🇬🇧</button>
+            <button id="btnLangAr" title="العربية" onclick="applyLanguage('ar')">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido" onclick="toggleSound()">
             <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -418,6 +419,20 @@ const gameDataI18n = {
             { text:"Envía la información al cerebro" }
         ]
     },
+    ar: {
+        g1: [
+            { text:"الأذن" }, { text:"القناة السمعية" }, { text:"طبلة الأذن" },
+            { text:"العُظيمات" }, { text:"القوقعة" }, { text:"العصب السمعي" }
+        ],
+        g2: [
+            { text:"الجزء الخارجي الذي يساعد على التقاط الأصوات" },
+            { text:"قناة تنقل الصوت إلى الأذن الوسطى" },
+            { text:"غشاء يهتز وينقل الاهتزاز إلى العُظيمات" },
+            { text:"تنقل الاهتزاز إلى القوقعة" },
+            { text:"ترسل المعلومة إلى العصب السمعي" },
+            { text:"تنقل المعلومة إلى الدماغ" }
+        ]
+    },
     en: {
         g1: [
             { text:"Ear" }, { text:"Ear canal" }, { text:"Eardrum" },
@@ -537,6 +552,53 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الأذن',
+        startSubtitle: 'حدد الأعضاء المشاركة في حاسة السمع',
+        startAdvice: 'راجع وتعلم الأجزاء الرئيسية لـ<span class="highlight-keyword">الأذن الخارجية</span> (الأذن، القناة السمعية)، و<span class="highlight-keyword">الأذن الوسطى</span> (طبلة الأذن والعُظيمات) و<span class="highlight-keyword">الأذن الداخلية</span> (القوقعة والعصب السمعي).<strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        summaryHeader: 'حاسة السمع',
+        continueBtn: 'متابعة',
+        summaryHTML: '<span class="theory-title">حاسة السمع</span>'
+            + '<p>تستقبل حاسة السمع الصوت وتعطي معلومات عن الشدة والنبرة والمسافة. تتكون من ثلاثة أجزاء:</p>'
+            + '<div class="theory-section"><span class="theory-subtitle">الأذن الخارجية</span><ul class="theory-list">'
+            + '<li><strong>الأذن:</strong> الجزء الخارجي الذي يساعد على التقاط الأصوات.</li>'
+            + '<li><strong>القناة السمعية:</strong> قناة تنقل الصوت إلى الأذن الوسطى.</li>'
+            + '</ul></div>'
+            + '<div class="theory-section"><span class="theory-subtitle">الأذن الوسطى</span><ul class="theory-list">'
+            + '<li><strong>طبلة الأذن:</strong> غشاء يهتز وينقل الاهتزاز إلى العُظيمات.</li>'
+            + '<li><strong>العُظيمات:</strong> تنقل الاهتزاز إلى القوقعة.</li>'
+            + '</ul></div>'
+            + '<div class="theory-section"><span class="theory-subtitle">الأذن الداخلية</span><ul class="theory-list">'
+            + '<li><strong>القوقعة:</strong> ترسل المعلومة إلى العصب السمعي.</li>'
+            + '<li><strong>العصب السمعي:</strong> ينقل المعلومة إلى الدماغ.</li>'
+            + '</ul>'
+            + '<p class="theory-note">ملاحظة: القوقعة مسؤولة أيضًا عن التوازن.</p></div>',
+        game1Title: 'حدد أجزاء الأذن',
+        game2Title: 'حدد أجزاء الأذن',
+        classifyTitle: 'صنّف أجزاء الأذن',
+        classifyInstructions: 'صنّف العناصر في الصناديق الصحيحة',
+        boxExternoLabel: 'الأذن الخارجية',
+        boxMedioLabel: 'الأذن الوسطى',
+        boxInternoLabel: 'الأذن الداخلية',
+        checkBtn: 'تحقق',
+        finalTitle: 'حاسة السمع',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -615,6 +677,12 @@ function getBestVoice(lang) {
         v = voices.find(voice => voice.lang === 'es-ES' || voice.lang.startsWith('es'));
         if (v) return v;
         return null;
+    } else if (lang === 'ar') {
+        let v = voices.find(voice => voice.lang.startsWith('ar') && (voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'ar-SA' || voice.lang.startsWith('ar'));
+        if (v) return v;
+        return null;
     } else {
         let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en'));
         if (v) return v;
@@ -630,8 +698,8 @@ function speakText(text, lang) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang === 'en' ? 'en-GB' : 'es-ES';
-    const voice = getBestVoice(lang === 'en' ? 'en' : 'es');
+    u.lang = lang === 'en' ? 'en-GB' : lang === 'ar' ? 'ar-SA' : 'es-ES';
+    const voice = getBestVoice(lang === 'en' ? 'en' : lang === 'ar' ? 'ar' : 'es');
     if (voice) u.voice = voice;
     u.rate = 0.85;
     window.speechSynthesis.speak(u);
@@ -647,6 +715,7 @@ function applyLanguage(lang) {
 
     document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
     document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
+    document.getElementById('btnLangAr').classList.toggle('active-lang', lang === 'ar');
 
     document.getElementById('startTitle').textContent = t.startTitle;
     document.getElementById('startSubtitle').textContent = t.startSubtitle;
@@ -710,6 +779,7 @@ function applyLanguage(lang) {
 
 document.getElementById('btnLangEs').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
 document.getElementById('btnLangEn').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+document.getElementById('btnLangAr').onclick = () => { reproducirSonidoTap(); applyLanguage('ar'); };
 
 /* ====================================================
    SONIDO ON/OFF

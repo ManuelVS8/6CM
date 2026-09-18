@@ -23,7 +23,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -180,6 +180,7 @@
         <div class="lang-pill">
             <button id="btnLangEs" class="active-lang" title="Español" onclick="applyLanguage('es')">🇪🇸</button>
             <button id="btnLangEn" title="English" onclick="applyLanguage('en')">🇬🇧</button>
+            <button id="btnLangAr" title="العربية" onclick="applyLanguage('ar')">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido" onclick="toggleSound()">
             <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -373,6 +374,33 @@ const gameDataI18n = {
             { text:"Envía la información al cerebro" }
         ]
     },
+    ar: {
+        ext1: [
+            { text:"القناة الدمعية" }, { text:"القزحية" }, { text:"البؤبؤ" }, { text:"الرموش" },
+            { text:"الجفون" }, { text:"الحواجب" }, { text:"الصلبة" }
+        ],
+        ext2: [
+            { text:"تنتج الدموع لترطيب العين" },
+            { text:"الجزء الملون من العين" },
+            { text:"الفتحة التي يدخل منها الضوء" },
+            { text:"تحمي العين من الغبار والجسيمات الصغيرة" },
+            { text:"تنغلق لحماية العين ونشر الدموع" },
+            { text:"تمنع عرق الجبين من دخول العين" },
+            { text:"الجزء الأبيض من العين" }
+        ],
+        int1: [
+            { text:"القرنية" }, { text:"القزحية" }, { text:"البؤبؤ" },
+            { text:"العدسة البلورية" }, { text:"الشبكية" }, { text:"العصب البصري" }
+        ],
+        int2: [
+            { text:"الطبقة الواقية للعين" },
+            { text:"تنفتح وتنغلق للسماح بمرور الضوء" },
+            { text:"الفتحة التي يدخل منها الضوء" },
+            { text:"العدسة التي تركز الضوء على الشبكية" },
+            { text:"تستقبل المعلومة وترسلها إلى العصب البصري" },
+            { text:"ترسل المعلومة إلى الدماغ" }
+        ]
+    },
     en: {
         ext1: [
             { text:"Tear duct" }, { text:"Iris" }, { text:"Pupil" }, { text:"Eyelashes" },
@@ -505,6 +533,52 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'العين البشرية',
+        startSubtitle: 'الجزء الخارجي والداخلي للعين البشرية',
+        startAdvice: 'راجع وتعلم الأجزاء الرئيسية لـ<span class="highlight-keyword">العين الخارجية</span> (الحواجب، الرموش، الجفون، القناة الدمعية، الصلبة، القزحية، البؤبؤ) و<span class="highlight-keyword">العين الداخلية</span> (القرنية، القزحية، البؤبؤ، العدسة البلورية، الشبكية والعصب البصري).<strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        summary1Header: 'العين الخارجية',
+        summary2Header: 'العين الداخلية',
+        continueBtn: 'متابعة',
+        summary1HTML: '<span class="theory-title">أجزاء العين الخارجية</span><ul class="theory-list">'
+            + '<li><strong>الحواجب:</strong> تمنع عرق الجبين من دخول العين.</li>'
+            + '<li><strong>الرموش:</strong> تحمي العين من الغبار والجسيمات الصغيرة.</li>'
+            + '<li><strong>القناة الدمعية:</strong> تنتج الدموع لترطيب العين.</li>'
+            + '<li><strong>الجفون:</strong> تنغلق لحماية العين ونشر الدموع.</li>'
+            + '<li><strong>الصلبة:</strong> الجزء الأبيض من العين.</li>'
+            + '<li><strong>القزحية:</strong> الجزء الملون من العين.</li>'
+            + '<li><strong>البؤبؤ:</strong> الفتحة التي يدخل منها الضوء.</li>'
+            + '</ul>',
+        summary2HTML: '<span class="theory-title">أجزاء العين الداخلية</span><ul class="theory-list">'
+            + '<li><strong>القرنية:</strong> الطبقة الواقية للعين.</li>'
+            + '<li><strong>القزحية:</strong> تنفتح وتنغلق للسماح بمرور الضوء.</li>'
+            + '<li><strong>البؤبؤ:</strong> الفتحة التي يدخل منها الضوء.</li>'
+            + '<li><strong>العدسة البلورية:</strong> العدسة التي تركز الضوء على الشبكية.</li>'
+            + '<li><strong>الشبكية:</strong> ترسل المعلومة إلى العصب البصري.</li>'
+            + '<li><strong>العصب البصري:</strong> يرسل المعلومة إلى الدماغ.</li>'
+            + '</ul>',
+        game1aTitle: 'حدد أجزاء العين الخارجية',
+        game1bTitle: 'حدد أجزاء العين الخارجية',
+        game2aTitle: 'أشر إلى أجزاء العين الداخلية',
+        game2bTitle: 'حدد أجزاء العين',
+        finalTitle: 'حاسة البصر',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -583,6 +657,12 @@ function getBestVoice(lang) {
         v = voices.find(voice => voice.lang === 'es-ES' || voice.lang.startsWith('es'));
         if (v) return v;
         return null;
+    } else if (lang === 'ar') {
+        let v = voices.find(voice => voice.lang.startsWith('ar') && (voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.name.includes('Natural')));
+        if (v) return v;
+        v = voices.find(voice => voice.lang === 'ar-SA' || voice.lang.startsWith('ar'));
+        if (v) return v;
+        return null;
     } else {
         let v = voices.find(voice => voice.name.includes('Google') && voice.lang.startsWith('en'));
         if (v) return v;
@@ -598,8 +678,8 @@ function speakText(text, lang) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang === 'en' ? 'en-GB' : 'es-ES';
-    const voice = getBestVoice(lang === 'en' ? 'en' : 'es');
+    u.lang = lang === 'en' ? 'en-GB' : lang === 'ar' ? 'ar-SA' : 'es-ES';
+    const voice = getBestVoice(lang === 'en' ? 'en' : lang === 'ar' ? 'ar' : 'es');
     if (voice) u.voice = voice;
     u.rate = 0.85;
     window.speechSynthesis.speak(u);
@@ -615,6 +695,7 @@ function applyLanguage(lang) {
 
     document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
     document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
+    document.getElementById('btnLangAr').classList.toggle('active-lang', lang === 'ar');
 
     document.getElementById('startTitle').textContent = t.startTitle;
     document.getElementById('startSubtitle').textContent = t.startSubtitle;
@@ -664,6 +745,7 @@ function applyLanguage(lang) {
 
 document.getElementById('btnLangEs').onclick = () => { reproducirSonidoTap(); applyLanguage('es'); };
 document.getElementById('btnLangEn').onclick = () => { reproducirSonidoTap(); applyLanguage('en'); };
+document.getElementById('btnLangAr').onclick = () => { reproducirSonidoTap(); applyLanguage('ar'); };
 
 /* ====================================================
    SONIDO ON/OFF

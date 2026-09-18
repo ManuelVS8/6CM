@@ -23,7 +23,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -202,6 +202,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -379,6 +380,13 @@ const game1Pairs = {
         tronco:      { term: "Brainstem",           def: "Controls internal organs and functions" },
         sensitivos:  { term: "Sensory nerves",      def: "carry information to the CNS" },
         motores:     { term: "Motor nerves",        def: "carry the response to the locomotor system" }
+    },
+    ar: {
+        cerebro:     { term: "المخ",                 def: "يتحكم في العواطف والذاكرة والحركات الإرادية" },
+        cerebelo:    { term: "المخيخ",                def: "التوازن وتنسيق الحركات" },
+        tronco:      { term: "جذع الدماغ",            def: "يتحكم في الأعضاء والوظائف الداخلية" },
+        sensitivos:  { term: "الأعصاب الحسية",        def: "تنقل المعلومة إلى الجهاز العصبي المركزي" },
+        motores:     { term: "الأعصاب الحركية",       def: "تنقل الاستجابة إلى الجهاز الحركي" }
     }
 };
 const game1Order = ['cerebro', 'cerebelo', 'tronco', 'sensitivos', 'motores'];
@@ -388,22 +396,23 @@ const game1Order = ['cerebro', 'cerebelo', 'tronco', 'sensitivos', 'motores'];
 ===================================================== */
 const game2Labels = {
     es: { cerebelo:"Cerebelo", cerebro:"Cerebro", tronco:"Tronco encefálico", medula:"Médula espinal", nervios:"Nervios" },
-    en: { cerebelo:"Cerebellum", cerebro:"Cerebrum", tronco:"Brainstem", medula:"Spinal cord", nervios:"Nerves" }
+    en: { cerebelo:"Cerebellum", cerebro:"Cerebrum", tronco:"Brainstem", medula:"Spinal cord", nervios:"Nerves" },
+    ar: { cerebelo:"المخيخ", cerebro:"المخ", tronco:"جذع الدماغ", medula:"النخاع الشوكي", nervios:"الأعصاب" }
 };
 
 /* ====================================================
    DATOS: JUEGO 3 - SEÑALAR PARTES (FUNCIONES)
 ===================================================== */
 const game3Functions = [
-    { box:'cerebelo', es:'Coordina movimientos',                                   en:'Coordinates movements' },
-    { box:'cerebelo', es:'Controla el equilibrio',                                  en:'Controls balance' },
-    { box:'cerebro',  es:'Ordena movimientos voluntarios',                          en:'Commands voluntary movements' },
-    { box:'cerebro',  es:'Controla la memoria',                                     en:'Controls memory' },
-    { box:'cerebro',  es:'Es responsable de las emociones',                         en:'Is responsible for emotions' },
-    { box:'tronco',   es:'Controla órganos y funciones internas',                   en:'Controls internal organs and functions' },
-    { box:'medula',   es:'Es responsable de los movimientos reflejos',              en:'Is responsible for reflex movements' },
-    { box:'nervios',  es:'Envían información al sistema nervioso central',          en:'Send information to the central nervous system' },
-    { box:'nervios',  es:'Envían la respuesta al aparato locomotor',                en:'Send the response to the locomotor system' }
+    { box:'cerebelo', es:'Coordina movimientos',                                   en:'Coordinates movements', ar:'ينسق الحركات' },
+    { box:'cerebelo', es:'Controla el equilibrio',                                  en:'Controls balance', ar:'يتحكم في التوازن' },
+    { box:'cerebro',  es:'Ordena movimientos voluntarios',                          en:'Commands voluntary movements', ar:'يأمر بالحركات الإرادية' },
+    { box:'cerebro',  es:'Controla la memoria',                                     en:'Controls memory', ar:'يتحكم في الذاكرة' },
+    { box:'cerebro',  es:'Es responsable de las emociones',                         en:'Is responsible for emotions', ar:'مسؤول عن العواطف' },
+    { box:'tronco',   es:'Controla órganos y funciones internas',                   en:'Controls internal organs and functions', ar:'يتحكم في الأعضاء والوظائف الداخلية' },
+    { box:'medula',   es:'Es responsable de los movimientos reflejos',              en:'Is responsible for reflex movements', ar:'مسؤول عن الحركات الانعكاسية' },
+    { box:'nervios',  es:'Envían información al sistema nervioso central',          en:'Send information to the central nervous system', ar:'ترسل المعلومة إلى الجهاز العصبي المركزي' },
+    { box:'nervios',  es:'Envían la respuesta al aparato locomotor',                en:'Send the response to the locomotor system', ar:'ترسل الاستجابة إلى الجهاز الحركي' }
 ];
 
 /* ====================================================
@@ -461,6 +470,33 @@ const summaryData = {
             items: [
                 "Sensory nerves: carry the stimulus from the senses to the CNS",
                 "Motor nerves: carry the response from the CNS to the locomotor system"
+            ]
+        }
+    ],
+    ar: [
+        {
+            heading: "الجهاز العصبي",
+            intro: "يتكون الجهاز العصبي من الجهاز العصبي المركزي والجهاز العصبي المحيطي",
+            items: []
+        },
+        {
+            heading: "الجهاز العصبي المركزي",
+            intro: "يتكون الجهاز العصبي المركزي من الدماغ والنخاع الشوكي",
+            items: [
+                { text: "الدماغ: يتكون من المخ والمخيخ وجذع الدماغ", sub: [
+                    "المخ: مسؤول عن الذاكرة والحركات الإرادية والعواطف.",
+                    "المخيخ: مسؤول عن التوازن وتنسيق الحركات.",
+                    "جذع الدماغ: يتحكم في الأعضاء الداخلية، مثل نبضات القلب والتنفس"
+                ]},
+                "النخاع الشوكي مسؤول عن الحركات اللاإرادية أو الانعكاسية"
+            ]
+        },
+        {
+            heading: "الجهاز العصبي المحيطي",
+            intro: "يتكون الجهاز العصبي المحيطي من الأعصاب الحسية والأعصاب الحركية:",
+            items: [
+                "الأعصاب الحسية: تنقل الإثارة من الحواس إلى الجهاز العصبي المركزي",
+                "الأعصاب الحركية: تنقل الاستجابة من الجهاز العصبي المركزي إلى الجهاز الحركي"
             ]
         }
     ]
@@ -525,6 +561,34 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الجهاز العصبي',
+        startSubtitle: 'الجهاز العصبي المركزي والمحيطي',
+        startAdvice: 'يتكون الجهاز العصبي من الجهاز العصبي المركزي: <span class="highlight-keyword">الدماغ</span> و<span class="highlight-keyword">النخاع الشوكي</span>؛ والجهاز العصبي المحيطي: <span class="highlight-keyword">الأعصاب الحسية</span> و<span class="highlight-keyword">الأعصاب الحركية</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الجهاز العصبي',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'ما وظيفة كل جزء من الجهاز العصبي؟',
+        game2Title: 'حدد أجزاء الجهاز العصبي.',
+        game3Title: 'ما وظيفة كل جزء من الجهاز العصبي؟',
+        finalTitle: 'الجهاز العصبي',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -580,7 +644,7 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : lang === 'ar' ? ['Google العربية','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -594,7 +658,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);

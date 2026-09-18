@@ -22,7 +22,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -162,6 +162,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -336,6 +337,14 @@ const game1Labels = {
         perone: "Fibula", tibia: "Tibia", femur: "Femur", sacro: "Sacrum", cubito: "Ulna",
         radio: "Radius", humero: "Humerus", omoplato: "Shoulder blade (Scapula)",
         clavicula: "Collarbone", mandibula: "Jaw"
+    },
+    ar: {
+        craneo: "الجمجمة", esternon: "عظم القص", costillas: "الأضلاع", columna: "العمود الفقري",
+        pelvis: "الحوض", carpo: "عظام الرسغ", falangesmano: "سلاميات اليد",
+        rotula: "الرضفة", tarso: "عظام العرقوب", falangespie: "سلاميات القدم",
+        perone: "الشظية", tibia: "الظنبوب", femur: "عظم الفخذ", sacro: "العجز", cubito: "الزند",
+        radio: "الكعبرة", humero: "العضد", omoplato: "لوح الكتف (الكتف)",
+        clavicula: "الترقوة", mandibula: "الفك السفلي"
     }
 };
 
@@ -346,13 +355,13 @@ const game1Labels = {
 const game2Areas = [
     {
         id: 'movil', tipo: 'poligono',
-        es: 'Articulación móvil', en: 'Movable joint',
+        es: 'Articulación móvil', en: 'Movable joint', ar: 'مفصل متحرك',
         coords: [[184,9],[179,66],[166,101],[137,122],[129,149],[120,287],[132,319],[134,388],
             [262,388],[276,312],[302,274],[314,243],[319,139],[296,114],[276,71],[270,13]]
     },
     {
         id: 'semimovil', tipo: 'poligono',
-        es: 'Articulación semimóvil', en: 'Semi-movable joint',
+        es: 'Articulación semimóvil', en: 'Semi-movable joint', ar: 'مفصل شبه متحرك',
         coords: [[387,76],[395,102],[390,156],[394,177],[402,207],[395,246],[395,258],[404,289],
             [396,337],[409,349],[514,349],[521,316],[539,312],[557,333],[556,353],[569,371],
             [596,374],[666,378],[690,364],[689,353],[651,343],[616,318],[632,301],[610,274],
@@ -362,7 +371,7 @@ const game2Areas = [
     },
     {
         id: 'fija', tipo: 'poligono',
-        es: 'Articulación fija', en: 'Fixed joint',
+        es: 'Articulación fija', en: 'Fixed joint', ar: 'مفصل ثابت',
         coords: [[866,8],[796,21],[754,57],[737,87],[731,126],[732,156],[744,201],[741,226],
             [748,231],[752,250],[768,269],[766,308],[762,327],[765,339],[783,356],[801,373],
             [856,393],[897,389],[940,368],[963,340],[973,331],[971,307],[965,266],[979,253],
@@ -370,12 +379,12 @@ const game2Areas = [
     },
     {
         id: 'cartilago', tipo: 'rectangulo',
-        es: 'Cartílago', en: 'Cartilage',
+        es: 'Cartílago', en: 'Cartilage', ar: 'الغضروف',
         box: [624,449,806,626]
     },
     {
         id: 'ligamentos', tipo: 'rectangulo',
-        es: 'Ligamentos', en: 'Ligaments',
+        es: 'Ligamentos', en: 'Ligaments', ar: 'الأربطة',
         box: [627,752,806,924]
     }
 ];
@@ -384,7 +393,8 @@ const game2AreasById = Object.fromEntries(game2Areas.map(a => [a.id, a]));
 
 const game2Labels = {
     es: Object.fromEntries(game2Areas.map(a => [a.id, a.es])),
-    en: Object.fromEntries(game2Areas.map(a => [a.id, a.en]))
+    en: Object.fromEntries(game2Areas.map(a => [a.id, a.en])),
+    ar: Object.fromEntries(game2Areas.map(a => [a.id, a.ar]))
 };
 
 /* ====================================================
@@ -415,6 +425,31 @@ const i18n = {
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
         msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+    },
+    ar: {
+        startTitle: 'الهيكل العظمي',
+        startSubtitle: 'العظام الرئيسية في الجسم',
+        startAdvice: 'يتكون <span class="highlight-keyword">الهيكل العظمي</span> عند البالغين من 206 <span class="highlight-keyword">عظمة</span>. في هذه اللعبة ستتعلم التعرف على أهم <span class="highlight-keyword">العظام</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'حدد عظام الجسم.',
+        game2Title: 'أنواع المفاصل والأنسجة',
+        finalTitle: 'الهيكل العظمي',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     },
     en: {
         startTitle: 'The skeleton',
@@ -491,7 +526,7 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : lang === 'ar' ? ['Google العربية','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -505,7 +540,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);

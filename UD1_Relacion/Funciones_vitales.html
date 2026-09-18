@@ -24,7 +24,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -235,6 +235,7 @@
         <div class="lang-pill" id="langPill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -459,6 +460,33 @@ const accordionData = {
                 { term:'Male and female reproductive system:', text:'allow having offspring.' }
             ]
         }
+    ],
+    ar: [
+        {
+            cls:'metals-acc', icon:'🍽️', title:'وظيفة التغذية', intro:null,
+            items:[
+                { term:'الجهاز الهضمي:', text:'يستخلص العناصر الغذائية من الطعام.' },
+                { term:'الجهاز التنفسي:', text:'يستمد الأكسجين من الهواء ويطرد ثاني أكسيد الكربون.' },
+                { term:'الجهاز الدوري:', text:'ينقل العناصر الغذائية ويجمع الفضلات.' },
+                { term:'الجهاز الإخراجي:', text:'ينظف الفضلات من الدم.' }
+            ]
+        },
+        {
+            cls:'antigua-acc', icon:'🧠', title:'وظيفة التفاعل',
+            intro:'يستقبل المعلومة، يعالجها، يقرر استجابة وينفذها. المسؤولون: الحواس، والجهاز العصبي، والجهاز الحركي (الهيكل العظمي والعضلات).',
+            items:[
+                { term:'الحواس:', text:'تستقبل معلومات من البيئة المحيطة: البصر والسمع والشم والذوق واللمس.' },
+                { term:'الجهاز العصبي:', text:'ينقل المعلومة ويقرر الاستجابة.' },
+                { term:'الجهاز الحركي:', text:'يتيح القيام بالحركات (الهيكل العظمي والعضلات).' }
+            ]
+        },
+        {
+            cls:'media-acc', icon:'👶', title:'وظيفة التكاثر',
+            intro:'تتيح إنجاب الأبناء. يتكون من الجهاز التناسلي الذكري والأنثوي.',
+            items:[
+                { term:'الجهاز التناسلي الذكري والأنثوي:', text:'يتيحان إنجاب الأبناء.' }
+            ]
+        }
     ]
 };
 
@@ -485,6 +513,16 @@ const game1Data = {
         { id:5, term:'Nervous system', def:'Transmits information and decides a response' },
         { id:6, term:'Locomotor system', def:'Allows movement using muscles and skeleton' },
         { id:7, term:'Reproductive system', def:'Allows having offspring' }
+    ],
+    ar: [
+        { id:0, term:'الجهاز الهضمي', def:'يستخلص العناصر الغذائية من الطعام' },
+        { id:1, term:'الجهاز التنفسي', def:'يستمد الأكسجين ويطرد <span style="white-space:nowrap">CO<sub style="font-size: 0.6em;">2</sub></span>' },
+        { id:2, term:'الجهاز الدوري', def:'ينقل العناصر الغذائية ويجمع الفضلات' },
+        { id:3, term:'الجهاز الإخراجي', def:'يزيل فضلات الجسم' },
+        { id:4, term:'الحواس', def:'تستقبل معلومات من البيئة المحيطة' },
+        { id:5, term:'الجهاز العصبي', def:'ينقل المعلومة ويقرر الاستجابة' },
+        { id:6, term:'الجهاز الحركي', def:'يتيح الحركة بالعضلات والهيكل العظمي' },
+        { id:7, term:'الجهاز التناسلي', def:'يتيح إنجاب الأبناء' }
     ]
 };
 const game1TotalPairs = 8;
@@ -518,6 +556,11 @@ const game3RoundText = {
         nutricion: 'Point to the systems or apparatuses of <span class="highlight-keyword">nutrition</span>',
         relacion: 'Point to the systems or apparatuses of <span class="highlight-keyword">relation</span>',
         reproduccion: 'Point to the systems or apparatuses of <span class="highlight-keyword">reproduction</span>'
+    },
+    ar: {
+        nutricion: 'حدد الأجهزة أو الأنظمة المرتبطة بـ<span class="highlight-keyword">التغذية</span>',
+        relacion: 'حدد الأجهزة أو الأنظمة المرتبطة بـ<span class="highlight-keyword">التفاعل</span>',
+        reproduccion: 'حدد الأجهزة أو الأنظمة المرتبطة بـ<span class="highlight-keyword">التكاثر</span>'
     }
 };
 const game3RoundSpeak = {
@@ -530,6 +573,11 @@ const game3RoundSpeak = {
         nutricion: 'Point to the systems or apparatuses of nutrition',
         relacion: 'Point to the systems or apparatuses of relation',
         reproduccion: 'Point to the systems or apparatuses of reproduction'
+    },
+    ar: {
+        nutricion: 'حدد الأجهزة أو الأنظمة المرتبطة بالتغذية',
+        relacion: 'حدد الأجهزة أو الأنظمة المرتبطة بالتفاعل',
+        reproduccion: 'حدد الأجهزة أو الأنظمة المرتبطة بالتكاثر'
     }
 };
 const game3TotalItems = 8; // 4 (nutrición) + 3 (relación) + 1 (reproducción)
@@ -559,6 +607,17 @@ const game4Data = {
         { text:'Locomotor system', type:'relacion' },
         { text:'Male reproductive system', type:'reproduccion' },
         { text:'Female reproductive system', type:'reproduccion' }
+    ],
+    ar: [
+        { text:'الجهاز الهضمي', type:'nutricion' },
+        { text:'الجهاز التنفسي', type:'nutricion' },
+        { text:'الجهاز الدوري', type:'nutricion' },
+        { text:'الجهاز الإخراجي', type:'nutricion' },
+        { text:'الحواس', type:'relacion' },
+        { text:'الجهاز العصبي', type:'relacion' },
+        { text:'الجهاز الحركي', type:'relacion' },
+        { text:'الجهاز التناسلي الذكري', type:'reproduccion' },
+        { text:'الجهاز التناسلي الأنثوي', type:'reproduccion' }
     ]
 };
 const game4TotalItems = 9;
@@ -632,6 +691,39 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الوظائف الحيوية وأجهزة الجسم',
+        startSubtitle: 'تقوم جميع الكائنات الحية بالوظائف الحيوية الثلاث',
+        startAdvice: 'الوظائف الحيوية تضمن الحياة. وهي <span class="highlight-keyword">التغذية</span> و<span class="highlight-keyword">التفاعل</span> و<span class="highlight-keyword">التكاثر</span>. ننجز الوظائف الحيوية بفضل أجهزة الجسم وأنظمته.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الوظائف الحيوية الثلاث عند الإنسان',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'الوظائف والأجهزة',
+        game1Subtitle: 'اربط كل جهاز بوظيفته',
+        game3Title: 'حدد أجهزة وأنظمة كل وظيفة حيوية',
+        game4Title: 'اربط كل جهاز بالوظيفة الحيوية المقابلة',
+        boxNutricionTitle: 'التغذية',
+        boxRelacionTitle: 'التفاعل',
+        boxReproduccionTitle: 'التكاثر',
+        checkBtn: 'تحقق',
+        finalTitle: 'الوظائف الحيوية وأجهزة الجسم',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -734,6 +826,20 @@ function getBestSpanishVoice() {
     } catch(e) { return null; }
 }
 
+function getBestArabicVoice() {
+    try {
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices.length) return null;
+        const prefer = ['Google', 'Natural', 'Microsoft'];
+        for (let p of prefer) {
+            for (let v of voices) {
+                if (v.name.includes(p) && v.lang.startsWith('ar')) return v;
+            }
+        }
+        return voices.find(v => v.lang.startsWith('ar')) || voices[0];
+    } catch(e) { return null; }
+}
+
 function speakInCurrentLang(text) {
     safeCancelSpeech();
     if (isMuted) return;
@@ -742,6 +848,9 @@ function speakInCurrentLang(text) {
         if (currentLang === 'en') {
             u.lang = 'en-GB';
             u.voice = getBestEnglishVoice();
+        } else if (currentLang === 'ar') {
+            u.lang = 'ar-SA';
+            u.voice = getBestArabicVoice();
         } else {
             u.lang = 'es-ES';
             u.voice = getBestSpanishVoice();

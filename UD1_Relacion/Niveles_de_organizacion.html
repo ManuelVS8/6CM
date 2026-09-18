@@ -23,7 +23,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -249,6 +249,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -425,6 +426,13 @@ const accordionData = {
         { icon:'❤️', cls:'metals-acc', dot:'🟠', title:'Organs', text:'Group of several tissues that carry out a task (rooms).' },
         { icon:'🫁', cls:'antigua-acc', dot:'🟣', title:'Systems', text:'Group of organs that carry out a vital function (house).' },
         { icon:'🧑', cls:'media-acc', dot:'🔵', title:'Organism', text:'A complete living being (block of houses).' }
+    ],
+    ar: [
+        { icon:'🔬', cls:'paleo-acc', dot:'🔴', title:'الخلية', text:'الوحدة الأصغر التي تتكون منها الكائنات الحية (الطوب).' },
+        { icon:'🧬', cls:'neo-acc', dot:'🟢', title:'الأنسجة', text:'اتحاد خلايا تؤدي نفس الوظيفة (الجدران).' },
+        { icon:'❤️', cls:'metals-acc', dot:'🟠', title:'الأعضاء', text:'اتحاد عدة أنسجة تؤدي مهمة معينة (الغرف).' },
+        { icon:'🫁', cls:'antigua-acc', dot:'🟣', title:'الأجهزة', text:'مجموعة أعضاء تؤدي وظيفة حيوية (المسكن).' },
+        { icon:'🧑', cls:'media-acc', dot:'🔵', title:'الكائن الحي', text:'كائن حي كامل (مجمع سكني).' }
     ]
 };
 
@@ -445,6 +453,13 @@ const game1Data = {
         { id:2, term:'Organs', def:'Group of several tissues that carry out a task' },
         { id:3, term:'Systems', def:'Group of organs that carry out a vital function' },
         { id:4, term:'Organism', def:'A complete living being' }
+    ],
+    ar: [
+        { id:0, term:'الخلية', def:'الوحدة الأصغر التي تتكون منها الكائنات الحية' },
+        { id:1, term:'الأنسجة', def:'اتحاد خلايا تؤدي نفس الوظيفة' },
+        { id:2, term:'الأعضاء', def:'اتحاد عدة أنسجة تؤدي مهمة معينة' },
+        { id:3, term:'الأجهزة', def:'مجموعة من الأعضاء تؤدي وظيفة حيوية' },
+        { id:4, term:'الكائن الحي', def:'كائن حي كامل' }
     ]
 };
 const game1TotalPairs = 5;
@@ -466,6 +481,13 @@ const game2Data = {
         { text:'3. Organs: group of several {tissues} that carry out a task.', blanks:['tissues'] },
         { text:'4. Systems: group of {organs} that carry out a {vital function}.', blanks:['organs','vital function'] },
         { text:'5. Organism: a complete {living being}.', blanks:['living being'] }
+    ],
+    ar: [
+        { text:'1. الخلية: الوحدة الأصغر التي تتكون منها {الكائنات الحية}.', blanks:['الكائنات الحية'] },
+        { text:'2. الأنسجة: اتحاد {خلايا} تؤدي نفس الوظيفة.', blanks:['خلايا'] },
+        { text:'3. الأعضاء: اتحاد عدة {أنسجة} تؤدي مهمة معينة.', blanks:['أنسجة'] },
+        { text:'4. الأجهزة: مجموعة من {أعضاء} تؤدي {وظيفة حيوية}.', blanks:['أعضاء','وظيفة حيوية'] },
+        { text:'5. الكائن الحي: {كائن حي} كامل.', blanks:['كائن حي'] }
     ]
 };
 
@@ -490,7 +512,8 @@ const game3TotalPairs = hotspotData.length;
 ===================================================== */
 const game4Data = {
     es: ['Célula', 'Tejido', 'Órganos', 'Sistemas', 'Organismo'],
-    en: ['Cell', 'Tissue', 'Organs', 'Systems', 'Organism']
+    en: ['Cell', 'Tissue', 'Organs', 'Systems', 'Organism'],
+    ar: ['الخلية', 'النسيج', 'الأعضاء', 'الأجهزة', 'الكائن الحي']
 };
 
 /* ====================================================
@@ -562,6 +585,39 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'مستويات التنظيم',
+        startSubtitle: 'مستويات تنظيم الكائن البشري',
+        startAdvice: 'يتكون جسم الإنسان من <span class="highlight-keyword">خلايا</span> تتجمع في مستويات: <span class="highlight-keyword">الخلايا</span>، و<span class="highlight-keyword">الأنسجة</span>، و<span class="highlight-keyword">الأعضاء</span>، و<span class="highlight-keyword">الأجهزة</span> و<span class="highlight-keyword">الكائن الحي</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'مستويات التنظيم',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'مستويات التنظيم',
+        game1Subtitle: 'اربط كل مستوى بتعريفه',
+        game2Title: 'أكمل النص',
+        game2Subtitle: 'اسحب أو انقر على الكلمات لملء الفراغات',
+        game4Title: 'رتب مستويات التنظيم',
+        game4Subtitle: 'من الأصغر إلى الأكبر',
+        checkBtn: 'تحقق',
+        continueGameBtn: 'متابعة',
+        finalTitle: 'مستويات التنظيم',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -638,7 +694,7 @@ function getBestVoice(lang) {
     try {
         const voices = window.speechSynthesis.getVoices();
         if (!voices.length) return null;
-        const prefer = lang === 'es' ? ['Google español', 'Natural', 'Microsoft'] : ['Google UK', 'Natural', 'Microsoft'];
+        const prefer = lang === 'es' ? ['Google español', 'Natural', 'Microsoft'] : lang === 'ar' ? ['Google العربية', 'Natural', 'Microsoft'] : ['Google UK', 'Natural', 'Microsoft'];
         for (let p of prefer) {
             for (let v of voices) {
                 if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -658,7 +714,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.85;
         window.speechSynthesis.speak(u);

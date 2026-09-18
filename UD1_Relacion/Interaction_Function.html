@@ -22,7 +22,7 @@
     --panel:#E8EAFF;
 }
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
     background:linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
     min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
     padding:20px 12px; color:#333;
@@ -202,6 +202,7 @@ h1 { color:var(--blue-dark); font-size:clamp(1.6rem,4.5vw,2.6rem); font-weight:9
         <div class="lang-pill hidden" id="langPill">
             <button id="btnLangEn" class="active-lang" title="English" onclick="setSummaryLang('en')">🇬🇧</button>
             <button id="btnLangEs" title="Español" onclick="setSummaryLang('es')">🇪🇸</button>
+            <button id="btnLangAr" title="العربية" onclick="setSummaryLang('ar')">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Mute/unmute sound" onclick="toggleSound()">
             <svg id="muteSvg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -386,6 +387,16 @@ const summaryI18n = {
             'La respuesta viaja a través de los nervios motores hasta el aparato locomotor.',
             'Respondemos utilizando nuestro aparato locomotor: músculos y huesos.'
         ]
+    },
+    ar: {
+        title: 'كيف تعمل وظيفة التفاعل؟',
+        steps: [
+            'نستقبل المعلومات عن طريق الحواس.',
+            'تنتقل المعلومة عبر الأعصاب الحسية إلى الجهاز العصبي المركزي.',
+            'يعالج الجهاز العصبي المركزي المعلومة وينتج استجابة.',
+            'تنتقل الاستجابة عبر الأعصاب الحركية إلى الجهاز الحركي.',
+            'نستجيب باستخدام جهازنا الحركي: العضلات والعظام.'
+        ]
     }
 };
 
@@ -393,6 +404,7 @@ function setSummaryLang(lang) {
     summaryLang = lang;
     document.getElementById('btnLangEn').classList.toggle('active-lang', lang === 'en');
     document.getElementById('btnLangEs').classList.toggle('active-lang', lang === 'es');
+    document.getElementById('btnLangAr').classList.toggle('active-lang', lang === 'ar');
     const t = summaryI18n[lang];
     document.getElementById('summaryTitle').textContent = t.title;
     document.getElementById('theoryTitle').textContent = t.title;

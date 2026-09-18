@@ -22,7 +22,7 @@
             --panel:#E8EAFF;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Noto Sans Arabic', sans-serif;
             background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
             padding:20px 12px; color:#333;
@@ -159,6 +159,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -328,6 +329,13 @@ const game1Labels = {
         intercostales: "Intercostals", gluteo: "Glutes", bicepsfemoral: "Biceps femoris",
         gemelos: "Calves", orbicular: "Orbicularis oculi", pectoral: "Pectoral",
         biceps: "Biceps", abdominales: "Abdominals", cuadriceps: "Quadriceps", tibial: "Tibialis"
+    },
+    ar: {
+        masetero: "العضلة الماضغة", esterno: "العضلة القصية الترقوية الخشائية", trapecios: "العضلة شبه المنحرفة",
+        deltoides: "العضلة الدالية", triceps: "العضلة ثلاثية الرؤوس", dorsales: "العضلة الظهرية العريضة",
+        intercostales: "العضلات الوربية", gluteo: "العضلات الألوية", bicepsfemoral: "العضلة ذات الرأسين الفخذية",
+        gemelos: "عضلات الساق", orbicular: "العضلة الدائرية للعين", pectoral: "العضلة الصدرية",
+        biceps: "العضلة ذات الرأسين", abdominales: "عضلات البطن", cuadriceps: "العضلة رباعية الرؤوس", tibial: "العضلة الظنبوبية"
     }
 };
 
@@ -343,7 +351,8 @@ const game2BoxOrder = ['musculo', 'tendon', 'hueso'];
 
 const game2Labels = {
     es: { musculo: "Músculo", tendon: "Tendón", hueso: "Hueso" },
-    en: { musculo: "Muscle", tendon: "Tendon", hueso: "Bone" }
+    en: { musculo: "Muscle", tendon: "Tendon", hueso: "Bone" },
+    ar: { musculo: "العضلة", tendon: "الوتر", hueso: "العظم" }
 };
 
 /* ====================================================
@@ -401,6 +410,32 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الجهاز العضلي',
+        startSubtitle: 'عضلات الجسم',
+        startAdvice: 'راجع وتعلم أهم <span class="highlight-keyword">العضلات</span> التي يتكون منها <span class="highlight-keyword">جهازنا العضلي</span><br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'حدد عضلات الجسم.',
+        game2Title: 'العضلات والحركة.',
+        game2ExplainText: 'تتيح العضلات الحركة من خلال الانقباض وشد العظام عبر الأوتار.',
+        finalTitle: 'عضلات الجسم',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى إدخال الاسم واللقب',
+        msgPerfect: 'رائع جدًا! نتيجة كاملة!',
+        msg80: 'اقتربت من النجاح. واصل التدريب!',
+        msg50: 'لم يحن الوقت بعد؛ ما زال بإمكانك تحسين نتيجتك',
+        msg0: 'يا للكارثة... هل ذاكرت حقًا؟'
     }
 };
 
@@ -452,7 +487,7 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : lang === 'ar' ? ['Google العربية','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -466,7 +501,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
