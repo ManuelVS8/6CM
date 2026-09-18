@@ -243,6 +243,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -459,6 +460,14 @@ const game1Data = {
         { term:"Luster", def:"The way a mineral reflects light" },
         { term:"Colour", def:"The shade minerals show when observed" },
         { term:"Shape", def:"The appearance a mineral has" }
+    ],
+    ar: [
+        { term:"المعدن", def:"مادة صلبة أحادية المكوّن تتكوّن في الطبيعة" },
+        { term:"الصلابة", def:"مدى صعوبة خدش المعدن" },
+        { term:"موس", def:"اسم عائلة الجيولوجي الذي ابتكر مقياس الصلابة" },
+        { term:"البريق", def:"الطريقة التي يعكس بها المعدن الضوء" },
+        { term:"اللون", def:"الدرجة اللونية التي تظهر عليها المعادن عند مشاهدتها" },
+        { term:"الشكل", def:"المظهر الذي يبدو عليه المعدن" }
     ]
 };
 
@@ -479,6 +488,13 @@ const game2Text = {
         { type:'li', text:'Luster: The way a mineral reflects {light}.' },
         { type:'li', text:'Colour: The {shade} minerals show when observed.' },
         { type:'li', text:'Shape: The {appearance} a mineral has. It can be geometric or {irregular}.' }
+    ],
+    ar: [
+        { type:'p', text:'المعادن هي مواد {صلبة} تتكوّن في {الطبيعة}. ويمكننا التعرّف عليها من خلال:' },
+        { type:'li', text:'الصلابة: مدى صعوبة {خدش} المعدن. ولقياس الصلابة نستخدم مقياس {موس}.' },
+        { type:'li', text:'البريق: الطريقة التي يعكس بها المعدن {الضوء}.' },
+        { type:'li', text:'اللون: {الدرجة اللونية} التي تظهر عليها المعادن عند مشاهدتها.' },
+        { type:'li', text:'الشكل: {المظهر} الذي يبدو عليه المعدن. يمكن أن يكون هندسيًا أو ذا شكل {غير منتظم}.' }
     ]
 };
 
@@ -501,6 +517,14 @@ const game3Data = {
         { term:"Plutonic rocks", def:"Igneous rocks formed inside the crust" },
         { term:"Volcanic rocks", def:"Igneous rocks formed on the surface" },
         { term:"Metamorphic rocks", def:"Formed due to heat and pressure" }
+    ],
+    ar: [
+        { term:"الصخر", def:"مادة صلبة طبيعية تتكوّن من معادن" },
+        { term:"الصخور الرسوبية", def:"تتكوّن من تراكم الرواسب" },
+        { term:"الصخور النارية", def:"تتكوّن من تبرّد وتصلّب الصهارة أو الحمم البركانية" },
+        { term:"الصخور الجوفية", def:"صخور نارية تتكوّن داخل القشرة الأرضية" },
+        { term:"الصخور البركانية", def:"صخور نارية تتكوّن على السطح" },
+        { term:"الصخور المتحولة", def:"تتكوّن بسبب الحرارة والضغط" }
     ]
 };
 
@@ -523,6 +547,14 @@ const game4Text = {
         { type:'sub-li', text:'{Plutonic} rocks: They form inside the {crust}.' },
         { type:'sub-li', text:'{Volcanic} rocks: They form from the cooling of lava on the surface.' },
         { type:'li', text:'{Metamorphic} rocks: A rock changes into another type of rock due to {heat and pressure}.' }
+    ],
+    ar: [
+        { type:'p', text:'تتكوّن الصخور من {معادن}. وتُصنَّف إلى ثلاث مجموعات حسب منشئها:' },
+        { type:'li', text:'الصخور الرسوبية: تتراكم {الرواسب} المنقولة وتتكوّن منها الصخور.' },
+        { type:'li', text:'الصخور النارية: تتكوّن عندما {تتصلّب} الصهارة أو الحمم البركانية. ويوجد نوعان:' },
+        { type:'sub-li', text:'الصخور {الجوفية}: تتكوّن داخل {القشرة} الأرضية.' },
+        { type:'sub-li', text:'الصخور {البركانية}: تتكوّن من تبرّد الحمم على السطح.' },
+        { type:'li', text:'الصخور {المتحولة}: تتحوّل الصخرة إلى نوع آخر من الصخور بسبب {الحرارة والضغط}.' }
     ]
 };
 
@@ -549,6 +581,16 @@ const game5Data = {
         { text:"Basalt", type:"roca" },
         { text:"Marble", type:"roca" },
         { text:"Sandstone", type:"roca" }
+    ],
+    ar: [
+        { text:"الكوارتز", type:"mineral" },
+        { text:"الماس", type:"mineral" },
+        { text:"التلك", type:"mineral" },
+        { text:"الياقوت الأحمر", type:"mineral" },
+        { text:"الجرانيت", type:"roca" },
+        { text:"البازلت", type:"roca" },
+        { text:"الرخام", type:"roca" },
+        { text:"الحجر الرملي", type:"roca" }
     ]
 };
 
@@ -572,6 +614,15 @@ const summary1Data = {
             { heading: "Luster", items: [ { term:null, def:"The way a mineral reflects light: metallic (silver), glassy (quartz) or dull, with no shine (talc)." } ] },
             { heading: "Colour", items: [ { term:null, def:"The shade minerals show when observed (sulphur – yellow, ruby – red)." } ] },
             { heading: "Shape", items: [ { term:null, def:"The appearance a mineral has. It can have a geometric shape, like crystals (quartz), or an irregular shape (gold)." } ] }
+        ]
+    },
+    ar: {
+        intro: "المعادن مواد صلبة تتكوّن في الطبيعة، وتتكوّن من نوع واحد من المادة. يمكننا التعرّف على المعادن بناءً على خصائصها:",
+        blocks: [
+            { heading: "الصلابة", items: [ { term:null, def:"مدى صعوبة خدش المعدن (الجبس – لين، الماس – صلب). ولقياس الصلابة نستخدم مقياس موس." } ] },
+            { heading: "البريق", items: [ { term:null, def:"الطريقة التي يعكس بها المعدن الضوء: معدني (الفضة)، أو زجاجي (الكوارتز)، أو باهت بلا لمعان (التلك)." } ] },
+            { heading: "اللون", items: [ { term:null, def:"الدرجة اللونية التي تظهر عليها المعادن عند مشاهدتها (الكبريت – أصفر، الياقوت الأحمر – أحمر)." } ] },
+            { heading: "الشكل", items: [ { term:null, def:"المظهر الذي يبدو عليه المعدن. قد يكون له شكل هندسي كالبلورات (الكوارتز)، أو شكل غير منتظم (الذهب)." } ] }
         ]
     }
 };
@@ -611,6 +662,23 @@ const summary2Data = {
             ]},
             { heading: "Metamorphic rocks", items: [
                 { term:null, def:"A rock changes into another type of rock due to heat and pressure. For example, limestone can turn into marble." }
+            ]}
+        ]
+    },
+    ar: {
+        intro: "تتكوّن الصخور من معادن. وتُصنَّف إلى ثلاث مجموعات حسب منشئها:",
+        blocks: [
+            { heading: "الصخور الرسوبية", items: [
+                { term:null, def:"تتراكم الرواسب التي تنقلها الأنهار أو الأنهار الجليدية أو الرياح وتتكوّن منها الصخور (الحجر الرملي)." }
+            ]},
+            { heading: "الصخور النارية", items: [
+                { term:null, def:"تتكوّن عندما تتصلّب الصهارة أو الحمم البركانية. ويوجد نوعان:", subitems:[
+                    "الصخور الجوفية: تتكوّن داخل القشرة الأرضية (الجرانيت).",
+                    "الصخور البركانية: تتكوّن من تبرّد الحمم على السطح (البازلت)."
+                ]}
+            ]},
+            { heading: "الصخور المتحولة", items: [
+                { term:null, def:"تتحوّل الصخرة إلى نوع آخر من الصخور بسبب الحرارة والضغط. فعلى سبيل المثال، يمكن أن يتحوّل الحجر الجيري إلى رخام." }
             ]}
         ]
     }
@@ -689,6 +757,41 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'المعادن والصخور',
+        startSubtitle: 'ميّز بين المعادن والصخور',
+        startAdvice: 'تعلّم خصائص <span class="highlight-keyword">المعادن</span> وكيفية تكوّن أنواع <span class="highlight-keyword">الصخور</span> المختلفة',
+        startBtn: 'ابدأ',
+        summary1Title: 'المعادن',
+        summary2Title: 'الصخور',
+        continueBtn: 'متابعة',
+        infografiaText: 'عرض الإنفوجرافيك',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'المعادن',
+        game2Title: 'المعادن',
+        game3Title: 'الصخور',
+        game4Title: 'الصخور',
+        game5Title: 'صنّف المعادن والصخور',
+        boxMineralesTitle: 'المعادن',
+        boxRocasTitle: 'الصخور',
+        checkBtn: 'تحقّق',
+        finalTitle: 'المعادن والصخور',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟'
     }
 };
 
@@ -901,7 +1004,7 @@ function shuffleArray(arr) {
 function highlightKeywords(text, keywords) {
     const sorted = [...keywords].sort((a,b) => b.length - a.length);
     const pattern = sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}])(${pattern})(?![\\p{L}\\p{N}])`, 'giu');
     return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
 }
 
@@ -937,6 +1040,8 @@ function buildSummary1() {
     if (!container) return;
     const keywords = currentLang === 'es'
         ? ['dureza', 'brillo', 'color', 'forma', 'minerales', 'mohs']
+        : currentLang === 'ar'
+        ? ['الصلابة', 'البريق', 'اللون', 'الشكل', 'المعادن', 'موس']
         : ['hardness', 'luster', 'colour', 'shape', 'minerals', 'mohs'];
     container.innerHTML = renderSummaryBlocks(summary1Data[currentLang], keywords);
 }
@@ -946,6 +1051,8 @@ function buildSummary2() {
     if (!container) return;
     const keywords = currentLang === 'es'
         ? ['rocas sedimentarias', 'rocas ígneas', 'rocas metamórficas', 'rocas plutónicas', 'rocas volcánicas']
+        : currentLang === 'ar'
+        ? ['الصخور الرسوبية', 'الصخور النارية', 'الصخور المتحولة', 'الصخور الجوفية', 'الصخور البركانية']
         : ['sedimentary rocks', 'igneous rocks', 'metamorphic rocks', 'plutonic rocks', 'volcanic rocks'];
     container.innerHTML = renderSummaryBlocks(summary2Data[currentLang], keywords);
 }

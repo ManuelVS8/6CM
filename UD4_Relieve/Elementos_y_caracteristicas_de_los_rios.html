@@ -259,6 +259,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -462,6 +463,14 @@ const game1Data = {
         { term:"Riverbed", def:"Channel through which a river flows" },
         { term:"Mouth", def:"Place where a river releases its waters" },
         { term:"Tributary", def:"A river that flows into another river" }
+    ],
+    ar: [
+        { term:"النهر", def:"مجرى طبيعي من المياه العذبة" },
+        { term:"المنبع", def:"المكان الذي ينبع منه النهر" },
+        { term:"المسار", def:"المسار الذي يقطعه النهر" },
+        { term:"القناة", def:"القناة التي يجري فيها النهر" },
+        { term:"المصب", def:"المكان الذي يصب فيه النهر مياهه" },
+        { term:"الرافد", def:"نهر يصب مياهه في نهر آخر" }
     ]
 };
 
@@ -508,6 +517,23 @@ const game2Data = {
             "The slope is very gentle in this stretch.",
             "Large amounts of sediment are deposited."
         ]
+    },
+    ar: {
+        cursoAlto: [
+            "المكان الذي ينبع منه النهر.",
+            "أرض شديدة الانحدار.",
+            "تجري المياه بسرعة كبيرة وتقتلع المواد."
+        ],
+        cursoMedio: [
+            "منطقة تقع بين المجرى العلوي والمجرى السفلي.",
+            "يقل الانحدار وتتباطأ سرعة المياه.",
+            "يقل التآكل ويزداد الترسيب."
+        ],
+        cursoBajo: [
+            "هو الجزء القريب من المصب.",
+            "الانحدار خفيف جدًا في هذا الجزء.",
+            "تترسّب فيه كميات كبيرة من الرواسب."
+        ]
     }
 };
 
@@ -534,6 +560,16 @@ const game3Data = {
         { term:"River factors", def:"Elements that influence a river's characteristics." },
         { term:"Relief", def:"Factor that affects a river's length and speed." },
         { term:"Climate", def:"Factor that affects a river's flow and regime." }
+    ],
+    ar: [
+        { term:"الطول", def:"المسافة بين المنبع والمصب." },
+        { term:"التصريف", def:"كمية المياه التي يحملها النهر." },
+        { term:"النظام المائي", def:"طريقة تغيّر التصريف على مدار العام." },
+        { term:"نظام مائي منتظم", def:"يكاد تصريفه لا يتغيّر على مدار العام." },
+        { term:"نظام مائي غير منتظم", def:"يشهد تصريفه تغيّرات كبيرة على مدار العام." },
+        { term:"عوامل النهر", def:"عناصر تؤثر في خصائص النهر." },
+        { term:"التضاريس", def:"عامل يؤثر في طول النهر وسرعته." },
+        { term:"المناخ", def:"عامل يؤثر في تصريف النهر ونظامه." }
     ]
 };
 
@@ -558,6 +594,15 @@ const game4Data = {
         { text:"Flow", type:"caracteristica" },
         { text:"Length", type:"caracteristica" },
         { text:"Regime", type:"caracteristica" }
+    ],
+    ar: [
+        { text:"المنبع", type:"elemento" },
+        { text:"المسار", type:"elemento" },
+        { text:"القناة", type:"elemento" },
+        { text:"المصب", type:"elemento" },
+        { text:"التصريف", type:"caracteristica" },
+        { text:"الطول", type:"caracteristica" },
+        { text:"النظام المائي", type:"caracteristica" }
     ]
 };
 
@@ -608,6 +653,28 @@ const summary1Data = {
                 ]
             }
         ]
+    },
+    ar: {
+        blocks: [
+            {
+                heading: "الأنهار", type:'intro',
+                text: "الأنهار مجارٍ من المياه العذبة. تنبع من المناطق الجبلية، وتعبر الوديان والسهول، وتصب في البحار أو البحيرات أو في أنهار أخرى. يُسمّى النهر الذي يصب في نهر آخر رافدًا."
+            },
+            {
+                heading: "عناصر النهر", type:'list',
+                intro: "عناصر النهر هي: المنبع، والمسار، والقناة، والمصب.",
+                items: [
+                    { term:"المنبع", def:"المكان الذي ينبع منه النهر." },
+                    { term:"المسار", def:"المسار الذي يقطعه النهر من منبعه إلى مصبه. ويُميَّز فيه ثلاثة أجزاء:", subitems:[
+                        "المجرى العلوي: هو الجزء الأقرب إلى المنبع. وبسبب شدة الانحدار، تجري المياه بسرعة كبيرة وتقتلع المواد (التآكل).",
+                        "المجرى الأوسط: الجزء الواقع بين المجرى العلوي والمجرى السفلي. الانحدار فيه أقل، لذا يقل التآكل ويزداد الترسيب.",
+                        "المجرى السفلي: الجزء القريب من المصب. الانحدار فيه شبه معدوم وتترسّب فيه المواد (الترسيب)."
+                    ]},
+                    { term:"القناة", def:"القناة التي يجري فيها النهر." },
+                    { term:"المصب", def:"المكان الذي يلتقي فيه النهر بالبحر أو البحيرة أو نهر آخر." }
+                ]
+            }
+        ]
     }
 };
 
@@ -640,6 +707,20 @@ const summary2Data = {
             { heading: "Factors that influence rivers", type:'list', items: [
                 { term:"Relief", def:"factor that affects a river's length and speed." },
                 { term:"Climate", def:"factor that affects a river's flow and regime." }
+            ]}
+        ]
+    },
+    ar: {
+        blocks: [
+            { heading: "الطول", type:'list', items: [ { term:null, def:"المسافة بين المنبع والمصب." } ] },
+            { heading: "التصريف", type:'list', items: [ { term:null, def:"كمية المياه التي يحملها النهر. تُقاس بالمتر المكعب في الثانية (م³/ث)." } ] },
+            { heading: "النظام المائي", type:'list', intro:"تغيّر التصريف على مدار العام. ويمكن أن يكون:", items: [
+                { term:"نظام مائي منتظم", def:"يكاد تصريفه لا يتغيّر على مدار العام." },
+                { term:"نظام مائي غير منتظم", def:"يشهد تغيّرات كبيرة في التصريف على مدار العام." }
+            ]},
+            { heading: "العوامل المؤثرة في الأنهار", type:'list', items: [
+                { term:"التضاريس", def:"عامل يؤثر في طول النهر وسرعته." },
+                { term:"المناخ", def:"عامل يؤثر في تصريف النهر ونظامه." }
             ]}
         ]
     }
@@ -680,7 +761,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Elements and characteristics of rivers',
@@ -713,7 +795,42 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'عناصر الأنهار وخصائصها',
+        startSubtitle: 'تعلّم التمييز بين عناصر النهر وخصائصه',
+        startAdvice: 'يتميّز النهر بـ<span class="highlight-keyword">عناصره</span> (المنبع، والمسار، والقناة، والمصب) و<span class="highlight-keyword">خصائصه</span> (الطول، والتصريف، والنظام المائي).',
+        startBtn: 'ابدأ',
+        summary1Title: 'الأنهار',
+        summary2Title: 'خصائص الأنهار',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'النهر وعناصره',
+        game2Title: 'حدّد مجاري هذا النهر',
+        game3Title: 'خصائص الأنهار',
+        game4Title: 'عناصر أم خصائص النهر؟',
+        boxElementosTitle: 'العناصر: أجزاء النهر',
+        boxCaracteristicasTitle: 'الخصائص: كيف يكون النهر',
+        checkBtn: 'تحقّق',
+        finalTitle: 'عناصر الأنهار وخصائصها',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -773,7 +890,9 @@ function getBestVoice(lang) {
     let voices = [];
     try { voices = window.speechSynthesis.getVoices(); } catch(e) { voices = []; }
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -787,7 +906,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -868,6 +987,10 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW2 = document.getElementById('btnPlayWord2');
+    if (btnW2) btnW2.title = t.listenTitle;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
 
     if (currentScreen === 'summary1') {
         buildSummary1();
@@ -948,7 +1071,7 @@ function shuffleArray(arr) {
 function highlightKeywords(text, keywords) {
     const sorted = [...keywords].sort((a,b) => b.length - a.length);
     const pattern = sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}])(${pattern})(?![\\p{L}\\p{N}])`, 'giu');
     return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
 }
 
@@ -989,6 +1112,8 @@ function buildSummary1() {
     if (!container) return;
     const keywords = currentLang === 'es'
         ? ['nacimiento', 'curso alto', 'curso medio', 'curso bajo', 'curso', 'cauce', 'desembocadura', 'afluente']
+        : currentLang === 'ar'
+        ? ['المنبع', 'المجرى العلوي', 'المجرى الأوسط', 'المجرى السفلي', 'المسار', 'القناة', 'المصب', 'الرافد']
         : ['source', 'upper course', 'middle course', 'lower course', 'course', 'riverbed', 'mouth', 'tributary'];
     container.innerHTML = renderSummaryBlocks(summary1Data[currentLang], keywords);
 }
@@ -998,6 +1123,8 @@ function buildSummary2() {
     if (!container) return;
     const keywords = currentLang === 'es'
         ? ['régimen regular', 'régimen irregular', 'longitud', 'caudal', 'régimen', 'relieve', 'clima']
+        : currentLang === 'ar'
+        ? ['نظام مائي منتظم', 'نظام مائي غير منتظم', 'الطول', 'التصريف', 'النظام المائي', 'التضاريس', 'المناخ']
         : ['regular regime', 'irregular regime', 'length', 'flow', 'regime', 'relief', 'climate'];
     container.innerHTML = renderSummaryBlocks(summary2Data[currentLang], keywords);
 }

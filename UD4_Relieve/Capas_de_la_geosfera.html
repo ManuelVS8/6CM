@@ -198,6 +198,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -386,6 +387,13 @@ const game1Data = {
         { term:"Outer core", def:"Molten metals" },
         { term:"Inner core", def:"Solid metals" },
         { term:"Lithosphere", def:"Crust and upper part of the mantle" }
+    ],
+    ar: [
+        { term:"القشرة", def:"صخر صلب" },
+        { term:"الوشاح", def:"صخر في حالة لدنة" },
+        { term:"اللب الخارجي", def:"معادن منصهرة" },
+        { term:"اللب الداخلي", def:"معادن صلبة" },
+        { term:"الغلاف الصخري", def:"القشرة والجزء العلوي من الوشاح" }
     ]
 };
 
@@ -406,6 +414,13 @@ const game2Data = {
         { term:"Mantle", def:"70 – 2900 km" },
         { term:"Outer core", def:"2900 – 5100 km" },
         { term:"Inner core", def:"5100 – 6000 km" }
+    ],
+    ar: [
+        { term:"القشرة القارية", def:"1 – 70 كم" },
+        { term:"القشرة المحيطية", def:"1 – 10 كم" },
+        { term:"الوشاح", def:"70 – 2900 كم" },
+        { term:"اللب الخارجي", def:"2900 – 5100 كم" },
+        { term:"اللب الداخلي", def:"5100 – 6000 كم" }
     ]
 };
 
@@ -414,7 +429,8 @@ const game2Data = {
 ===================================================== */
 const game3Data = {
     es: { corteza:"Corteza", manto:"Manto", nucleoExterno:"Núcleo externo", nucleoInterno:"Núcleo interno" },
-    en: { corteza:"Crust", manto:"Mantle", nucleoExterno:"Outer core", nucleoInterno:"Inner core" }
+    en: { corteza:"Crust", manto:"Mantle", nucleoExterno:"Outer core", nucleoInterno:"Inner core" },
+    ar: { corteza:"القشرة", manto:"الوشاح", nucleoExterno:"اللب الخارجي", nucleoInterno:"اللب الداخلي" }
 };
 
 /* ====================================================
@@ -432,6 +448,12 @@ const game4Data = {
         manto:"Layer of rock in a plastic state",
         nucleoExterno:"Layer made of molten metals",
         nucleoInterno:"Layer made of solid metals"
+    },
+    ar: {
+        corteza:"طبقة مكوّنة من صخور صلبة",
+        manto:"طبقة من صخور في حالة لدنة",
+        nucleoExterno:"طبقة مكوّنة من معادن منصهرة",
+        nucleoInterno:"طبقة مكوّنة من معادن صلبة"
     }
 };
 
@@ -494,6 +516,34 @@ const summaryData = {
             }
         ],
         note: "Note: we call the lithosphere the part made up of the Earth's crust and the upper part of the mantle."
+    },
+    ar: {
+        intro: "الغلاف الصخري هو الطبقة الصلبة من الأرض. ويتكوّن من القشرة والوشاح واللب.",
+        blocks: [
+            {
+                heading: "القشرة",
+                items: [
+                    "تتكوّن القشرة من صخور صلبة.",
+                    "يتراوح عمق القشرة المحيطية بين 5 و10 كم، بينما يبلغ عمق القشرة القارية نحو 70 كم."
+                ]
+            },
+            {
+                heading: "الوشاح",
+                items: [
+                    "يتكوّن الوشاح من صخور صلبة في حالة لدنة.",
+                    "يقع بين عمق 70 كم و2900 كم."
+                ]
+            },
+            {
+                heading: "اللب",
+                items: [
+                    "ينقسم اللب إلى لب خارجي ولب داخلي.",
+                    "يتكوّن اللب الخارجي من معادن منصهرة، ويقع بين عمق 2900 و5100 كم.",
+                    "يتكوّن اللب الداخلي من معادن صلبة (بسبب الضغط)، ويقع بين عمق 5100 و6000 كم."
+                ]
+            }
+        ],
+        note: "ملاحظة: يُطلق اسم الغلاف الصخري على الجزء المكوّن من القشرة الأرضية والجزء العلوي من الوشاح."
     }
 };
 
@@ -528,7 +578,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Layers of the geosphere',
@@ -557,7 +608,38 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'طبقات الغلاف الصخري',
+        startSubtitle: 'تكوين طبقات الأرض',
+        startAdvice: 'الغلاف الصخري هو الطبقة الصلبة من الأرض. ويتكوّن من <span class="highlight-keyword">القشرة</span>، و<span class="highlight-keyword">الوشاح</span>، و<span class="highlight-keyword">اللب</span>.',
+        startBtn: 'ابدأ',
+        summaryTitle: 'طبقات الغلاف الصخري',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'تكوين طبقات الغلاف الصخري',
+        game2Title: 'المسافة بين طبقات الغلاف الصخري',
+        game3Title: 'حدّد طبقات الغلاف الصخري',
+        game4Title: 'ما هذه الطبقة؟',
+        finalTitle: 'طبقات الغلاف الصخري',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -617,7 +699,9 @@ function getBestVoice(lang) {
     let voices = [];
     try { voices = window.speechSynthesis.getVoices(); } catch(e) { voices = []; }
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -631,7 +715,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -706,6 +790,10 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
+    const btnW4 = document.getElementById('btnPlayWord4');
+    if (btnW4) btnW4.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();
@@ -769,7 +857,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 function highlightKeywords(text, keywords) {
     const sorted = [...keywords].sort((a,b) => b.length - a.length);
     const pattern = sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}])(${pattern})(?![\\p{L}\\p{N}])`, 'giu');
     return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
 }
 
@@ -781,6 +869,8 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['núcleo externo', 'núcleo interno', 'corteza oceánica', 'corteza continental', 'litosfera', 'corteza', 'manto', 'núcleo', 'metales fundidos', 'metales sólidos']
+        : currentLang === 'ar'
+        ? ['اللب الخارجي', 'اللب الداخلي', 'القشرة المحيطية', 'القشرة القارية', 'الغلاف الصخري', 'القشرة', 'الوشاح', 'اللب', 'معادن منصهرة', 'معادن صلبة']
         : ['outer core', 'inner core', 'oceanic crust', 'continental crust', 'lithosphere', 'crust', 'mantle', 'core', 'molten metals', 'solid metals'];
 
     const blockColors = ['block-blue', 'block-orange', 'block-yellow'];

@@ -199,6 +199,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -384,6 +385,16 @@ const game1Data = {
         { term:"Hydrosphere", def:"It is all the water on the planet" },
         { term:"Atmosphere", def:"Layer of air that surrounds the Earth" },
         { term:"Biosphere", def:"Layer where living things live" }
+    ],
+    ar: [
+        { term:"الغلاف الصخري", def:"الجزء الصلب من الكوكب" },
+        { term:"القشرة", def:"طبقة مكوّنة من صخر صلب" },
+        { term:"الوشاح", def:"طبقة من الصخر في حالة لدنة" },
+        { term:"اللب الخارجي", def:"طبقة من المعادن المنصهرة" },
+        { term:"اللب الداخلي", def:"طبقة من المعادن الصلبة" },
+        { term:"الغلاف المائي", def:"هو كل الماء الموجود في الكوكب" },
+        { term:"الغلاف الجوي", def:"طبقة من الهواء تحيط بالأرض" },
+        { term:"الغلاف الحيوي", def:"الطبقة التي تعيش فيها الكائنات الحية" }
     ]
 };
 
@@ -416,6 +427,15 @@ const game3Data = {
         hydrosphere:"It is all the water on Earth",
         biosphere:"The layer of the Earth where living things live",
         atmosphere:"The layer of gases that surrounds the Earth"
+    },
+    ar: {
+        crust:"طبقة مكوّنة من صخور في حالة صلبة",
+        mantle:"طبقة مكوّنة من صخور في حالة لدنة",
+        outerCore:"طبقة مكوّنة من معادن منصهرة",
+        innerCore:"طبقة مكوّنة من معادن صلبة",
+        hydrosphere:"هو مجموع كل الماء الموجود على الأرض",
+        biosphere:"طبقة من الأرض تعيش فيها الكائنات الحية",
+        atmosphere:"طبقة من الغازات تحيط بالأرض"
     }
 };
 
@@ -490,6 +510,40 @@ const summaryData = {
                 ]
             }
         ]
+    },
+    ar: {
+        blocks: [
+            {
+                heading: "الغلاف الصخري",
+                intro: "هو الجزء الصلب من الكوكب. ويتكوّن من ثلاث طبقات:",
+                items: [
+                    { text:"القشرة: طبقة مكوّنة من صخر صلب." },
+                    { text:"الوشاح: طبقة مكوّنة من صخر في حالة لدنة." },
+                    { text:"اللب: هو الطبقة الأعمق. ويمكن تمييز جزأين فيه:", subitems:[
+                        "اللب الخارجي: يتكوّن من معادن منصهرة.",
+                        "اللب الداخلي: يتكوّن من معادن صلبة."
+                    ]}
+                ]
+            },
+            {
+                heading: "الغلاف المائي",
+                items: [
+                    { text:"هو كل الماء الموجود في الكوكب. ويمكن أن يكون في حالة صلبة أو سائلة أو غازية." }
+                ]
+            },
+            {
+                heading: "الغلاف الجوي",
+                items: [
+                    { text:"هو طبقة الهواء التي تحيط بالأرض." }
+                ]
+            },
+            {
+                heading: "الغلاف الحيوي",
+                items: [
+                    { text:"طبقة من الأرض تعيش فيها الكائنات الحية." }
+                ]
+            }
+        ]
     }
 };
 
@@ -522,7 +576,9 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        game2Title: 'Point the Earth layers',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Layers of the Earth',
@@ -549,7 +605,38 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        game2Title: 'Point the Earth layers',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'طبقات الأرض',
+        startSubtitle: 'يمكننا تمييز طبقات مختلفة حسب تكوينها ووظيفتها.',
+        startAdvice: 'طبقات الأرض هي <span class="highlight-keyword">الغلاف الصخري</span> (الطبقة الصلبة)، و<span class="highlight-keyword">الغلاف المائي</span> (طبقة الماء)، و<span class="highlight-keyword">الغلاف الجوي</span> (طبقة الهواء)، و<span class="highlight-keyword">الغلاف الحيوي</span> (الطبقة التي تعيش فيها الكائنات الحية).',
+        startBtn: 'ابدأ',
+        summaryTitle: 'طبقات الأرض',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'تكوين طبقات الغلاف الصخري',
+        game3Title: 'حدّد طبقات الأرض',
+        finalTitle: 'طبقات الأرض',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        game2Title: 'أشر إلى طبقات الأرض',
+        listenTitle: 'استماع'
     }
 };
 
@@ -606,7 +693,9 @@ function getBestVoice(lang) {
     let voices = [];
     try { voices = window.speechSynthesis.getVoices(); } catch(e) { voices = []; }
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -620,7 +709,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -676,7 +765,12 @@ function applyLanguage(lang) {
     document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
     document.getElementById('continueBtn').innerHTML = t.continueBtn;
     document.getElementById('game1Title').innerHTML = t.game1Title;
-    // game2Title NO se traduce: la Pantalla de Juego 2 está fijada en inglés (notranslate)
+    const g2Title = document.getElementById('game2Title');
+    if (g2Title) g2Title.innerHTML = t.game2Title;
+    const g2Listen = document.getElementById('btnPlayWord2');
+    if (g2Listen) g2Listen.title = t.listenTitle;
+    const g3Listen = document.getElementById('btnPlayWord3');
+    if (g3Listen) g3Listen.title = t.listenTitle;
     document.getElementById('game3Title').innerHTML = t.game3Title;
     document.getElementById('finalTitle').innerHTML = t.finalTitle;
     document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
@@ -749,7 +843,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 function highlightKeywords(text, keywords) {
     const sorted = [...keywords].sort((a,b) => b.length - a.length);
     const pattern = sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}])(${pattern})(?![\\p{L}\\p{N}])`, 'giu');
     return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
 }
 
@@ -761,6 +855,8 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['núcleo externo', 'núcleo interno', 'geosfera', 'hidrosfera', 'atmósfera', 'biosfera', 'corteza', 'manto', 'núcleo']
+        : currentLang === 'ar'
+        ? ['اللب الخارجي', 'اللب الداخلي', 'الغلاف الصخري', 'الغلاف المائي', 'الغلاف الجوي', 'الغلاف الحيوي', 'القشرة', 'الوشاح', 'اللب']
         : ['outer core', 'inner core', 'geosphere', 'hydrosphere', 'atmosphere', 'biosphere', 'crust', 'mantle', 'core'];
 
     const blockColors = ['block-blue', 'block-orange', 'block-yellow'];

@@ -235,6 +235,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -493,6 +494,16 @@ const game1Data = {
         { text:"Folds", type:"interno" },
         { text:"Earthquakes", type:"interno" },
         { text:"Volcanoes", type:"interno" }
+    ],
+    ar: [
+        { text:"التجوية", type:"externo" },
+        { text:"التعرية", type:"externo" },
+        { text:"النقل", type:"externo" },
+        { text:"الترسيب", type:"externo" },
+        { text:"الصدوع", type:"interno" },
+        { text:"الطيات", type:"interno" },
+        { text:"الزلازل", type:"interno" },
+        { text:"البراكين", type:"interno" }
     ]
 };
 
@@ -509,7 +520,8 @@ const gridOrder = ['fallas', 'plegamientos', 'volcanes', 'terremoto'];
 
 const game2Data = {
     es: { fallas:"Fallas", plegamientos:"Plegamientos", volcanes:"Volcanes", terremoto:"Terremoto" },
-    en: { fallas:"Faults", plegamientos:"Folds", volcanes:"Volcanoes", terremoto:"Earthquake" }
+    en: { fallas:"Faults", plegamientos:"Folds", volcanes:"Volcanoes", terremoto:"Earthquake" },
+    ar: { fallas:"الصدوع", plegamientos:"الطيات", volcanes:"البراكين", terremoto:"الزلزال" }
 };
 
 const game3Data = {
@@ -524,6 +536,12 @@ const game3Data = {
         plegamientos:"They are deformations of the crust caused by the pressure of internal forces",
         volcanes:"Openings in the Earth's crust where lava comes out",
         terremoto:"Sudden and violent movements of the Earth's crust"
+    },
+    ar: {
+        fallas:"هي تصدّعات في الصفائح بسبب القوى الموجودة داخل الأرض",
+        plegamientos:"هي تشوّهات في القشرة الأرضية ناتجة عن ضغط القوى الداخلية",
+        volcanes:"فتحات في القشرة الأرضية يخرج منها الحمم البركانية",
+        terremoto:"حركات مفاجئة وعنيفة في القشرة الأرضية"
     }
 };
 
@@ -540,7 +558,8 @@ const volcanoOrder = ['chimenea', 'lava', 'crater', 'camara'];
 
 const game4Data = {
     es: { chimenea:"Chimenea", lava:"Lava", crater:"Cráter", camara:"Cámara magmática" },
-    en: { chimenea:"Chimney", lava:"Lava", crater:"Crater", camara:"Magma chamber" }
+    en: { chimenea:"Chimney", lava:"Lava", crater:"Crater", camara:"Magma chamber" },
+    ar: { chimenea:"المدخنة", lava:"الحمم البركانية", crater:"الفوهة", camara:"غرفة الصهارة" }
 };
 
 /* ====================================================
@@ -556,7 +575,8 @@ const externosOrder = ['meteorizacion', 'erosion', 'transporte', 'sedimentacion'
 
 const game5Data = {
     es: { meteorizacion:"Meteorización", erosion:"Erosión", transporte:"Transporte", sedimentacion:"Sedimentación" },
-    en: { meteorizacion:"Weathering", erosion:"Erosion", transporte:"Transport", sedimentacion:"Sedimentation" }
+    en: { meteorizacion:"Weathering", erosion:"Erosion", transporte:"Transport", sedimentacion:"Sedimentation" },
+    ar: { meteorizacion:"التجوية", erosion:"التعرية", transporte:"النقل", sedimentacion:"الترسيب" }
 };
 
 const game6Data = {
@@ -571,6 +591,12 @@ const game6Data = {
         erosion:"Materials dragged by water and wind wear away the surface",
         transporte:"Water and wind carry the torn-off materials to other places",
         sedimentacion:"The transported materials are deposited and build up in low areas"
+    },
+    ar: {
+        meteorizacion:"يؤدي المناخ والكائنات الحية إلى تفتيت الصخور إلى قطع صغيرة",
+        erosion:"تؤدي المواد التي يجرفها الماء والريح إلى تآكل السطح",
+        transporte:"ينقل الماء والريح المواد المقتلعة إلى أماكن أخرى",
+        sedimentacion:"تترسّب المواد المنقولة وتتراكم في المناطق المنخفضة"
     }
 };
 
@@ -621,6 +647,28 @@ const summaryData = {
                 ]
             }
         ]
+    },
+    ar: {
+        intro: "التضاريس هي شكل سطح القشرة الأرضية. وتتشكّل التضاريس بفعل عمليتين:",
+        blocks: [
+            {
+                heading: "العمليات الخارجية (على القشرة)",
+                items: [
+                    { term:"التجوية", def:"يؤدي المناخ والكائنات الحية إلى تفتيت الصخور إلى قطع صغيرة." },
+                    { term:"التعرية", def:"تؤدي المواد التي يجرفها الماء والريح إلى تآكل السطح." },
+                    { term:"النقل", def:"ينقل الماء والريح المواد المقتلعة إلى أماكن أخرى." },
+                    { term:"الترسيب", def:"تترسّب المواد المنقولة وتتراكم في المناطق المنخفضة." }
+                ]
+            },
+            {
+                heading: "العمليات الداخلية (تحت القشرة)",
+                items: [
+                    { term:"حركات الصفائح الصخرية", def:"الصدوع (تصدّع الصفائح) والطيات (انحناء القشرة)." },
+                    { term:"الزلازل", def:"حركات سريعة ومفاجئة في القشرة." },
+                    { term:"البراكين", def:"يخرج فيها الصهارة إلى خارج القشرة." }
+                ]
+            }
+        ]
     }
 };
 
@@ -662,7 +710,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Formation of relief',
@@ -698,7 +747,45 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'تكوّن التضاريس',
+        startSubtitle: 'العمليات الداخلية والخارجية.',
+        startAdvice: 'التضاريس هي شكل سطح القشرة الأرضية، وتنشأ بفعل <span class="highlight-keyword">العمليات الخارجية</span> و<span class="highlight-keyword">العمليات الداخلية</span>.',
+        startBtn: 'ابدأ',
+        summaryTitle: 'تكوّن التضاريس',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'رتّب العمليات الداخلية والخارجية',
+        boxExternoTitle: 'العمليات الخارجية',
+        boxInternoTitle: 'العمليات الداخلية',
+        checkBtn: 'تحقّق',
+        game2Title: 'العمليات الجيولوجية الداخلية',
+        game2Eyebrow: 'ابحث عن:',
+        game3Title: 'العمليات الجيولوجية الداخلية',
+        game3Eyebrow: 'ابحث عن:',
+        game4Title: 'أجزاء البركان',
+        game5Title: 'العوامل الخارجية',
+        game6Title: 'العوامل الخارجية',
+        finalTitle: 'تكوّن التضاريس',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -769,7 +856,9 @@ function getBestVoice(lang) {
     let voices = [];
     try { voices = window.speechSynthesis.getVoices(); } catch(e) { voices = []; }
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -783,7 +872,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -866,6 +955,16 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW2 = document.getElementById('btnPlayWord2');
+    if (btnW2) btnW2.title = t.listenTitle;
+    const btnW3 = document.getElementById('btnPlayWord3');
+    if (btnW3) btnW3.title = t.listenTitle;
+    const btnW4 = document.getElementById('btnPlayWord4');
+    if (btnW4) btnW4.title = t.listenTitle;
+    const btnW5 = document.getElementById('btnPlayWord5');
+    if (btnW5) btnW5.title = t.listenTitle;
+    const btnW6 = document.getElementById('btnPlayWord6');
+    if (btnW6) btnW6.title = t.listenTitle;
 
     if (currentScreen === 'summary') {
         buildSummary();
@@ -947,7 +1046,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 function highlightKeywords(text, keywords) {
     const sorted = [...keywords].sort((a,b) => b.length - a.length);
     const pattern = sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}])(${pattern})(?![\\p{L}\\p{N}])`, 'giu');
     return text.replace(regex, (match) => `<span class="keyword">${match}</span>`);
 }
 
@@ -959,6 +1058,8 @@ function buildSummary() {
 
     const keywords = currentLang === 'es'
         ? ['procesos externos', 'procesos internos']
+        : currentLang === 'ar'
+        ? ['العمليات الخارجية', 'العمليات الداخلية']
         : ['external processes', 'internal processes'];
 
     const blockColors = ['block-blue', 'block-orange'];
