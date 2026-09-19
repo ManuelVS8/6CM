@@ -75,6 +75,23 @@
         .mute-btn:hover{ transform: scale(1.1); }
         .mute-btn svg { width: 20px; height: 20px; fill: white; }
 
+        /* Selector de idioma */
+        .lang-pill { position:absolute; top:.8rem; right:4.5rem; display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; z-index:20; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        @media (max-width:480px) {
+            .mute-btn { right:.6rem; width:34px; height:34px; }
+            .lang-pill { right:3.4rem; padding:2px; gap:2px; }
+            .lang-pill button { width:28px; height:28px; font-size:1rem; }
+        }
+        .modal-validation-msg { color:var(--red); font-size:.9rem; margin:-4px 0 6px; min-height:1.1em; }
+        .modal-validation-msg.hidden { display:none; }
+
         /* --- Pantalla Resumen --- */
         .theory-content { 
             padding: 10px; 
@@ -247,17 +264,22 @@
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
         </svg>
     </button>
+    <div class="lang-pill">
+        <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
+        <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+        <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
+    </div>
 
     <!-- Pantalla de Inicio -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1>Propiedades específicas de la materia</h1>
-            <div class="subtitle">Usamos diferentes materiales para construir objetos según sus propiedades específicas. Estúdialas</div>
+            <h1 id="startTitle">Propiedades específicas de la materia</h1>
+            <div class="subtitle" id="startSubtitle">Usamos diferentes materiales para construir objetos según sus propiedades específicas. Estúdialas</div>
         </header>
 
         <div class="start-content">
             <div class="advice-box">
-                <span class="advice-text">En este juego aprenderás a identificar a diferenciar las propiedades específicas de la materia: <span class="highlight-keyword">resistencia</span>, <span class="highlight-keyword">plasticidad</span>, <span class="highlight-keyword">elasticidad</span>, <span class="highlight-keyword">solubilidad</span>, <span class="highlight-keyword">conductividad</span>, <span class="highlight-keyword">comportamiento ante la luz</span> y <span class="highlight-keyword">flotabilidad</span>.
+                <span class="advice-text" id="startAdvice">En este juego aprenderás a identificar a diferenciar las propiedades específicas de la materia: <span class="highlight-keyword">resistencia</span>, <span class="highlight-keyword">plasticidad</span>, <span class="highlight-keyword">elasticidad</span>, <span class="highlight-keyword">solubilidad</span>, <span class="highlight-keyword">conductividad</span>, <span class="highlight-keyword">comportamiento ante la luz</span> y <span class="highlight-keyword">flotabilidad</span>.
                 <strong style="display:block; margin-top:0.5rem; text-align: center;">¡Ánimo!</strong></span>
             </div>
             
@@ -266,14 +288,14 @@
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
             
             <div class="hall-of-fame" id="hallOfFame">
-              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
               <table class="hall-of-fame-table">
                   <thead>
                         <tr>
-                            <th>Posición</th>
-                            <th>Nombre</th>
-                            <th>Puntos</th>
-                            <th>Tiempo</th>
+                            <th id="hofPos">Posición</th>
+                            <th id="hofName">Nombre</th>
+                            <th id="hofPoints">Puntos</th>
+                            <th id="hofTime">Tiempo</th>
                         </tr>
                     </thead>
                     <tbody id="hofTableBody"><tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr></tbody>
@@ -285,15 +307,15 @@
     <!-- Pantalla Resumen -->
     <section class="screen" id="summaryScreen">
         <header>
-            <h1>La materia y sus propiedades específicas</h1>
+            <h1 id="summaryTitle">La materia y sus propiedades específicas</h1>
         </header>
         <div class="theory-content">
-            <div class="theory-main-title">Propiedades específicas de los materiales</div>
-            <p class="theory-intro">Para fabricar objetos, usamos distintos materiales dependiendo de sus propiedades; por ejemplo:</p>
+            <div class="theory-main-title" id="theoryMainTitle">Propiedades específicas de los materiales</div>
+            <p class="theory-intro" id="theoryIntro">Para fabricar objetos, usamos distintos materiales dependiendo de sus propiedades; por ejemplo:</p>
             
             <div class="change-block">
-                <div class="block-title">Propiedades específicas de la materia</div>
-                <ul class="block-list">
+                <div class="block-title" id="blockTitle">Propiedades específicas de la materia</div>
+                <ul class="block-list" id="blockList">
                     <li><strong>Resistencia:</strong> si es difícil de romper: hormigón, roca, acero…</li>
                     <li><strong>Plasticidad:</strong> si al deformarlo, mantiene la forma nueva: plastilina, arcilla…</li>
                     <li><strong>Elasticidad:</strong> si al deformarlo, recupera su forma anterior: elástico, goma…</li>
@@ -313,8 +335,8 @@
     <!-- Pantalla Juego 1 -->
     <section class="screen" id="game1Screen">
         <header>
-            <h1>Empareja las propiedades específicas con su definición</h1>
-            <div class="subtitle">Nivel 1/3</div>
+            <h1 id="game1Title">Empareja las propiedades específicas con su definición</h1>
+            <div class="subtitle" id="game1Level">Nivel 1/3</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame1">00:00.0</div>
@@ -327,8 +349,8 @@
     <!-- Pantalla Juego 2 -->
     <section class="screen" id="game2Screen">
         <header>
-            <h1>Empareja las propiedades específicas con los ejemplos</h1>
-            <div class="subtitle">Nivel 2/3</div>
+            <h1 id="game2Title">Empareja las propiedades específicas con los ejemplos</h1>
+            <div class="subtitle" id="game2Level">Nivel 2/3</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame2">00:00.0</div>
@@ -341,8 +363,8 @@
     <!-- Pantalla Juego 3 -->
     <section class="screen" id="game3Screen">
         <header>
-            <h1>Empareja las definiciones de propiedades específicas con sus ejemplos</h1>
-            <div class="subtitle">Nivel 3/3</div>
+            <h1 id="game3Title">Empareja las definiciones de propiedades específicas con sus ejemplos</h1>
+            <div class="subtitle" id="game3Level">Nivel 3/3</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame3">00:00.0</div>
@@ -355,14 +377,14 @@
     <!-- Pantalla Final -->
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title">Propiedades específicas de la materia</h1>
+            <h1 class="final-title" id="finalTitle">Propiedades específicas de la materia</h1>
         </header>
         <div class="results">
             <div id="trophyBox">🏆</div>
             
-            <div class="score-title">Puntuación:</div>
+            <div class="score-title" id="scoreLabel">Puntuación:</div>
             <div class="big-score" id="finalScore">0</div>
-            <div class="final-time">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div class="final-time" id="timeLabelWrap">Tiempo: <span id="finalTime">00:00.0</span></div>
             <div id="finalMsg" class="subtitle"></div>
             <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
             <span class="credit">Creado por Manuel J. Ventura</span>
@@ -374,10 +396,11 @@
 <!-- Modal de Envío de Puntuación -->
 <div id="submitModal" class="modal-overlay">
     <div class="modal-content">
-        <h3>¡Juego Terminado!</h3>
-        <p>Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <h3 id="modalTitle">¡Juego Terminado!</h3>
+        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">00:00.0</span></p>
         <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
         <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <p id="modalValidationMsg" class="modal-validation-msg hidden"></p>
         <div style="display: flex; gap: 10px; justify-content: center;">
             <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
             <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
@@ -461,9 +484,11 @@
     }
 
     /* --- LÓGICA GENERAL --- */
+    let currentScreen = 'start';
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        currentScreen = id.replace('Screen', '');
     }
 
     function startGlobalTimer() {
@@ -499,35 +524,313 @@
     document.getElementById('playBtn').onclick = () => { playSound('tap'); startGlobalTimer(); totalAttempts = 0; initGame1(); };
 
     /* --- DATOS DE JUEGOS --- */
-    const game1Data = [
-        { id: 1, term: 'Resistencia', def: 'Es difícil de romper' },
-        { id: 2, term: 'Elasticidad', def: 'Al deformarlo, recupera su forma' },
-        { id: 3, term: 'Plasticidad', def: 'Al deformarlo, no recupera su forma' },
-        { id: 4, term: 'Conductividad', def: 'Deja pasar la corriente (conductores) o no (aislantes)' },
-        { id: 5, term: 'Solubilidad', def: 'Se disuelve en el agua' },
-        { id: 6, term: 'Comportamiento ante la luz', def: 'Puede ser transparente, opaco o traslúcido' },
-        { id: 7, term: 'Flotabilidad', def: 'Flota sobre un líquido' }
-    ];
+    const game1Data = {
+        es: [
+            { id: 1, term: 'Resistencia', def: 'Es difícil de romper' },
+            { id: 2, term: 'Elasticidad', def: 'Al deformarlo, recupera su forma' },
+            { id: 3, term: 'Plasticidad', def: 'Al deformarlo, no recupera su forma' },
+            { id: 4, term: 'Conductividad', def: 'Deja pasar la corriente (conductores) o no (aislantes)' },
+            { id: 5, term: 'Solubilidad', def: 'Se disuelve en el agua' },
+            { id: 6, term: 'Comportamiento ante la luz', def: 'Puede ser transparente, opaco o traslúcido' },
+            { id: 7, term: 'Flotabilidad', def: 'Flota sobre un líquido' }
+        ],
+        en: [
+            { id: 1, term: 'Resistance', def: 'It is difficult to break' },
+            { id: 2, term: 'Elasticity', def: 'When deformed, it returns to its shape' },
+            { id: 3, term: 'Plasticity', def: 'When deformed, it does not return to its shape' },
+            { id: 4, term: 'Conductivity', def: 'It lets electric current pass through (conductors) or not (insulators)' },
+            { id: 5, term: 'Solubility', def: 'It dissolves in water' },
+            { id: 6, term: 'Behaviour towards light', def: 'It can be transparent, opaque or translucent' },
+            { id: 7, term: 'Buoyancy', def: 'It floats on a liquid' }
+        ],
+        ar: [
+            { id: 1, term: 'المقاومة', def: 'من الصعب كسرها' },
+            { id: 2, term: 'المرونة', def: 'عند تشويهها، تستعيد شكلها' },
+            { id: 3, term: 'اللدونة', def: 'عند تشويهها، لا تستعيد شكلها' },
+            { id: 4, term: 'الموصلية', def: 'تسمح بمرور التيار الكهربائي (الموصلات) أو لا تسمح به (العوازل)' },
+            { id: 5, term: 'الذوبانية', def: 'تذوب في الماء' },
+            { id: 6, term: 'السلوك تجاه الضوء', def: 'يمكن أن تكون شفافة أو معتمة أو شبه شفافة' },
+            { id: 7, term: 'الطفو', def: 'تطفو على سائل' }
+        ]
+    };
 
-    const game2Data = [
-        { id: 1, term: 'Resistencia', def: 'Roca, hormigón…' },
-        { id: 2, term: 'Elasticidad', def: 'Elástico, goma…' },
-        { id: 3, term: 'Plasticidad', def: 'Plastilina, arcilla…' },
-        { id: 4, term: 'Conductividad', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
-        { id: 5, term: 'Solubilidad', def: 'Azúcar o sal en agua' },
-        { id: 6, term: 'Comportamiento ante la luz', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
-        { id: 7, term: 'Flotabilidad', def: 'Madera, corcho…' }
-    ];
+    const game2Data = {
+        es: [
+            { id: 1, term: 'Resistencia', def: 'Roca, hormigón…' },
+            { id: 2, term: 'Elasticidad', def: 'Elástico, goma…' },
+            { id: 3, term: 'Plasticidad', def: 'Plastilina, arcilla…' },
+            { id: 4, term: 'Conductividad', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
+            { id: 5, term: 'Solubilidad', def: 'Azúcar o sal en agua' },
+            { id: 6, term: 'Comportamiento ante la luz', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
+            { id: 7, term: 'Flotabilidad', def: 'Madera, corcho…' }
+        ],
+        en: [
+            { id: 1, term: 'Resistance', def: 'Rock, concrete…' },
+            { id: 2, term: 'Elasticity', def: 'Elastic band, rubber…' },
+            { id: 3, term: 'Plasticity', def: 'Plasticine, clay…' },
+            { id: 4, term: 'Conductivity', def: 'Conductors (copper, iron…), insulators (rubber, wood…)' },
+            { id: 5, term: 'Solubility', def: 'Sugar or salt in water' },
+            { id: 6, term: 'Behaviour towards light', def: 'Transparent (magnifying glass), opaque (brick), translucent (plastic bag)' },
+            { id: 7, term: 'Buoyancy', def: 'Wood, cork…' }
+        ],
+        ar: [
+            { id: 1, term: 'المقاومة', def: 'الصخر، الخرسانة…' },
+            { id: 2, term: 'المرونة', def: 'المطاط، الشريط المطاطي…' },
+            { id: 3, term: 'اللدونة', def: 'الصلصال، الطين…' },
+            { id: 4, term: 'الموصلية', def: 'موصلات (النحاس، الحديد…)، عوازل (المطاط، الخشب…)' },
+            { id: 5, term: 'الذوبانية', def: 'السكر أو الملح في الماء' },
+            { id: 6, term: 'السلوك تجاه الضوء', def: 'شفاف (عدسة مكبرة)، معتم (الطوب)، شبه شفاف (كيس بلاستيكي)' },
+            { id: 7, term: 'الطفو', def: 'الخشب، الفلين…' }
+        ]
+    };
 
-    const game3Data = [
-        { id: 1, term: 'Es difícil de romper', def: 'Roca, hormigón…' },
-        { id: 2, term: 'Al deformarlo, recupera su forma', def: 'Elástico, goma…' },
-        { id: 3, term: 'Al deformarlo, no recupera su forma', def: 'Plastilina, arcilla…' },
-        { id: 4, term: 'Deja pasar la corriente o no', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
-        { id: 5, term: 'Se disuelve en el agua', def: 'Azúcar o sal en agua' },
-        { id: 6, term: 'Deja pasar la luz o no', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
-        { id: 7, term: 'Flota sobre un líquido', def: 'Madera, corcho…' }
-    ];
+    const game3Data = {
+        es: [
+            { id: 1, term: 'Es difícil de romper', def: 'Roca, hormigón…' },
+            { id: 2, term: 'Al deformarlo, recupera su forma', def: 'Elástico, goma…' },
+            { id: 3, term: 'Al deformarlo, no recupera su forma', def: 'Plastilina, arcilla…' },
+            { id: 4, term: 'Deja pasar la corriente o no', def: 'Conductores (cobre, hierro…), aislantes (goma, madera...)' },
+            { id: 5, term: 'Se disuelve en el agua', def: 'Azúcar o sal en agua' },
+            { id: 6, term: 'Deja pasar la luz o no', def: 'Transparente (lupa), opaco (ladrillo), traslúcido (bolsa de plástico)' },
+            { id: 7, term: 'Flota sobre un líquido', def: 'Madera, corcho…' }
+        ],
+        en: [
+            { id: 1, term: 'It is difficult to break', def: 'Rock, concrete…' },
+            { id: 2, term: 'When deformed, it returns to its shape', def: 'Elastic band, rubber…' },
+            { id: 3, term: 'When deformed, it does not return to its shape', def: 'Plasticine, clay…' },
+            { id: 4, term: 'It lets electric current pass through or not', def: 'Conductors (copper, iron…), insulators (rubber, wood…)' },
+            { id: 5, term: 'It dissolves in water', def: 'Sugar or salt in water' },
+            { id: 6, term: 'It lets light pass through or not', def: 'Transparent (magnifying glass), opaque (brick), translucent (plastic bag)' },
+            { id: 7, term: 'It floats on a liquid', def: 'Wood, cork…' }
+        ],
+        ar: [
+            { id: 1, term: 'من الصعب كسرها', def: 'الصخر، الخرسانة…' },
+            { id: 2, term: 'عند تشويهها، تستعيد شكلها', def: 'المطاط، الشريط المطاطي…' },
+            { id: 3, term: 'عند تشويهها، لا تستعيد شكلها', def: 'الصلصال، الطين…' },
+            { id: 4, term: 'تسمح بمرور التيار الكهربائي أو لا تسمح به', def: 'موصلات (النحاس، الحديد…)، عوازل (المطاط، الخشب…)' },
+            { id: 5, term: 'تذوب في الماء', def: 'السكر أو الملح في الماء' },
+            { id: 6, term: 'تسمح بمرور الضوء أو لا تسمح به', def: 'شفاف (عدسة مكبرة)، معتم (الطوب)، شبه شفاف (كيس بلاستيكي)' },
+            { id: 7, term: 'تطفو على سائل', def: 'الخشب، الفلين…' }
+        ]
+    };
+
+    /* --- TEXTOS DE INTERFAZ (i18n) --- */
+    const i18n = {
+        es: {
+            startTitle: 'Propiedades específicas de la materia',
+            startSubtitle: 'Usamos diferentes materiales para construir objetos según sus propiedades específicas. Estúdialas',
+            startAdvice: 'En este juego aprenderás a identificar a diferenciar las propiedades específicas de la materia: <span class="highlight-keyword">resistencia</span>, <span class="highlight-keyword">plasticidad</span>, <span class="highlight-keyword">elasticidad</span>, <span class="highlight-keyword">solubilidad</span>, <span class="highlight-keyword">conductividad</span>, <span class="highlight-keyword">comportamiento ante la luz</span> y <span class="highlight-keyword">flotabilidad</span>.<strong style="display:block;margin-top:0.5rem;text-align:center;">¡Ánimo!</strong>',
+            startBtn: 'Comenzar',
+            hofTitle: 'Mejores puntuaciones',
+            hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
+            hofConnError: 'Error de conexión.',
+            hofLoading: 'Cargando datos...',
+            hofEmpty: '¡Sé el primero en guardar tu puntuación!',
+            hofDataError: 'Error de datos.',
+            summaryTitle: 'La materia y sus propiedades específicas',
+            theoryMainTitle: 'Propiedades específicas de los materiales',
+            theoryIntro: 'Para fabricar objetos, usamos distintos materiales dependiendo de sus propiedades; por ejemplo:',
+            blockTitle: 'Propiedades específicas de la materia',
+            blockList: [
+                '<strong>Resistencia:</strong> si es difícil de romper: hormigón, roca, acero…',
+                '<strong>Plasticidad:</strong> si al deformarlo, mantiene la forma nueva: plastilina, arcilla…',
+                '<strong>Elasticidad:</strong> si al deformarlo, recupera su forma anterior: elástico, goma…',
+                '<strong>Solubilidad:</strong> si se disuelve en el agua: azúcar, sal…',
+                '<strong>Flotabilidad:</strong> si flota en un líquido: madera, corcho…',
+                '<strong>Conductividad:</strong> si deja pasar la electricidad (conductores: cobre, hierro...) o si no la deja pasar (aislantes: goma, plástico, madera).',
+                '<strong>Comportamiento ante la luz:</strong> si deja pasar la luz (transparente: cristal), si no la deja pasar (opaco: madera) o si deja pasar parte de la luz (traslúcido: mampara de baño).'
+            ],
+            playBtn: 'Jugar',
+            game1Title: 'Empareja las propiedades específicas con su definición',
+            game1Level: 'Nivel 1/3',
+            game2Title: 'Empareja las propiedades específicas con los ejemplos',
+            game2Level: 'Nivel 2/3',
+            game3Title: 'Empareja las definiciones de propiedades específicas con sus ejemplos',
+            game3Level: 'Nivel 3/3',
+            finalTitle: 'Propiedades específicas de la materia',
+            scoreLabel: 'Puntuación:',
+            timeLabelPrefix: 'Tiempo:',
+            backBtn: 'Volver al menú',
+            msgPerfect: '¡Enhorabuena, puntuación máxima!',
+            msgGood: '¡Buen trabajo! Sigue practicando',
+            modalTitle: '¡Juego Terminado!',
+            modalTimeLabel: 'Tu tiempo:',
+            namePlaceholder: 'Nombre',
+            surnamePlaceholder: 'Apellido',
+            modalSave: 'Guardar',
+            modalSending: 'Enviando...',
+            modalCancel: 'Cancelar',
+            validationMsg: 'Por favor, rellena nombre y apellido',
+            sendError: 'Error al enviar la puntuación.'
+        },
+        en: {
+            startTitle: 'Specific properties of matter',
+            startSubtitle: 'We use different materials to build objects according to their specific properties. Study them',
+            startAdvice: 'In this game you will learn to identify and tell apart the specific properties of matter: <span class="highlight-keyword">resistance</span>, <span class="highlight-keyword">plasticity</span>, <span class="highlight-keyword">elasticity</span>, <span class="highlight-keyword">solubility</span>, <span class="highlight-keyword">conductivity</span>, <span class="highlight-keyword">behaviour towards light</span> and <span class="highlight-keyword">buoyancy</span>.<strong style="display:block;margin-top:0.5rem;text-align:center;">Good luck!</strong>',
+            startBtn: 'Start',
+            hofTitle: 'Best scores',
+            hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+            hofConnError: 'Connection error.',
+            hofLoading: 'Loading data...',
+            hofEmpty: 'Be the first to save your score!',
+            hofDataError: 'Data error.',
+            summaryTitle: 'Matter and its specific properties',
+            theoryMainTitle: 'Specific properties of materials',
+            theoryIntro: 'To make objects, we use different materials depending on their properties; for example:',
+            blockTitle: 'Specific properties of matter',
+            blockList: [
+                '<strong>Resistance:</strong> if it is difficult to break: concrete, rock, steel…',
+                '<strong>Plasticity:</strong> if, when deformed, it keeps the new shape: plasticine, clay…',
+                '<strong>Elasticity:</strong> if, when deformed, it returns to its previous shape: elastic, rubber…',
+                '<strong>Solubility:</strong> if it dissolves in water: sugar, salt…',
+                '<strong>Buoyancy:</strong> if it floats in a liquid: wood, cork…',
+                '<strong>Conductivity:</strong> if it lets electricity pass through (conductors: copper, iron…) or if it does not (insulators: rubber, plastic, wood).',
+                '<strong>Behaviour towards light:</strong> if it lets light pass through (transparent: glass), if it does not (opaque: wood) or if it lets some light through (translucent: shower screen).'
+            ],
+            playBtn: 'Play',
+            game1Title: 'Match the specific properties with their definition',
+            game1Level: 'Level 1/3',
+            game2Title: 'Match the specific properties with the examples',
+            game2Level: 'Level 2/3',
+            game3Title: 'Match the definitions of specific properties with their examples',
+            game3Level: 'Level 3/3',
+            finalTitle: 'Specific properties of matter',
+            scoreLabel: 'Score:',
+            timeLabelPrefix: 'Time:',
+            backBtn: 'Back to menu',
+            msgPerfect: 'Congratulations, perfect score!',
+            msgGood: 'Good job! Keep practising',
+            modalTitle: 'Game Over!',
+            modalTimeLabel: 'Your time:',
+            namePlaceholder: 'Name',
+            surnamePlaceholder: 'Surname',
+            modalSave: 'Save',
+            modalSending: 'Sending...',
+            modalCancel: 'Cancel',
+            validationMsg: 'Please fill in name and surname',
+            sendError: 'Error sending score.'
+        },
+        ar: {
+            startTitle: 'الخصائص النوعية للمادة',
+            startSubtitle: 'نستخدم مواد مختلفة لصنع الأشياء حسب خصائصها النوعية. تعرّف عليها',
+            startAdvice: 'في هذه اللعبة ستتعلّم كيف تحدّد وتميّز بين الخصائص النوعية للمادة: <span class="highlight-keyword">المقاومة</span>، و<span class="highlight-keyword">اللدونة</span>، و<span class="highlight-keyword">المرونة</span>، و<span class="highlight-keyword">الذوبانية</span>، و<span class="highlight-keyword">الموصلية</span>، و<span class="highlight-keyword">السلوك تجاه الضوء</span>، و<span class="highlight-keyword">الطفو</span>.<strong style="display:block;margin-top:0.5rem;text-align:center;">بالتوفيق!</strong>',
+            startBtn: 'ابدأ',
+            hofTitle: 'أفضل النتائج',
+            hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+            hofConnError: 'خطأ في الاتصال.',
+            hofLoading: 'جارٍ تحميل البيانات...',
+            hofEmpty: 'كن أول من يحفظ نتيجته!',
+            hofDataError: 'خطأ في البيانات.',
+            summaryTitle: 'المادة وخصائصها النوعية',
+            theoryMainTitle: 'الخصائص النوعية للمواد',
+            theoryIntro: 'لصناعة الأشياء، نستخدم مواد مختلفة حسب خصائصها؛ على سبيل المثال:',
+            blockTitle: 'الخصائص النوعية للمادة',
+            blockList: [
+                '<strong>المقاومة:</strong> إذا كانت صعبة الكسر: الخرسانة، والصخر، والفولاذ…',
+                '<strong>اللدونة:</strong> إذا احتفظت بشكلها الجديد بعد تشويهها: الصلصال، والطين…',
+                '<strong>المرونة:</strong> إذا استعادت شكلها السابق بعد تشويهها: المطاط، والأربطة المطاطية…',
+                '<strong>الذوبانية:</strong> إذا ذابت في الماء: السكر، والملح…',
+                '<strong>الطفو:</strong> إذا طفت في سائل: الخشب، والفلين…',
+                '<strong>الموصلية:</strong> إذا سمحت بمرور الكهرباء (الموصلات: النحاس، والحديد…) أو لم تسمح بذلك (العوازل: المطاط، والبلاستيك، والخشب).',
+                '<strong>السلوك تجاه الضوء:</strong> إذا سمحت بمرور الضوء (شفافة: الزجاج)، أو لم تسمح بذلك (معتمة: الخشب)، أو سمحت بمرور جزء منه (شبه شفافة: ستارة الحمام الزجاجية).'
+            ],
+            playBtn: 'العب',
+            game1Title: 'اربط الخصائص النوعية بتعريفها',
+            game1Level: 'المستوى 1/3',
+            game2Title: 'اربط الخصائص النوعية بأمثلتها',
+            game2Level: 'المستوى 2/3',
+            game3Title: 'اربط تعريفات الخصائص النوعية بأمثلتها',
+            game3Level: 'المستوى 3/3',
+            finalTitle: 'الخصائص النوعية للمادة',
+            scoreLabel: 'النتيجة:',
+            timeLabelPrefix: 'الوقت:',
+            backBtn: 'العودة إلى القائمة',
+            msgPerfect: 'تهانينا! نتيجة كاملة!',
+            msgGood: 'أحسنت! واصل التدريب',
+            modalTitle: 'انتهت اللعبة!',
+            modalTimeLabel: 'وقتك:',
+            namePlaceholder: 'الاسم',
+            surnamePlaceholder: 'اللقب',
+            modalSave: 'حفظ',
+            modalSending: 'جارٍ الإرسال...',
+            modalCancel: 'إلغاء',
+            validationMsg: 'يرجى كتابة الاسم واللقب',
+            sendError: 'حدث خطأ أثناء إرسال النتيجة.'
+        }
+    };
+
+    let currentLang = 'es';
+
+    function applyLanguage(lang) {
+        currentLang = lang;
+        const t = i18n[lang];
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+            btn.classList.toggle('active-lang', btn.dataset.lang === lang);
+        });
+
+        document.getElementById('startTitle').innerHTML = t.startTitle;
+        document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
+        document.getElementById('startAdvice').innerHTML = t.startAdvice;
+        document.getElementById('startBtn').innerHTML = t.startBtn;
+        document.getElementById('hofTitle').innerHTML = t.hofTitle;
+        document.getElementById('hofPos').innerHTML = t.hofPos;
+        document.getElementById('hofName').innerHTML = t.hofName;
+        document.getElementById('hofPoints').innerHTML = t.hofPoints;
+        document.getElementById('hofTime').innerHTML = t.hofTime;
+        document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
+        document.getElementById('theoryMainTitle').innerHTML = t.theoryMainTitle;
+        document.getElementById('theoryIntro').innerHTML = t.theoryIntro;
+        document.getElementById('blockTitle').innerHTML = t.blockTitle;
+        document.getElementById('blockList').innerHTML = t.blockList.map(li => `<li>${li}</li>`).join('');
+        document.getElementById('playBtn').innerHTML = t.playBtn;
+        document.getElementById('game1Title').innerHTML = t.game1Title;
+        document.getElementById('game1Level').innerHTML = t.game1Level;
+        document.getElementById('game2Title').innerHTML = t.game2Title;
+        document.getElementById('game2Level').innerHTML = t.game2Level;
+        document.getElementById('game3Title').innerHTML = t.game3Title;
+        document.getElementById('game3Level').innerHTML = t.game3Level;
+        document.getElementById('finalTitle').innerHTML = t.finalTitle;
+        document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
+        document.getElementById('backToMenuBtn').innerHTML = t.backBtn;
+        document.getElementById('modalTitle').innerHTML = t.modalTitle;
+        document.getElementById('playerName').placeholder = t.namePlaceholder;
+        document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+        document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
+        document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
+
+        const timeWrap = document.getElementById('timeLabelWrap');
+        const finalTimeSpan = document.getElementById('finalTime').outerHTML;
+        timeWrap.innerHTML = t.timeLabelPrefix + ' ' + finalTimeSpan;
+
+        const modalTimeSpan = document.getElementById('modalTime').outerHTML;
+        document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' ' + modalTimeSpan;
+
+        // Si hay una partida de emparejar en curso, actualizamos las tarjetas ya
+        // mostradas (sin reiniciar el progreso) para que reflejen el nuevo idioma.
+        refreshActiveGameCards(lang);
+    }
+
+    function refreshActiveGameCards(lang) {
+        let containerId = null, data = null;
+        if (currentScreen === 'game1') { containerId = 'game1Container'; data = game1Data[lang]; }
+        else if (currentScreen === 'game2') { containerId = 'game2Container'; data = game2Data[lang]; }
+        else if (currentScreen === 'game3') { containerId = 'game3Container'; data = game3Data[lang]; }
+        if (!containerId) return;
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        Array.from(container.querySelectorAll('.memory-card:not(.matched)')).forEach(card => {
+            const pairId = parseInt(card.dataset.pairId, 10);
+            const type = card.dataset.type;
+            const item = data.find(d => d.id === pairId);
+            if (item) card.textContent = type === 'term' ? item.term : item.def;
+        });
+    }
+
+    document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+        btn.addEventListener('click', () => { playSound('tap'); applyLanguage(btn.dataset.lang); });
+    });
 
     /* --- LÓGICA DE EMPAREJAMIENTO (BIDIRECCIONAL) --- */
     function initGame(containerId, data, nextScreenInitFunc, progressId, totalPairs) {
@@ -634,17 +937,17 @@
     /* --- NAVEGACIÓN DE JUEGOS --- */
     function initGame1() {
         showScreen('game1Screen');
-        initGame('game1Container', game1Data, initGame2, 'progressFillGame1', 7);
+        initGame('game1Container', game1Data[currentLang], initGame2, 'progressFillGame1', 7);
     }
 
     function initGame2() {
         showScreen('game2Screen');
-        initGame('game2Container', game2Data, initGame3, 'progressFillGame2', 7);
+        initGame('game2Container', game2Data[currentLang], initGame3, 'progressFillGame2', 7);
     }
 
     function initGame3() {
         showScreen('game3Screen');
-        initGame('game3Container', game3Data, finishGame, 'progressFillGame3', 7);
+        initGame('game3Container', game3Data[currentLang], finishGame, 'progressFillGame3', 7);
     }
 
     /* --- FINALIZAR --- */
@@ -666,12 +969,12 @@
         
         if (finalScoreVal === 100) {
             trophyBox.style.display = 'block';
-            msg.textContent = '¡Enhorabuena, puntuación máxima!';
+            msg.textContent = i18n[currentLang].msgPerfect;
             playSound('victory');
             createConfetti();
         } else {
             trophyBox.style.display = 'none';
-            msg.textContent = '¡Buen trabajo! Sigue practicando';
+            msg.textContent = i18n[currentLang].msgGood;
             playSound('completed');
         }
 
@@ -704,15 +1007,16 @@
     function loadHallOfFame() {
         if (isHofLoading) return;
         isHofLoading = true;
+        const t = i18n[currentLang];
 
         const tbody = document.getElementById('hofTableBody');
-        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofLoading}</td></tr>`;
 
         const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
 
         const timeoutId = setTimeout(() => {
             if(isHofLoading) {
-                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>';
+                tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnError}</td></tr>`;
                 isHofLoading = false;
             }
         }, 8000);
@@ -734,7 +1038,7 @@
                     const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
 
                     if (validData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofEmpty}</td></tr>`;
                     } else {
                         validData.sort((a, b) => {
                             const sA = parseFloat(a.Puntuación) || 0, sB = parseFloat(b.Puntuación) || 0;
@@ -753,10 +1057,10 @@
                         });
                     }
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de datos.</td></tr>';
+                    tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofDataError}</td></tr>`;
                 }
             })
-            .catch(e => { clearTimeout(timeoutId); tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; })
+            .catch(e => { clearTimeout(timeoutId); tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnError}</td></tr>`; })
             .finally(() => { isHofLoading = false; });
     }
 
@@ -765,23 +1069,30 @@
         document.getElementById('playerName').value = '';
         document.getElementById('playerSurname').value = '';
         document.getElementById('submitModal').style.display = 'flex';
+        const validationEl = document.getElementById('modalValidationMsg');
+        validationEl.classList.add('hidden');
+        validationEl.textContent = '';
         const btn = document.getElementById('submitScoreBtn');
-        btn.textContent = "Guardar";
+        btn.textContent = i18n[currentLang].modalSave;
         btn.disabled = false;
         document.getElementById('playerName').focus();
     }
 
     function handleSubmitScore() {
+        const t = i18n[currentLang];
         const btn = document.getElementById('submitScoreBtn');
         const nameInput = document.getElementById('playerName');
         const surnameInput = document.getElementById('playerSurname');
+        const validationEl = document.getElementById('modalValidationMsg');
         playSound('tap');
 
         const payload = { score: finalScoreVal, time: finalTimeVal, name: nameInput.value.trim(), surname: surnameInput.value.trim() };
 
         if(payload.name && payload.surname) {
+            validationEl.classList.add('hidden');
+            validationEl.textContent = '';
             const originalText = btn.textContent;
-            btn.textContent = "Enviando...";
+            btn.textContent = t.modalSending;
             btn.disabled = true;
 
             fetch(APP_SCRIPT_URL, {
@@ -790,9 +1101,14 @@
                 body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: payload })
             })
             .then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = originalText; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
-            .catch(e => { alert("Error al enviar puntuación."); btn.textContent = originalText; btn.disabled = false; });
+            .catch(e => {
+                validationEl.textContent = t.sendError;
+                validationEl.classList.remove('hidden');
+                btn.textContent = originalText; btn.disabled = false;
+            });
         } else {
-            alert("Por favor, rellena nombre y apellido");
+            validationEl.textContent = t.validationMsg;
+            validationEl.classList.remove('hidden');
         }
     }
 
@@ -803,7 +1119,7 @@
     document.getElementById('backToMenuBtn').onclick = () => { playSound('tap'); location.reload(); };
     document.getElementById('muteBtn').onclick = toggleSound;
 
-    document.addEventListener('DOMContentLoaded', () => { loadHallOfFame(); });
+    document.addEventListener('DOMContentLoaded', () => { applyLanguage('es'); loadHallOfFame(); });
 </script>
 
 </body></html>

@@ -221,6 +221,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -417,17 +418,40 @@ const summaryData = {
                 "Fermentation: microorganisms transform organic matter: milk → yogurt or cheese."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "التغيرات الفيزيائية",
+            intro: "في التغيرات الفيزيائية، تبقى المادة كما هي، ويتغيّر مظهرها فقط. ومن أمثلة التغيرات الفيزيائية:",
+            items: [
+                "التشوّه: تتغيّر المادة في شكلها، لكنها تحافظ على خصائصها.",
+                "التفتّت: تنكسر المادة إلى قطع أصغر.",
+                "التمدّد: يزداد حجم المادة بسبب الحرارة.",
+                "تغيّر الحالة: تتحوّل المادة بين الحالة الصلبة والسائلة والغازية."
+            ]
+        },
+        {
+            heading: "التغيرات الكيميائية",
+            intro: "في التغيرات الكيميائية، تتحوّل المادة إلى مادة جديدة.",
+            items: [
+                "الأكسدة: يتفاعل الأكسجين مع المادة وينتج الصدأ.",
+                "الاحتراق: أكسدة سريعة جدًا تنتج ضوءًا وحرارة.",
+                "التخمّر: تحوّل الكائنات الدقيقة المادة العضوية: الحليب ← اللبن الزبادي أو الجبن."
+            ]
+        }
     ]
 };
 
 const summaryIntroText = {
     es: "La materia puede experimentar cambios. Estos cambios pueden ser físicos o químicos.",
-    en: "Matter can undergo changes. These changes can be physical or chemical."
+    en: "Matter can undergo changes. These changes can be physical or chemical.",
+    ar: "يمكن للمادة أن تخضع لتغيّرات. وهذه التغيّرات يمكن أن تكون فيزيائية أو كيميائية."
 };
 
 const summaryKeywords = {
     es: ['deformación','fragmentación','dilatación','cambios de estado','oxidación','combustión','fermentación','física','físicos','química','químicos'],
-    en: ['deformation','fragmentation','expansion','changes of state','oxidation','combustion','fermentation','physical','chemical']
+    en: ['deformation','fragmentation','expansion','changes of state','oxidation','combustion','fermentation','physical','chemical'],
+    ar: ['التشوّه','التفتّت','التمدّد','تغيّر الحالة','الأكسدة','الاحتراق','التخمّر','فيزيائية','كيميائية']
 };
 
 /* ====================================================
@@ -451,6 +475,15 @@ const g1Data = {
         { term: 'Oxidation', def: 'Matter reacts with oxygen' },
         { term: 'Combustion', def: 'Fast oxidation that gives off light and heat' },
         { term: 'Fermentation', def: 'Microorganisms react with organic matter' }
+    ],
+    ar: [
+        { term: 'التشوّه', def: 'تتغيّر المادة في شكلها' },
+        { term: 'التفتّت', def: 'تنكسر المادة إلى قطع أصغر' },
+        { term: 'التمدّد', def: 'يزداد حجمها بسبب الحرارة' },
+        { term: 'تغيّر الحالة', def: 'تنتقل المادة من حالة إلى أخرى' },
+        { term: 'الأكسدة', def: 'تتفاعل المادة مع الأكسجين' },
+        { term: 'الاحتراق', def: 'أكسدة سريعة تطلق ضوءًا وحرارة' },
+        { term: 'التخمّر', def: 'تتفاعل الكائنات الدقيقة مع المادة العضوية' }
     ]
 };
 
@@ -475,6 +508,15 @@ const sortData = {
         { text: 'Oxidation', type: 'quimicos' },
         { text: 'Combustion', type: 'quimicos' },
         { text: 'Fermentation', type: 'quimicos' }
+    ],
+    ar: [
+        { text: 'التمدّد', type: 'fisicos' },
+        { text: 'التفتّت', type: 'fisicos' },
+        { text: 'التشوّه', type: 'fisicos' },
+        { text: 'تغيّر الحالة', type: 'fisicos' },
+        { text: 'الأكسدة', type: 'quimicos' },
+        { text: 'الاحتراق', type: 'quimicos' },
+        { text: 'التخمّر', type: 'quimicos' }
     ]
 };
 
@@ -516,18 +558,33 @@ const groupsData = {
     en: [
         { key: "fisicos", title: "Physical", options: ["Deformation", "Fragmentation", "Expansion", "Change of state"] },
         { key: "quimicos", title: "Chemical", options: ["Oxidation", "Combustion", "Fermentation"] }
+    ],
+    ar: [
+        { key: "fisicos", title: "فيزيائية", options: ["التشوّه", "التفتّت", "التمدّد", "تغيّر الحالة"] },
+        { key: "quimicos", title: "كيميائية", options: ["الأكسدة", "الاحتراق", "التخمّر"] }
     ]
 };
 
-// Traducción de subgrupos (elementos) ES -> EN
+// Traducción de subgrupos (elementos) ES -> EN / AR
 const subgroupTranslation = {
-    "Deformación": "Deformation",
-    "Fragmentación": "Fragmentation",
-    "Dilatación": "Expansion",
-    "Cambio de estado": "Change of state",
-    "Oxidación": "Oxidation",
-    "Combustión": "Combustion",
-    "Fermentación": "Fermentation"
+    en: {
+        "Deformación": "Deformation",
+        "Fragmentación": "Fragmentation",
+        "Dilatación": "Expansion",
+        "Cambio de estado": "Change of state",
+        "Oxidación": "Oxidation",
+        "Combustión": "Combustion",
+        "Fermentación": "Fermentation"
+    },
+    ar: {
+        "Deformación": "التشوّه",
+        "Fragmentación": "التفتّت",
+        "Dilatación": "التمدّد",
+        "Cambio de estado": "تغيّر الحالة",
+        "Oxidación": "الأكسدة",
+        "Combustión": "الاحتراق",
+        "Fermentación": "التخمّر"
+    }
 };
 
 /* ====================================================
@@ -605,6 +662,42 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'المادة تتغيّر',
+        startSubtitle: 'التغيرات الفيزيائية والكيميائية',
+        startAdvice: 'تذكّر: يمكن أن تخضع المادة لتغيرات فيزيائية، مثل <span class="highlight-keyword">التشوّه</span>، و<span class="highlight-keyword">التفتّت</span>، و<span class="highlight-keyword">التمدّد</span>، أو <span class="highlight-keyword">تغيّر الحالة</span>، وتغيرات كيميائية، مثل <span class="highlight-keyword">الأكسدة</span>، و<span class="highlight-keyword">الاحتراق</span>، و<span class="highlight-keyword">التخمّر</span>. سنتعلّم كيف نميّز بينها.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'التغيرات الفيزيائية والتغيرات الكيميائية',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        hofLoading: 'جارٍ تحميل النتائج...',
+        hofEmpty: 'كن أول من يحفظ نتيجته!',
+        hofError: 'حدث خطأ أثناء تحميل النتائج',
+        game1Title: 'اربط المفاهيم بتعريفها',
+        game2Title: 'صنّف التغيرات الفيزيائية والكيميائية',
+        boxFisicosTitle: 'التغيرات الفيزيائية',
+        boxQuimicosTitle: 'التغيرات الكيميائية',
+        game3Title: 'حدّد نوع التغيّر الذي تمثّله',
+        checkBtn: 'تحقّق',
+        continueGameBtn: 'متابعة',
+        finalTitle: 'التغيرات الفيزيائية والكيميائية في المادة',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalSending: 'جارٍ الإرسال...',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟'
     }
 };
 
@@ -841,7 +934,7 @@ function buildSummary() {
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, (m) => `<span class="keyword">${m}</span>`);
         });
         return result;
@@ -1228,7 +1321,7 @@ document.getElementById('checkGame3Btn').addEventListener('click', () => {
 
     const { groupKey: selectedGroupKey, subgroup: selectedSubgroup } = g3ActiveAnswer;
     const isCorrectGroup = selectedGroupKey === item.groupKey;
-    const expectedSubgroup = currentLang === 'es' ? item.correctSubgroup : (subgroupTranslation[item.correctSubgroup] || item.correctSubgroup);
+    const expectedSubgroup = currentLang === 'es' ? item.correctSubgroup : (subgroupTranslation[currentLang]?.[item.correctSubgroup] || item.correctSubgroup);
     const isCorrect = isCorrectGroup && selectedSubgroup === expectedSubgroup;
 
     const selectedTrigger = document.querySelector(`.custom-select[data-group-key="${selectedGroupKey}"] .custom-select__trigger`);

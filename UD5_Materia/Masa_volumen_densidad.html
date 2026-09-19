@@ -237,6 +237,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -445,12 +446,45 @@ const summaryData = {
                 "A body floats if its density is lower than the density of the liquid."
             ]
         }
+    ],
+    ar: [
+        {
+            heading: "المادة",
+            items: [
+                "المادة هي المكوّن لكل ما هو موجود.",
+                "للمادة خصائص، مثل الكتلة والحجم والكثافة."
+            ]
+        },
+        {
+            heading: "الكتلة",
+            items: [
+                "هي كمية المادة التي يحتويها الجسم.",
+                "تُقاس بالموازين.",
+                "تُقاس بالكيلوغرام (كغ) أو الغرام (غ)."
+            ]
+        },
+        {
+            heading: "الحجم",
+            items: [
+                "هو الحيّز الذي يشغله الجسم.",
+                "يُقاس بأوعية مُدرَّجة.",
+                "يُقاس باللتر."
+            ]
+        },
+        {
+            heading: "الكثافة والطفو",
+            items: [
+                "الكثافة هي العلاقة (القسمة) بين الكتلة والحجم.",
+                "يطفو الجسم إذا كانت كثافته أقل من كثافة السائل الذي يُغمَر فيه."
+            ]
+        }
     ]
 };
 
 const summaryKeywords = {
     es: ['materia','masa','volumen','densidad','básculas','balanzas','kilogramos','gramos','recipientes graduados','litros','flota'],
-    en: ['matter','mass','volume','density','scales','balances','kilograms','grams','graduated containers','litres','floats']
+    en: ['matter','mass','volume','density','scales','balances','kilograms','grams','graduated containers','litres','floats'],
+    ar: ['المادة','الكتلة','الحجم','الكثافة','الموازين','الكيلوغرام','الغرام','أوعية مُدرَّجة','اللتر','يطفو']
 };
 
 /* ====================================================
@@ -471,6 +505,13 @@ const g1Text = {
         "Mass is the amount of {matter} in a body. It is measured with {scales or balances} and it is expressed in {kilograms} or grams.",
         "Volume is the {space} that a {body} takes up. It is measured with {graduated containers} and it is expressed in {litres}.",
         "Density is the relationship between {mass} and {volume}. Floating depends on {density}."
+    ],
+    ar: [
+        "المادة هي {المكوّن} لكل ما هو موجود.",
+        "للمادة {خصائص}، مثل الكتلة والحجم والكثافة.",
+        "الكتلة هي كمية {المادة} التي يحتويها الجسم. تُقاس {بالموازين} وتُقاس بـ{الكيلوغرام} أو الغرام.",
+        "الحجم هو {الحيّز} الذي يشغله {الجسم}. يُقاس بـ{أوعية مُدرَّجة} ويُعبَّر عنه بـ{اللتر}.",
+        "الكثافة هي العلاقة بين {الكتلة} و{الحجم}. ويعتمد الطفو على {الكثافة}."
     ]
 };
 
@@ -487,6 +528,11 @@ const g2Buttons = {
         { cat:'masa',     icon:'⚖️', label:'Mass',    cls:'btn-masa' },
         { cat:'volumen',  icon:'🧪', label:'Volume',  cls:'btn-volumen' },
         { cat:'densidad', icon:'🛟', label:'Density', cls:'btn-densidad' }
+    ],
+    ar: [
+        { cat:'masa',     icon:'⚖️', label:'الكتلة',  cls:'btn-masa' },
+        { cat:'volumen',  icon:'🧪', label:'الحجم',   cls:'btn-volumen' },
+        { cat:'densidad', icon:'🛟', label:'الكثافة', cls:'btn-densidad' }
     ]
 };
 
@@ -522,6 +568,20 @@ const g2Data = {
         { cat:'densidad', text:'It tells us if a body floats in a liquid' },
         { cat:'densidad', text:'What does this graph show?', img:IMG_DENSIDAD },
         { cat:'densidad', text:'Two bodies with the same mass can have different sizes' }
+    ],
+    ar: [
+        { cat:'masa', text:'كمية المادة' },
+        { cat:'masa', text:'تُحسَب بالموازين' },
+        { cat:'masa', text:'تُقاس بالغرام أو الكيلوغرام' },
+        { cat:'masa', text:'ماذا نقيس بهذه الأداة؟', img:IMG_BASCULA },
+        { cat:'volumen', text:'الحيّز الذي يشغله الجسم' },
+        { cat:'volumen', text:'يُحسَب بأوعية مُدرَّجة' },
+        { cat:'volumen', text:'يُقاس باللتر' },
+        { cat:'volumen', text:'ماذا نقيس بهذه الأداة؟', img:IMG_RECIPIENTES },
+        { cat:'densidad', text:'هي العلاقة بين الكتلة والحجم' },
+        { cat:'densidad', text:'تُبيّن إن كان الجسم يطفو في سائل' },
+        { cat:'densidad', text:'ماذا يمثّل هذا الرسم البياني؟', img:IMG_DENSIDAD },
+        { cat:'densidad', text:'يمكن أن يكون لجسمين لهما نفس الكتلة حجمان مختلفان' }
     ]
 };
 
@@ -634,6 +694,59 @@ const testData = {
                 { text:"Is the amount of matter in a body", correct:false }
             ]
         }
+    ],
+    ar: [
+        {
+            q: "المادة...",
+            options: [
+                { text:"هي المكوّن لكل ما هو موجود", correct:true },
+                { text:"هي كمية المادة التي يحتويها الجسم", correct:false },
+                { text:"هي الحيّز الذي يشغله الجسم", correct:false }
+            ]
+        },
+        {
+            q: "الكتلة...",
+            options: [
+                { text:"هي المكوّن لكل ما هو موجود", correct:false },
+                { text:"هي كمية المادة التي يحتويها الجسم", correct:true },
+                { text:"هي الحيّز الذي يشغله الجسم", correct:false }
+            ]
+        },
+        {
+            q: "الحجم...",
+            options: [
+                { text:"هي المكوّن لكل ما هو موجود", correct:false },
+                { text:"هي كمية المادة التي يحتويها الجسم", correct:false },
+                { text:"هي الحيّز الذي يشغله الجسم", correct:true }
+            ]
+        },
+        {
+            q: "الكتلة...",
+            options: [
+                { text:"تُقاس بالموازين وتُقاس بالكيلوغرام", correct:true },
+                { text:"تُقاس بأوعية مُدرَّجة وتُقاس بالكيلوغرام", correct:false },
+                { text:"تُقاس بالموازين وتُقاس باللتر", correct:false },
+                { text:"تُقاس بأوعية مُدرَّجة وتُقاس باللتر", correct:false }
+            ]
+        },
+        {
+            q: "الحجم...",
+            options: [
+                { text:"تُقاس بالموازين وتُقاس بالكيلوغرام", correct:false },
+                { text:"تُقاس بأوعية مُدرَّجة وتُقاس بالكيلوغرام", correct:false },
+                { text:"تُقاس بالموازين وتُقاس باللتر", correct:false },
+                { text:"تُقاس بأوعية مُدرَّجة وتُقاس باللتر", correct:true }
+            ]
+        },
+        {
+            q: "الكثافة...",
+            options: [
+                { text:"هي العلاقة بين الكتلة والحجم", correct:true },
+                { text:"لا تخبرنا عن الطفو", correct:false },
+                { text:"هي الحيّز الذي يشغله الجسم", correct:false },
+                { text:"هي كمية المادة التي يحتويها الجسم", correct:false }
+            ]
+        }
     ]
 };
 
@@ -712,6 +825,42 @@ const i18n = {
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
         msg0: 'What a disaster... Did you really study?'
+    },
+    ar: {
+        startTitle: 'الكتلة والحجم والكثافة',
+        startSubtitle: 'خصائص المادة: الكتلة والحجم والكثافة',
+        startAdvice: 'أظهر ما تعرفه عن <span class="highlight-keyword">الكتلة</span> و<span class="highlight-keyword">الحجم</span> و<span class="highlight-keyword">الكثافة</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'الكتلة والحجم والكثافة',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        hofLoading: 'جارٍ تحميل النتائج...',
+        hofEmpty: 'كن أول من يحفظ نتيجته!',
+        hofError: 'حدث خطأ أثناء تحميل النتائج',
+        game1Title: 'الكتلة والحجم والكثافة',
+        game1Subtitle: 'املأ الفراغات لإكمال النص',
+        game2Title: 'الكتلة أم الحجم أم الكثافة',
+        game3Title: 'اختر الإجابة الصحيحة',
+        checkBtn: 'تحقّق',
+        continueGameBtn: 'متابعة',
+        questionCounter: (n, t) => `السؤال ${n}/${t}`,
+        finalTitle: 'المادة. الكتلة والحجم والكثافة',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalSending: 'جارٍ الإرسال...',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟'
     }
 };
 
@@ -946,7 +1095,7 @@ function buildSummary() {
     const highlightKeywords = (text) => {
         let result = text;
         keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+            const regex = new RegExp(`(?<![\\p{L}\\p{N}])${kw}(?![\\p{L}\\p{N}])`, 'giu');
             result = result.replace(regex, (m) => `<span class="keyword">${m}</span>`);
         });
         return result;

@@ -242,6 +242,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
@@ -312,19 +313,19 @@
 
     <section class="screen notranslate" id="game2Screen" lang="en" translate="no">
         <header>
-            <h1>Identify the forms of energy</h1>
-            <div class="subtitle">Use the <span class="highlight-keyword">dropdown list</span> to select the correct form.</div>
+            <h1 id="game2Title">Identify the forms of energy</h1>
+            <div class="subtitle" id="game2Subtitle">Use the <span class="highlight-keyword">dropdown list</span> to select the correct form.</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame2">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
-            <div class="level-indicator">Level 2/3</div>
+            <div class="level-indicator" id="level2Text">Level 2/3</div>
         </div>
         <div class="game-container-generic">
             <div class="image-display" id="game2Display"></div>
             <div class="custom-select-wrapper drop-up">
                 <div class="custom-select" id="customSelectGame2">
-                    <div class="custom-select__trigger"><span>Forms of energy</span></div>
+                    <div class="custom-select__trigger"><span id="game2DropdownDefault">Forms of energy</span></div>
                     <div class="custom-options">
                         <span class="custom-option" data-value="Kinetic energy">Kinetic energy</span>
                         <span class="custom-option" data-value="Thermal energy">Thermal energy</span>
@@ -342,11 +343,11 @@
     </section>
 
     <section class="screen notranslate" id="game3Screen" lang="en" translate="no">
-        <header><h1>Identify the forms of energy</h1></header>
+        <header><h1 id="game3Title">Identify the forms of energy</h1></header>
         <div class="game-info">
             <div class="timer" id="timerGame3">00:00.00</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
-            <div class="level-indicator">Level 3/3</div>
+            <div class="level-indicator" id="level3Text">Level 3/3</div>
         </div>
         <div class="game3-wrapper">
             <div class="game3-display">
@@ -533,7 +534,15 @@
             msgPerfect: '¡Genial! ¡Puntuación perfecta!',
             msg80: 'Casi lo logras. ¡Sigue practicando!',
             msg50: 'No está mal, pero aún puedes hacerlo mejor',
-            msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+            msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+            game2Title: 'Identify the forms of energy',
+            game2Subtitle: 'Use the <span class="highlight-keyword">dropdown list</span> to select the correct form.',
+            level2: 'Level 2/3',
+            game2DropdownDefault: 'Forms of energy',
+            checkBtnGame2: 'Check',
+            game3Title: 'Identify the forms of energy',
+            level3: 'Level 3/3',
+            listenTitle: 'Listen'
         },
         en: {
             startTitle: 'Forms of energy',
@@ -579,7 +588,69 @@
             msgPerfect: 'Amazing! Perfect score!',
             msg80: 'Almost there. Keep practicing!',
             msg50: "Not bad, but you can still do better",
-            msg0: 'What a mess... Are you sure you studied?'
+            msg0: 'What a mess... Are you sure you studied?',
+            game2Title: 'Identify the forms of energy',
+            game2Subtitle: 'Use the <span class="highlight-keyword">dropdown list</span> to select the correct form.',
+            level2: 'Level 2/3',
+            game2DropdownDefault: 'Forms of energy',
+            checkBtnGame2: 'Check',
+            game3Title: 'Identify the forms of energy',
+            level3: 'Level 3/3',
+            listenTitle: 'Listen'
+        },
+        ar: {
+            startTitle: 'أشكال الطاقة',
+            startSubtitle: 'تعرّف على الأشكال المختلفة التي تظهر بها الطاقة.',
+            startAdvice: '<span class="advice-text">الطاقة هي كل ما يمكنه إحداث تغييرات في المادة. لا يحدث شيء بدون طاقة. أشكال الطاقة التي سندرسها هي: <span class="highlight-keyword">الحركية، والحرارية، والكهربائية، والضوئية، والكيميائية، والنووية</span>.<strong style="display:block;margin-top:0.5rem;text-align:center;">بالتوفيق!</strong></span>',
+            startBtn: 'ابدأ',
+            hofTitle: 'أفضل النتائج',
+            hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+            summaryTitle: 'أشكال الطاقة المختلفة',
+            summaryContent: `
+                <div class="theory-box">
+                    <h2>أشكال الطاقة:</h2>
+                    <p>الطاقة هي القدرة على إحداث تغييرات في المادة. ويمكن أن تظهر الطاقة بأشكال مختلفة:</p>
+                    <div class="theory-block theory-block-forms">
+                        <ul>
+                            <li><strong>الطاقة الحركية:</strong> توجد في الأجسام المتحركة <span class="arrow-hl">→ سكوتر</span></li>
+                            <li><strong>الطاقة الحرارية:</strong> تنقل الحرارة <span class="arrow-hl">→ نار</span></li>
+                            <li><strong>الطاقة الضوئية:</strong> تصدر ضوءًا <span class="arrow-hl">→ مصباح</span></li>
+                            <li><strong>الطاقة الكيميائية:</strong> مخزَّنة في الطعام والبطاريات والوقود.</li>
+                            <li><strong>الطاقة الكهربائية:</strong> تحتوي على كهرباء <span class="arrow-hl">→ برق</span></li>
+                            <li><strong>الطاقة النووية:</strong> توجد داخل الذرات <span class="arrow-hl">→ محطة نووية</span>.</li>
+                        </ul>
+                    </div>
+                    <div class="theory-block theory-block-law">
+                        <p>الطاقة لا تُخلق ولا تُفنى، بل تتحوّل فقط. فمثلًا: يمكن أن تتحوّل الطاقة الكهربائية إلى طاقة <strong>حركية</strong> (مروحة)، أو <strong>حرارية</strong> (مِدفأة)، أو <strong>ضوئية</strong> (مصباح).</p>
+                    </div>
+                </div>
+            `,
+            playBtn: 'العب',
+            game1Title: 'أشكال الطاقة',
+            game1Subtitle: 'اربط كل شكل من أشكال الطاقة بتعريفه.',
+            level1: 'المستوى 1/3',
+            finalTitle: 'أشكال الطاقة',
+            scoreLabel: 'النتيجة:',
+            timeLabel: 'الوقت: ',
+            backBtn: 'العودة إلى القائمة',
+            modalTitle: 'انتهت اللعبة!',
+            modalTimeLabel: 'وقتك: ',
+            namePlaceholder: 'الاسم',
+            surnamePlaceholder: 'اللقب',
+            modalSave: 'حفظ',
+            modalCancel: 'إلغاء',
+            msgPerfect: 'رائع! نتيجة كاملة!',
+            msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+            msg50: 'ليست سيئة، لكن يمكنك تحسينها',
+            msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+            game2Title: 'حدّد أشكال الطاقة',
+            game2Subtitle: 'استخدم <span class="highlight-keyword">القائمة المنسدلة</span> لاختيار الشكل الصحيح.',
+            level2: 'المستوى 2/3',
+            game2DropdownDefault: 'أشكال الطاقة',
+            checkBtnGame2: 'تحقّق',
+            game3Title: 'حدّد أشكال الطاقة',
+            level3: 'المستوى 3/3',
+            listenTitle: 'استماع'
         }
     };
 
@@ -613,6 +684,15 @@
         document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
         const finalTimeSpan = document.getElementById('finalTime').outerHTML;
         document.getElementById('finalTimeLabel').innerHTML = t.timeLabel + finalTimeSpan;
+        document.getElementById('game2Title').innerHTML = t.game2Title;
+        document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
+        document.getElementById('level2Text').innerHTML = t.level2;
+        document.getElementById('game2DropdownDefault').innerHTML = t.game2DropdownDefault;
+        document.getElementById('checkBtnGame2').innerHTML = t.checkBtnGame2;
+        document.getElementById('game3Title').innerHTML = t.game3Title;
+        document.getElementById('level3Text').innerHTML = t.level3;
+        const g3Listen = document.getElementById('game3PlayBtn');
+        if (g3Listen) g3Listen.title = t.listenTitle;
 
         // Si estamos en el juego 1 (emparejar), se reconstruye con el idioma nuevo
         if (document.getElementById('game1Screen').classList.contains('active')) {
@@ -650,6 +730,14 @@
             { id: 4, term: 'Chemical', def: 'Stored in food, batteries and fuels' },
             { id: 5, term: 'Electrical', def: 'Contains electricity' },
             { id: 6, term: 'Nuclear', def: 'Energy inside atoms' }
+        ],
+        ar: [
+            { id: 1, term: 'حركية', def: 'أجسام في حالة حركة' },
+            { id: 2, term: 'حرارية', def: 'تنقل الحرارة' },
+            { id: 3, term: 'ضوئية', def: 'تصدر ضوءًا' },
+            { id: 4, term: 'كيميائية', def: 'مخزَّنة في الطعام والبطاريات والوقود' },
+            { id: 5, term: 'كهربائية', def: 'تحتوي على كهرباء' },
+            { id: 6, term: 'نووية', def: 'طاقة داخل الذرات' }
         ]
     };
 

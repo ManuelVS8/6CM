@@ -267,6 +267,7 @@
     <div class="lang-pill">
         <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
         <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+        <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
     </div>
 
     <!-- ===== PANTALLA INICIO ===== -->
@@ -327,7 +328,7 @@
     <!-- ===== PANTALLA JUEGO 2: IMAGEN CON LISTAS (fija en inglés) ===== -->
     <section class="screen notranslate" id="game2Screen" lang="en" translate="no">
         <header>
-            <h1>Identify the energy sources</h1>
+            <h1 id="game2Title">Identify the energy sources</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplay">00:00.00</div>
@@ -348,7 +349,7 @@
     <!-- ===== PANTALLA JUEGO 3: IMAGEN CON LISTA (fija en inglés, lista única) ===== -->
     <section class="screen notranslate" id="game3Screen" lang="en" translate="no">
         <header>
-            <h1>Identify the energy sources</h1>
+            <h1 id="game3Title">Identify the energy sources</h1>
         </header>
         <div class="game-info">
             <div class="timer" id="timerDisplayGame3">00:00.00</div>
@@ -492,6 +493,14 @@ const matchData = {
         { id: 4, term: 'Biomass', def: 'Remains of living things from forests and crops' },
         { id: 5, term: 'Fossil fuels', def: 'Remains of plants and animals from millions of years ago (coal, oil and gas)' },
         { id: 6, term: 'Radioactive materials', def: 'Elements that emit energy, such as uranium and plutonium' }
+    ],
+    ar: [
+        { id: 1, term: 'شمسية', def: 'ضوء الشمس وحرارتها' },
+        { id: 2, term: 'رياحية', def: 'تحرّك الرياح التوربينات' },
+        { id: 3, term: 'كهرومائية', def: 'تحرّك تيارات الماء التوربينات' },
+        { id: 4, term: 'الكتلة الحيوية', def: 'بقايا الكائنات الحية من الغابات والمحاصيل' },
+        { id: 5, term: 'الوقود الأحفوري', def: 'بقايا نباتات وحيوانات من ملايين السنين (الفحم والنفط والغاز)' },
+        { id: 6, term: 'المواد المشعة', def: 'عناصر تُصدر طاقة، مثل اليورانيوم والبلوتونيوم' }
     ]
 };
 
@@ -518,6 +527,16 @@ const game4Data = {
         { group: 'nonrenewable', text: 'A large amount of energy is obtained' },
         { group: 'nonrenewable', text: 'They run out over time, there is a limited amount' },
         { group: 'nonrenewable', text: 'They come from fossil fuels or radioactive materials' }
+    ],
+    ar: [
+        { group: 'renewable', text: 'طاقات نظيفة تلوّث قليلًا جدًا' },
+        { group: 'renewable', text: 'تنتج كمية أقل من الطاقة' },
+        { group: 'renewable', text: 'لا تنفد أو تتجدد بسرعة كبيرة' },
+        { group: 'renewable', text: 'تأتي من الشمس والرياح والماء والبقايا العضوية' },
+        { group: 'nonrenewable', text: 'تطلق غازات ونفايات تلوّث كثيرًا: الهواء والماء والتربة' },
+        { group: 'nonrenewable', text: 'يُحصل منها على كمية كبيرة من الطاقة' },
+        { group: 'nonrenewable', text: 'تنفد مع الوقت، وكميتها محدودة' },
+        { group: 'nonrenewable', text: 'تأتي من الوقود الأحفوري أو المواد المشعة' }
     ]
 };
 
@@ -573,7 +592,10 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        game2Title: 'Identify the energy sources',
+        game3Title: 'Identify the energy sources',
+        listenTitle: 'Listen'
     },
     en: {
         startTitle: 'Energy sources',
@@ -623,7 +645,63 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        game2Title: 'Identify the energy sources',
+        game3Title: 'Identify the energy sources',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'مصادر الطاقة',
+        startSubtitle: 'المصادر هي الموارد الطبيعية التي نحصل منها على الطاقة.',
+        startAdvice: 'المصادر <span class="highlight-keyword">المتجددة</span> هي التي لا تنفد بالاستخدام أو تتجدد بسرعة: <span class="highlight-keyword">الشمسية</span>، و<span class="highlight-keyword">الرياحية</span>، و<span class="highlight-keyword">المائية</span>، و<span class="highlight-keyword">الكتلة الحيوية</span>. أما المصادر <span class="highlight-keyword">غير المتجددة</span> فتنفد بالاستخدام، وكميتها محدودة: يمكن أن تكون <span class="highlight-keyword">وقودًا أحفوريًا</span> (بقايا كائنات حية): الفحم، والنفط، والغاز الطبيعي، أو <span class="highlight-keyword">مواد نووية</span>: البلوتونيوم واليورانيوم.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'أشكال الطاقة المختلفة',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'مصادر الطاقة',
+        summaryContent: `
+            <div class="summary-block block-blue">
+                <div class="summary-block-title">المتجددة ♻️</div>
+                <p class="intro">لا تنفد بالاستخدام وتلوّث قليلًا. ويمكن أن تكون:</p>
+                <ul class="summary-list">
+                    <li><span class="keyword">طاقة الرياح:</span> تُستمَد من الرياح باستخدام توربينات الرياح.</li>
+                    <li><span class="keyword">الطاقة الكهرومائية:</span> تُستمَد من الماء في المحطات الكهرومائية.</li>
+                    <li><span class="keyword">الطاقة الشمسية:</span> تُستمَد من الشمس عبر الألواح الشمسية.</li>
+                    <li><span class="keyword">الكتلة الحيوية:</span> تُستمَد من بقايا النباتات والكائنات الحية.</li>
+                </ul>
+            </div>
+            <div class="summary-block block-orange">
+                <div class="summary-block-title">غير المتجددة 🏭</div>
+                <p class="intro">تنفد بالاستخدام وتلوّث كثيرًا. ويمكن أن تكون:</p>
+                <ul class="summary-list">
+                    <li><span class="keyword">الوقود الأحفوري:</span> الفحم والنفط والغاز الطبيعي.</li>
+                    <li><span class="keyword">المواد المشعة:</span> اليورانيوم والبلوتونيوم.</li>
+                </ul>
+            </div>
+        `,
+        checkBtn: 'تحقّق',
+        game4Title: 'مصدر متجدد أم غير متجدد؟',
+        btnRenewable: 'متجدد',
+        btnNonRenewable: 'غير متجدد',
+        finalTitle: 'مصادر الطاقة',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        game2Title: 'حدّد مصادر الطاقة',
+        game3Title: 'حدّد مصادر الطاقة',
+        listenTitle: 'استماع'
     }
 };
 
@@ -668,7 +746,9 @@ let game4Locked = false;
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -682,7 +762,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -762,6 +842,14 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    document.getElementById('game2Title').innerHTML = t.game2Title;
+    document.getElementById('game3Title').innerHTML = t.game3Title;
+    const btnW2 = document.getElementById('btnPlayMaterial');
+    if (btnW2) btnW2.title = t.listenTitle;
+    const btnW3 = document.getElementById('btnPlayMaterialGame3');
+    if (btnW3) btnW3.title = t.listenTitle;
+    const btnW4 = document.getElementById('btnPlayGame4');
+    if (btnW4) btnW4.title = t.listenTitle;
     // game2Screen y game3Screen (imagen con listas) quedan siempre en inglés y no se traducen aquí.
 
     if (currentScreen === 'game1') {

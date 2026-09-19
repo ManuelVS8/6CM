@@ -191,6 +191,7 @@
         <div class="lang-pill">
             <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
             <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
         </div>
         <button class="mute-btn" id="muteBtn" title="Volumen">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -354,6 +355,14 @@ const methodsData = {
         { key:'filtracion', name:'Filtration', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/filtraci%C3%B3n.png' },
         { key:'tamizado', name:'Sieving', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Tamizacion.png' },
         { key:'magnetismo', name:'Magnetism', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Magenitismo.png' }
+    ],
+    ar: [
+        { key:'decantacion', name:'الترويق', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Decantacion.png' },
+        { key:'destilacion', name:'التقطير', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Destilacion.png' },
+        { key:'cristalizacion', name:'التبلور', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Evaporacion.png' },
+        { key:'filtracion', name:'الترشيح', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/filtraci%C3%B3n.png' },
+        { key:'tamizado', name:'الغربلة', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Tamizacion.png' },
+        { key:'magnetismo', name:'المغناطيسية', img:'https://raw.githubusercontent.com/ManuelVS8/6CM/refs/heads/main/UD5_Materia/Imagen/Magenitismo.png' }
     ]
 };
 
@@ -374,6 +383,14 @@ const definitionsData = {
         'It separates solids from a liquid using a filter',
         'It separates solids of different sizes using a sieve',
         'It separates magnetic materials using a magnet'
+    ],
+    ar: [
+        'يفصل السوائل ذات الكثافات المختلفة',
+        'يفصل السوائل ذات درجات الغليان المختلفة',
+        'يفصل مادة صلبة مذابة عن طريق تبخير السائل',
+        'يفصل المواد الصلبة عن السائل باستخدام مرشِّح',
+        'يفصل المواد الصلبة ذات الأحجام المختلفة باستخدام غربال',
+        'يفصل المواد المغناطيسية باستخدام مغناطيس'
     ]
 };
 
@@ -396,6 +413,14 @@ const summaryData = {
         { icon:'🧽', title:'Filtration', text:'It separates solids from a liquid using a filter, such as water and sand.' },
         { icon:'🕳️', title:'Sieving', text:'It separates solids of different sizes using a sieve, such as sand and stones.' },
         { icon:'🧲', title:'Magnetism', text:'It separates magnetic materials using a magnet, such as sand and iron particles.' }
+    ],
+    ar: [
+        { icon:'💧', title:'الترويق', text:'يفصل السوائل ذات الكثافات المختلفة، مثل الماء والزيت.' },
+        { icon:'🔥', title:'التقطير', text:'يفصل السوائل ذات درجات الغليان المختلفة، مثل الماء والكحول.' },
+        { icon:'🧂', title:'التبلور', text:'يفصل مادة صلبة مذابة عن طريق تبخير السائل، مثل الماء المملح.' },
+        { icon:'🧽', title:'الترشيح', text:'يفصل المواد الصلبة عن السائل باستخدام مرشِّح، مثل الماء والرمل.' },
+        { icon:'🕳️', title:'الغربلة', text:'يفصل المواد الصلبة ذات الأحجام المختلفة باستخدام غربال، مثل الرمل والحصى.' },
+        { icon:'🧲', title:'المغناطيسية', text:'يفصل المواد المغناطيسية باستخدام مغناطيس، مثل الرمل وجزيئات الحديد.' }
     ]
 };
 
@@ -418,6 +443,14 @@ const g3Data = {
         { term:'Filtration', def:'Mixture of water and sand' },
         { term:'Sieving', def:'Mixture of sand and stones' },
         { term:'Magnetism', def:'Mixture of sand and iron particles' }
+    ],
+    ar: [
+        { term:'التقطير', def:'محلول من الماء والكحول' },
+        { term:'الترويق', def:'مزيج من الماء والزيت' },
+        { term:'التبلور', def:'محلول من الماء والملح' },
+        { term:'الترشيح', def:'مزيج من الماء والرمل' },
+        { term:'الغربلة', def:'مزيج من الرمل والحصى' },
+        { term:'المغناطيسية', def:'مزيج من الرمل وجزيئات الحديد' }
     ]
 };
 
@@ -456,7 +489,8 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        listenTitle: 'Escuchar'
     },
     en: {
         startTitle: 'Separating mixtures',
@@ -489,7 +523,42 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'فصل المخاليط',
+        startSubtitle: 'طرق فصل المخاليط',
+        startAdvice: 'أحيانًا يمكننا فصل مكوّنات المخلوط. ومن أكثر الطرق شيوعًا: <span class="highlight-keyword">الترويق</span>، و<span class="highlight-keyword">التقطير</span>، و<span class="highlight-keyword">التبلور</span>، و<span class="highlight-keyword">الترشيح</span>، و<span class="highlight-keyword">الغربلة</span>، و<span class="highlight-keyword">المغناطيسية</span>.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'طرق فصل المخاليط',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        hofLoading: 'جارٍ تحميل النتائج...',
+        hofEmpty: 'كن أول من يحفظ نتيجته!',
+        hofError: 'حدث خطأ أثناء تحميل النتائج',
+        game1Title: 'اربط المفاهيم بتعريفها',
+        game2Title: 'اربط المفاهيم بتعريفها',
+        game3Title: 'ما الطريقة التي تستخدمها لفصل هذه المخاليط؟',
+        eyebrow: 'ابحث عن:',
+        finalTitle: 'فصل المخاليط',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalSending: 'جارٍ الإرسال...',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        listenTitle: 'استماع'
     }
 };
 
@@ -532,7 +601,9 @@ function forceInitTTS() {
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -546,7 +617,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.85;
         window.speechSynthesis.speak(u);
@@ -637,6 +708,10 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    const btnW1 = document.getElementById('btnPlayWord1');
+    if (btnW1) btnW1.title = t.listenTitle;
+    const btnW2 = document.getElementById('btnPlayWord2');
+    if (btnW2) btnW2.title = t.listenTitle;
 
     buildAccordion();
 

@@ -88,6 +88,23 @@
         .mute-btn:hover { transform: scale(1.1); }
         .mute-btn svg { width: 22px; height: 22px; fill: white; }
 
+        /* Selector de idioma */
+        .lang-pill { position:absolute; top:.8rem; right:4.7rem; display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; z-index:20; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        @media (max-width:480px) {
+            .mute-btn { right:.6rem; width:34px; height:34px; }
+            .lang-pill { right:3.4rem; padding:2px; gap:2px; }
+            .lang-pill button { width:28px; height:28px; font-size:1rem; }
+        }
+        .modal-validation-msg { color:var(--red); font-size:.9rem; margin:-4px 0 6px; min-height:1.1em; }
+        .modal-validation-msg.hidden { display:none; }
+
         /* --- NUEVO DISEÑO PANTALLA RESUMEN (TEORÍA) --- */
         .theory-content { 
             padding: 10px; 
@@ -661,16 +678,21 @@
             <path class="sound-waves" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
         </svg>
     </button>
+    <div class="lang-pill">
+        <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
+        <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+        <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
+    </div>
 
     <section class="screen active" id="startScreen">
         <header>
-            <h1>Sustancias puras y mezclas</h1>
-            <div class="subtitle">Sustancias puras y mezclas. Mezclas homogéneas y heterogéneas.</div>
+            <h1 id="startTitle">Sustancias puras y mezclas</h1>
+            <div class="subtitle" id="startSubtitle">Sustancias puras y mezclas. Mezclas homogéneas y heterogéneas.</div>
         </header>
 
         <div class="start-content">
             <div class="advice-box">
-                <span class="advice-text">La materia puede presentarse como <span class="highlight-keyword">sustancia pura</span> (un solo componente) o como <span class="highlight-keyword">mezcla</span> (tiene más de un componente)</span>
+                <span class="advice-text" id="startAdvice">La materia puede presentarse como <span class="highlight-keyword">sustancia pura</span> (un solo componente) o como <span class="highlight-keyword">mezcla</span> (tiene más de un componente)</span>
                 <strong style="display:block; margin-top:0.5rem; text-align:center;">¡Ánimo!</strong>
             </div>
             
@@ -679,14 +701,14 @@
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
             
             <div class="hall-of-fame" id="hallOfFame">
-              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
               <table class="hall-of-fame-table">
                   <thead>
                         <tr>
-                            <th>Posición</th>
-                            <th>Nombre</th>
-                            <th>Puntos</th>
-                            <th>Tiempo</th>
+                            <th id="hofPos">Posición</th>
+                            <th id="hofName">Nombre</th>
+                            <th id="hofPoints">Puntos</th>
+                            <th id="hofTime">Tiempo</th>
                         </tr>
                     </thead>
                     <tbody id="hofTableBody">
@@ -698,20 +720,20 @@
 
     <section class="screen" id="summaryScreen">
         <header>
-            <h1>Sustancias puras y mezclas</h1>
+            <h1 id="summaryTitle">Sustancias puras y mezclas</h1>
         </header>
         <div class="theory-content">
-            <div class="theory-main-title">Clasificación de la materia</div>
-            <p class="theory-intro">La materia puede presentarse como sustancias puras o mezclas.</p>
+            <div class="theory-main-title" id="theoryMainTitle">Clasificación de la materia</div>
+            <p class="theory-intro" id="theoryIntro">La materia puede presentarse como sustancias puras o mezclas.</p>
             
             <div class="change-block pure">
-                <div class="block-title">
+                <div class="block-title" id="pureTitle">
                     Sustancias puras
                 </div>
-                <div class="block-desc">
+                <div class="block-desc" id="pureDesc">
                     Está compuesta por un solo componente. Algunos ejemplos son:
                 </div>
-                <ul class="example-list">
+                <ul class="example-list" id="pureList">
                     <li><strong>Agua:</strong> compuesta únicamente por moléculas de agua.</li>
                     <li><strong>Hierro:</strong> elemento puro.</li>
                     <li><strong>Diamante:</strong> carbono puro.</li>
@@ -719,13 +741,13 @@
             </div>
 
             <div class="change-block mixture">
-                <div class="block-title">
+                <div class="block-title" id="mixTitle">
                     Mezclas
                 </div>
-                <div class="block-desc">
+                <div class="block-desc" id="mixDesc">
                     Están compuestas por varios componentes.
                 </div>
-                <ul class="example-list">
+                <ul class="example-list" id="mixList">
                     <li><strong>Homogéneas:</strong> no se distinguen los componentes (batido, agua salada, bronce).</li>
                     <li><strong>Heterogéneas:</strong> sí se distinguen sus componentes (ensalada, granito).</li>
                 </ul>
@@ -739,8 +761,8 @@
 
     <section class="screen" id="game1Screen">
         <header>
-            <h1>Sustancias puras y mezclas</h1>
-            <div class="subtitle">Rellena los huecos para completar el texto</div>
+            <h1 id="game1Title">Sustancias puras y mezclas</h1>
+            <div class="subtitle" id="game1Subtitle">Rellena los huecos para completar el texto</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame1">00:00.0</div>
@@ -758,8 +780,8 @@
 
     <section class="screen" id="game2Screen" lang="en" translate="no" class="notranslate">
         <header>
-            <h1>Pure substances and mixtures</h1>
-            <div class="subtitle">Identify the image</div>
+            <h1 id="game2Title">Pure substances and mixtures</h1>
+            <div class="subtitle" id="game2Subtitle">Identify the image</div>
         </header>
         <div class="game-info">
             <div class="timer" id="timerGame2">00:00.0</div>
@@ -803,7 +825,7 @@
 
     <section class="screen" id="game3Screen">
         <header>
-            <h1>Elige la opción correcta</h1>
+            <h1 id="game3Title">Elige la opción correcta</h1>
         </header>
         <div class="game-info">
             <div class="level-indicator" id="levelIndicatorG3">Nivel 1/5</div>
@@ -821,14 +843,14 @@
 
     <section class="screen" id="finalScreen">
         <header>
-            <h1 class="final-title">Sustancias puras y mezclas</h1>
+            <h1 class="final-title" id="finalTitle">Sustancias puras y mezclas</h1>
         </header>
         <div class="results">
             <div id="trophyBox">🏆</div>
             
-            <div class="score-title">Puntuación:</div>
+            <div class="score-title" id="scoreLabel">Puntuación:</div>
             <div class="big-score" id="finalScore">0</div>
-            <div class="final-time">Tiempo: <span id="finalTime">00:00.0</span></div>
+            <div class="final-time" id="timeLabelWrap">Tiempo: <span id="finalTime">00:00.0</span></div>
             <div id="finalMsg" class="subtitle"></div>
             <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Volver al menú</button>
             <span class="credit">Creado por Manuel J. Ventura</span>
@@ -839,10 +861,11 @@
 
 <div id="submitModal" class="modal-overlay">
     <div class="modal-content">
-        <h3>¡Juego Terminado!</h3>
-        <p>Tu tiempo: <span id="modalTime">00:00.0</span></p>
+        <h3 id="modalTitle">¡Juego Terminado!</h3>
+        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">00:00.0</span></p>
         <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
         <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <p id="modalValidationMsg" class="modal-validation-msg hidden"></p>
         <div style="display: flex; gap: 10px; justify-content: center;">
             <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
             <button id="discardScoreBtn" class="btn btn-ghost">Cancelar</button>
@@ -887,6 +910,234 @@
     const MIN_ATTEMPTS = 18;
     let totalAttempts = 0;
     // ────────────────────────────────────────────────────────────
+
+    let currentLang = 'es';
+
+    const i18n = {
+        es: {
+            startTitle: 'Sustancias puras y mezclas',
+            startSubtitle: 'Sustancias puras y mezclas. Mezclas homogéneas y heterogéneas.',
+            startAdvice: 'La materia puede presentarse como <span class="highlight-keyword">sustancia pura</span> (un solo componente) o como <span class="highlight-keyword">mezcla</span> (tiene más de un componente)',
+            startBtn: 'Comenzar',
+            hofTitle: 'Mejores puntuaciones',
+            hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
+            hofLoading: 'Cargando datos...',
+            hofEmpty: '¡Sé el primero en guardar tu puntuación!',
+            hofConnError: 'Error de conexión.',
+            hofConnErrorTimeout: 'Error de conexión o timeout.',
+            summaryTitle: 'Sustancias puras y mezclas',
+            theoryMainTitle: 'Clasificación de la materia',
+            theoryIntro: 'La materia puede presentarse como sustancias puras o mezclas.',
+            pureTitle: 'Sustancias puras',
+            pureDesc: 'Está compuesta por un solo componente. Algunos ejemplos son:',
+            pureList: [
+                '<strong>Agua:</strong> compuesta únicamente por moléculas de agua.',
+                '<strong>Hierro:</strong> elemento puro.',
+                '<strong>Diamante:</strong> carbono puro.'
+            ],
+            mixTitle: 'Mezclas',
+            mixDesc: 'Están compuestas por varios componentes.',
+            mixList: [
+                '<strong>Homogéneas:</strong> no se distinguen los componentes (batido, agua salada, bronce).',
+                '<strong>Heterogéneas:</strong> sí se distinguen sus componentes (ensalada, granito).'
+            ],
+            playBtn: 'Jugar',
+            game1Title: 'Sustancias puras y mezclas',
+            game1Subtitle: 'Rellena los huecos para completar el texto',
+            checkGame1Btn: 'Comprobar',
+            continueFromGame1Btn: 'Continuar',
+            game2Title: 'Pure substances and mixtures',
+            game2Subtitle: 'Identify the image',
+            listenTitle: 'Play audio',
+            game3Title: 'Elige la opción correcta',
+            levelPrefix: (n, t) => `Nivel ${n}/${t}`,
+            finalTitle: 'Sustancias puras y mezclas',
+            scoreLabel: 'Puntuación:',
+            timeLabelPrefix: 'Tiempo:',
+            backBtn: 'Volver al menú',
+            msgPerfect: '¡Enhorabuena, puntuación máxima!',
+            msgGood: '¡Buen trabajo! Sigue practicando',
+            modalTitle: '¡Juego Terminado!',
+            modalTimeLabel: 'Tu tiempo:',
+            namePlaceholder: 'Nombre',
+            surnamePlaceholder: 'Apellido',
+            modalSave: 'Guardar',
+            modalSending: 'Enviando...',
+            modalCancel: 'Cancelar',
+            validationMsg: 'Por favor, rellena nombre y apellido',
+            sendError: 'Error al enviar la puntuación.'
+        },
+        en: {
+            startTitle: 'Pure substances and mixtures',
+            startSubtitle: 'Pure substances and mixtures. Homogeneous and heterogeneous mixtures.',
+            startAdvice: 'Matter can appear as a <span class="highlight-keyword">pure substance</span> (a single component) or as a <span class="highlight-keyword">mixture</span> (it has more than one component)',
+            startBtn: 'Start',
+            hofTitle: 'Best scores',
+            hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+            hofLoading: 'Loading data...',
+            hofEmpty: 'Be the first to save your score!',
+            hofConnError: 'Connection error.',
+            hofConnErrorTimeout: 'Connection error or timeout.',
+            summaryTitle: 'Pure substances and mixtures',
+            theoryMainTitle: 'Classification of matter',
+            theoryIntro: 'Matter can appear as pure substances or mixtures.',
+            pureTitle: 'Pure substances',
+            pureDesc: 'It is made up of a single component. Some examples are:',
+            pureList: [
+                '<strong>Water:</strong> made up only of water molecules.',
+                '<strong>Iron:</strong> a pure element.',
+                '<strong>Diamond:</strong> pure carbon.'
+            ],
+            mixTitle: 'Mixtures',
+            mixDesc: 'They are made up of several components.',
+            mixList: [
+                '<strong>Homogeneous:</strong> the components cannot be told apart (milkshake, salt water, bronze).',
+                '<strong>Heterogeneous:</strong> the components can be told apart (salad, granite).'
+            ],
+            playBtn: 'Play',
+            game1Title: 'Pure substances and mixtures',
+            game1Subtitle: 'Fill in the blanks to complete the text',
+            checkGame1Btn: 'Check',
+            continueFromGame1Btn: 'Continue',
+            game2Title: 'Pure substances and mixtures',
+            game2Subtitle: 'Identify the image',
+            listenTitle: 'Play audio',
+            game3Title: 'Choose the correct option',
+            levelPrefix: (n, t) => `Level ${n}/${t}`,
+            finalTitle: 'Pure substances and mixtures',
+            scoreLabel: 'Score:',
+            timeLabelPrefix: 'Time:',
+            backBtn: 'Back to menu',
+            msgPerfect: 'Congratulations, perfect score!',
+            msgGood: 'Good job! Keep practising',
+            modalTitle: 'Game Over!',
+            modalTimeLabel: 'Your time:',
+            namePlaceholder: 'Name',
+            surnamePlaceholder: 'Surname',
+            modalSave: 'Save',
+            modalSending: 'Sending...',
+            modalCancel: 'Cancel',
+            validationMsg: 'Please fill in name and surname',
+            sendError: 'Error sending score.'
+        },
+        ar: {
+            startTitle: 'المواد النقية والمخاليط',
+            startSubtitle: 'المواد النقية والمخاليط. المخاليط المتجانسة وغير المتجانسة.',
+            startAdvice: 'يمكن أن تظهر المادة كـ<span class="highlight-keyword">مادة نقية</span> (مكوّن واحد) أو كـ<span class="highlight-keyword">مخلوط</span> (له أكثر من مكوّن واحد)',
+            startBtn: 'ابدأ',
+            hofTitle: 'أفضل النتائج',
+            hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+            hofLoading: 'جارٍ تحميل البيانات...',
+            hofEmpty: 'كن أول من يحفظ نتيجته!',
+            hofConnError: 'خطأ في الاتصال.',
+            hofConnErrorTimeout: 'خطأ في الاتصال أو انتهت المهلة.',
+            summaryTitle: 'المواد النقية والمخاليط',
+            theoryMainTitle: 'تصنيف المادة',
+            theoryIntro: 'يمكن أن تظهر المادة على شكل مواد نقية أو مخاليط.',
+            pureTitle: 'المواد النقية',
+            pureDesc: 'تتكوّن من مكوّن واحد. ومن أمثلتها:',
+            pureList: [
+                '<strong>الماء:</strong> يتكوّن فقط من جزيئات الماء.',
+                '<strong>الحديد:</strong> عنصر نقي.',
+                '<strong>الماس:</strong> كربون نقي.'
+            ],
+            mixTitle: 'المخاليط',
+            mixDesc: 'تتكوّن من عدة مكوّنات.',
+            mixList: [
+                '<strong>متجانسة:</strong> لا يمكن تمييز مكوّناتها (عصير الحليب، الماء المملح، البرونز).',
+                '<strong>غير متجانسة:</strong> يمكن تمييز مكوّناتها (السلطة، الجرانيت).'
+            ],
+            playBtn: 'العب',
+            game1Title: 'المواد النقية والمخاليط',
+            game1Subtitle: 'املأ الفراغات لإكمال النص',
+            checkGame1Btn: 'تحقّق',
+            continueFromGame1Btn: 'متابعة',
+            game2Title: 'المواد النقية والمخاليط',
+            game2Subtitle: 'حدّد الصورة',
+            listenTitle: 'تشغيل الصوت',
+            game3Title: 'اختر الإجابة الصحيحة',
+            levelPrefix: (n, t) => `المستوى ${n}/${t}`,
+            finalTitle: 'المواد النقية والمخاليط',
+            scoreLabel: 'النتيجة:',
+            timeLabelPrefix: 'الوقت:',
+            backBtn: 'العودة إلى القائمة',
+            msgPerfect: 'تهانينا! نتيجة كاملة!',
+            msgGood: 'أحسنت! واصل التدريب',
+            modalTitle: 'انتهت اللعبة!',
+            modalTimeLabel: 'وقتك:',
+            namePlaceholder: 'الاسم',
+            surnamePlaceholder: 'اللقب',
+            modalSave: 'حفظ',
+            modalSending: 'جارٍ الإرسال...',
+            modalCancel: 'إلغاء',
+            validationMsg: 'يرجى كتابة الاسم واللقب',
+            sendError: 'حدث خطأ أثناء إرسال النتيجة.'
+        }
+    };
+
+    function applyLanguage(lang) {
+        currentLang = lang;
+        const t = i18n[lang];
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+            btn.classList.toggle('active-lang', btn.dataset.lang === lang);
+        });
+
+        document.getElementById('startTitle').innerHTML = t.startTitle;
+        document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
+        document.getElementById('startAdvice').innerHTML = t.startAdvice;
+        document.getElementById('playBtn').innerHTML = t.startBtn;
+        document.getElementById('hofTitle').innerHTML = t.hofTitle;
+        document.getElementById('hofPos').innerHTML = t.hofPos;
+        document.getElementById('hofName').innerHTML = t.hofName;
+        document.getElementById('hofPoints').innerHTML = t.hofPoints;
+        document.getElementById('hofTime').innerHTML = t.hofTime;
+        document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
+        document.getElementById('theoryMainTitle').innerHTML = t.theoryMainTitle;
+        document.getElementById('theoryIntro').innerHTML = t.theoryIntro;
+        document.getElementById('pureTitle').innerHTML = t.pureTitle;
+        document.getElementById('pureDesc').innerHTML = t.pureDesc;
+        document.getElementById('pureList').innerHTML = t.pureList.map(li => `<li>${li}</li>`).join('');
+        document.getElementById('mixTitle').innerHTML = t.mixTitle;
+        document.getElementById('mixDesc').innerHTML = t.mixDesc;
+        document.getElementById('mixList').innerHTML = t.mixList.map(li => `<li>${li}</li>`).join('');
+        document.getElementById('startGameBtn').innerHTML = t.playBtn;
+        document.getElementById('game1Title').innerHTML = t.game1Title;
+        document.getElementById('game1Subtitle').innerHTML = t.game1Subtitle;
+        document.getElementById('checkGame1Btn').innerHTML = t.checkGame1Btn;
+        document.getElementById('continueFromGame1Btn').innerHTML = t.continueFromGame1Btn;
+        document.getElementById('game2Title').innerHTML = t.game2Title;
+        document.getElementById('game2Subtitle').innerHTML = t.game2Subtitle;
+        const playNameBtn = document.getElementById('playNameBtn');
+        if (playNameBtn) playNameBtn.title = t.listenTitle;
+        document.getElementById('game3Title').innerHTML = t.game3Title;
+        document.getElementById('finalTitle').innerHTML = t.finalTitle;
+        document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
+        document.getElementById('backToMenuBtn').innerHTML = t.backBtn;
+        document.getElementById('modalTitle').innerHTML = t.modalTitle;
+        document.getElementById('playerName').placeholder = t.namePlaceholder;
+        document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+        document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
+        document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
+
+        const finalTimeSpan = document.getElementById('finalTime').outerHTML;
+        document.getElementById('timeLabelWrap').innerHTML = t.timeLabelPrefix + ' ' + finalTimeSpan;
+        const modalTimeSpan = document.getElementById('modalTime').outerHTML;
+        document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' ' + modalTimeSpan;
+
+        // Si el alumnado está en juego 1 (huecos) o juego 3 (test), regeneramos esa
+        // pantalla para que el contenido dinámico se muestre en el nuevo idioma.
+        if (currentScreen === 'game1' && !document.getElementById('checkGame1Btn').classList.contains('hidden')) {
+            initGame1();
+        } else if (currentScreen === 'game3') {
+            initGame3();
+        }
+    }
+
+    document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+        btn.addEventListener('click', () => { reproducirSonidoTap(); applyLanguage(btn.dataset.lang); });
+    });
 
     /* --- AUDIOS --- */
     const audioUrls = {
@@ -998,9 +1249,11 @@
     }
 
     /* --- LÓGICA GENERAL --- */
+    let currentScreen = 'start';
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        currentScreen = id.replace('Screen', '');
     }
 
     function startGlobalTimer() {
@@ -1102,14 +1355,34 @@
     }
 
     /* --- JUEGO 1: COMPLETAR HUECOS --- */
-    const g1FullText = [
-        "La materia puede presentarse como {sustancias} puras o mezclas.",
-        "Las sustancias puras están compuestas por {un solo componente}, como por ejemplo, agua, hierro, {diamante}, etc.",
-        "Las mezclas están compuestas por {varios componentes}. Existen dos tipos de {mezclas}: homogéneas y heterogéneas.",
-        "    • En las mezclas homogéneas {no se distinguen} sus componentes, como {un batido}, agua salada o bronce.",
-        "    • En las mezclas heterogéneas {sí se distinguen} sus componentes, como {una ensalada} o el granito."
-    ];
-    const g1Answers = ["sustancias", "un solo componente", "diamante", "varios componentes", "mezclas", "no se distinguen", "un batido", "sí se distinguen", "una ensalada"];
+    const g1FullText = {
+        es: [
+            "La materia puede presentarse como {sustancias} puras o mezclas.",
+            "Las sustancias puras están compuestas por {un solo componente}, como por ejemplo, agua, hierro, {diamante}, etc.",
+            "Las mezclas están compuestas por {varios componentes}. Existen dos tipos de {mezclas}: homogéneas y heterogéneas.",
+            "    • En las mezclas homogéneas {no se distinguen} sus componentes, como {un batido}, agua salada o bronce.",
+            "    • En las mezclas heterogéneas {sí se distinguen} sus componentes, como {una ensalada} o el granito."
+        ],
+        en: [
+            "Matter can appear as pure {substances} or mixtures.",
+            "Pure substances are made up of {a single component}, such as water, iron, {diamond}, etc.",
+            "Mixtures are made up of {several components}. There are two types of {mixtures}: homogeneous and heterogeneous.",
+            "    • In homogeneous mixtures {the components cannot be told apart}, such as {a milkshake}, salt water or bronze.",
+            "    • In heterogeneous mixtures {the components can be told apart}, such as {a salad} or granite."
+        ],
+        ar: [
+            "يمكن أن تظهر المادة على شكل {مواد} نقية أو مخاليط.",
+            "تتكوّن المواد النقية من {مكوّن واحد}، مثل الماء، والحديد، و{الماس}، وما إلى ذلك.",
+            "تتكوّن المخاليط من {عدة مكوّنات}. ويوجد نوعان من {المخاليط}: متجانسة وغير متجانسة.",
+            "    • في المخاليط المتجانسة {لا يمكن تمييز} مكوّناتها، مثل {عصير الحليب}، أو الماء المملح، أو البرونز.",
+            "    • في المخاليط غير المتجانسة {يمكن تمييز} مكوّناتها، مثل {السلطة} أو الجرانيت."
+        ]
+    };
+    const g1Answers = {
+        es: ["sustancias", "un solo componente", "diamante", "varios componentes", "mezclas", "no se distinguen", "un batido", "sí se distinguen", "una ensalada"],
+        en: ["substances", "a single component", "diamond", "several components", "mixtures", "the components cannot be told apart", "a milkshake", "the components can be told apart", "a salad"],
+        ar: ["مواد", "مكوّن واحد", "الماس", "عدة مكوّنات", "المخاليط", "لا يمكن تمييز", "عصير الحليب", "يمكن تمييز", "السلطة"]
+    };
     
     let selectedWordBankItem = null;
 
@@ -1125,7 +1398,7 @@
         contBtn.classList.add('hidden');
         totalCorrectG1 = 0;
         
-        const shuffledAnswers = [...g1Answers].sort(() => Math.random() - 0.5);
+        const shuffledAnswers = [...g1Answers[currentLang]].sort(() => Math.random() - 0.5);
         
         shuffledAnswers.forEach(word => {
             const el = document.createElement('div');
@@ -1144,7 +1417,7 @@
         });
 
         let html = '';
-        g1FullText.forEach(paragraph => {
+        g1FullText[currentLang].forEach(paragraph => {
             const processedText = paragraph.replace(/{(.*?)}/g, (match, captured) => {
                 return `<span class="dropzone" data-answer="${captured}"></span>`;
             });
@@ -1492,55 +1765,141 @@
     };
 
     /* --- JUEGO 3: TEST --- */
-    const g3Data = [
-        { 
-            question: "Las sustancias puras...", 
-            options: [
-                { text: "Tienen un solo componente", correct: true },
-                { text: "Tienen varios componentes", correct: false },
-                { text: "Son los diferentes tipos de materia", correct: false }
-            ]
-        },
-        { 
-            question: "Las mezclas...", 
-            options: [
-                { text: "Tienen dos componentes", correct: false },
-                { text: "Tienen más de un componente", correct: true },
-                { text: "Pueden tener uno o varios componentes", correct: false }
-            ]
-        },
-        { 
-            question: "En las mezclas homogéneas...", 
-            options: [
-                { text: "Podemos distinguir los componentes", correct: false },
-                { text: "No podemos distinguir los componentes", correct: true },
-                { text: "Son puras o mixtas", correct: false }
-            ]
-        },
-        { 
-            question: "En las mezclas heterogéneas...", 
-            options: [
-                { text: "Sí se distinguen los componentes", correct: true },
-                { text: "No se distinguen los componentes", correct: false }
-            ]
-        },
-        { 
-            question: "La materia puede aparecer como…", 
-            options: [
-                { text: "Sustancias puras o mezclas", correct: true },
-                { text: "Mezclas homogéneas y heterogéneas", correct: false },
-                { text: "Masa y volumen", correct: false },
-                { text: "Materia y mezclas", correct: false }
-            ]
-        }
-    ];
+    const g3Data = {
+        es: [
+            {
+                question: "Las sustancias puras...",
+                options: [
+                    { text: "Tienen un solo componente", correct: true },
+                    { text: "Tienen varios componentes", correct: false },
+                    { text: "Son los diferentes tipos de materia", correct: false }
+                ]
+            },
+            {
+                question: "Las mezclas...",
+                options: [
+                    { text: "Tienen dos componentes", correct: false },
+                    { text: "Tienen más de un componente", correct: true },
+                    { text: "Pueden tener uno o varios componentes", correct: false }
+                ]
+            },
+            {
+                question: "En las mezclas homogéneas...",
+                options: [
+                    { text: "Podemos distinguir los componentes", correct: false },
+                    { text: "No podemos distinguir los componentes", correct: true },
+                    { text: "Son puras o mixtas", correct: false }
+                ]
+            },
+            {
+                question: "En las mezclas heterogéneas...",
+                options: [
+                    { text: "Sí se distinguen los componentes", correct: true },
+                    { text: "No se distinguen los componentes", correct: false }
+                ]
+            },
+            {
+                question: "La materia puede aparecer como…",
+                options: [
+                    { text: "Sustancias puras o mezclas", correct: true },
+                    { text: "Mezclas homogéneas y heterogéneas", correct: false },
+                    { text: "Masa y volumen", correct: false },
+                    { text: "Materia y mezclas", correct: false }
+                ]
+            }
+        ],
+        en: [
+            {
+                question: "Pure substances...",
+                options: [
+                    { text: "Have a single component", correct: true },
+                    { text: "Have several components", correct: false },
+                    { text: "Are the different types of matter", correct: false }
+                ]
+            },
+            {
+                question: "Mixtures...",
+                options: [
+                    { text: "Have two components", correct: false },
+                    { text: "Have more than one component", correct: true },
+                    { text: "Can have one or several components", correct: false }
+                ]
+            },
+            {
+                question: "In homogeneous mixtures...",
+                options: [
+                    { text: "We can tell the components apart", correct: false },
+                    { text: "We cannot tell the components apart", correct: true },
+                    { text: "They are pure or mixed", correct: false }
+                ]
+            },
+            {
+                question: "In heterogeneous mixtures...",
+                options: [
+                    { text: "The components can be told apart", correct: true },
+                    { text: "The components cannot be told apart", correct: false }
+                ]
+            },
+            {
+                question: "Matter can appear as…",
+                options: [
+                    { text: "Pure substances or mixtures", correct: true },
+                    { text: "Homogeneous and heterogeneous mixtures", correct: false },
+                    { text: "Mass and volume", correct: false },
+                    { text: "Matter and mixtures", correct: false }
+                ]
+            }
+        ],
+        ar: [
+            {
+                question: "المواد النقية...",
+                options: [
+                    { text: "لها مكوّن واحد", correct: true },
+                    { text: "لها عدة مكوّنات", correct: false },
+                    { text: "هي الأنواع المختلفة للمادة", correct: false }
+                ]
+            },
+            {
+                question: "المخاليط...",
+                options: [
+                    { text: "لها مكوّنان", correct: false },
+                    { text: "لها أكثر من مكوّن واحد", correct: true },
+                    { text: "يمكن أن يكون لها مكوّن واحد أو عدة مكوّنات", correct: false }
+                ]
+            },
+            {
+                question: "في المخاليط المتجانسة...",
+                options: [
+                    { text: "يمكننا تمييز المكوّنات", correct: false },
+                    { text: "لا يمكننا تمييز المكوّنات", correct: true },
+                    { text: "تكون نقية أو مختلطة", correct: false }
+                ]
+            },
+            {
+                question: "في المخاليط غير المتجانسة...",
+                options: [
+                    { text: "يمكن تمييز المكوّنات", correct: true },
+                    { text: "لا يمكن تمييز المكوّنات", correct: false }
+                ]
+            },
+            {
+                question: "يمكن أن تظهر المادة على شكل…",
+                options: [
+                    { text: "مواد نقية أو مخاليط", correct: true },
+                    { text: "مخاليط متجانسة وغير متجانسة", correct: false },
+                    { text: "كتلة وحجم", correct: false },
+                    { text: "مادة ومخاليط", correct: false }
+                ]
+            }
+        ]
+    };
 
     let g3CurrentIndex = 0;
     let g3Questions = [];
     let g3Blocking = false; // evita doble clic mientras se procesa la respuesta
 
     function initGame3() {
-        g3Questions = [...g3Data].sort(() => Math.random() - 0.5);
+        g3Questions = [...g3Data[currentLang]].sort(() => Math.random() - 0.5);
         g3Questions.forEach(q => q.options.sort(() => Math.random() - 0.5));
         
         g3CurrentIndex = 0;
@@ -1562,7 +1921,7 @@
         const levelEl = document.getElementById('levelIndicatorG3');
 
         questionTextEl.textContent = q.question;
-        levelEl.textContent = `Nivel ${g3CurrentIndex + 1}/${TOTAL_QUESTIONS_G3}`;
+        levelEl.textContent = i18n[currentLang].levelPrefix(g3CurrentIndex + 1, TOTAL_QUESTIONS_G3);
         
         optionsContainer.innerHTML = '';
         g3Blocking = false;
@@ -1631,12 +1990,12 @@
         
         if (finalScoreVal === 100) {
             trophyBox.style.display = 'block';
-            msg.textContent = '¡Enhorabuena, puntuación máxima!';
+            msg.textContent = i18n[currentLang].msgPerfect;
             reproducirSonidoVictoria();
             createConfetti();
         } else {
             trophyBox.style.display = 'none';
-            msg.textContent = '¡Buen trabajo! Sigue practicando';
+            msg.textContent = i18n[currentLang].msgGood;
             reproducirSonidoCompletado();
         }
 
@@ -1669,9 +2028,10 @@
     function loadHallOfFame() {
         if (isHofLoading) return;
         isHofLoading = true;
+        const t = i18n[currentLang];
 
         const tbody = document.getElementById('hofTableBody');
-        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofLoading}</td></tr>`;
 
         const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
 
@@ -1702,7 +2062,7 @@
                     const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
 
                     if (validData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofEmpty}</td></tr>`;
                     } else {
                         validData.sort((a, b) => {
                             const scoreA = parseFloat(a.Puntuación) || 0;
@@ -1740,12 +2100,12 @@
                         }
                     }
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>';
+                    tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnError}</td></tr>`;
                 }
             })
             .catch(e => {
                 console.error("Error HoF:", e);
-                tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión o timeout.</td></tr>';
+                tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnErrorTimeout}</td></tr>`;
             })
             .finally(() => {
                 isHofLoading = false;
@@ -1757,6 +2117,9 @@
         document.getElementById('playerName').value = '';
         document.getElementById('playerSurname').value = '';
         document.getElementById('submitModal').style.display = 'flex';
+        const validationEl = document.getElementById('modalValidationMsg');
+        validationEl.classList.add('hidden');
+        validationEl.textContent = '';
     }
 
     document.getElementById('discardScoreBtn').onclick = () => { 
@@ -1765,9 +2128,11 @@
     };
 
     document.getElementById('submitScoreBtn').onclick = () => {
+        const t = i18n[currentLang];
         const btn = document.getElementById('submitScoreBtn');
         const nameInput = document.getElementById('playerName');
         const surnameInput = document.getElementById('playerSurname');
+        const validationEl = document.getElementById('modalValidationMsg');
         
         const payload = {
             score: finalScoreVal,
@@ -1777,9 +2142,11 @@
         };
 
         if(payload.name && payload.surname) {
+            validationEl.classList.add('hidden');
+            validationEl.textContent = '';
             reproducirSonidoTap();
             const originalText = btn.textContent;
-            btn.textContent = "Enviando...";
+            btn.textContent = t.modalSending;
             btn.disabled = true;
 
             fetch(APP_SCRIPT_URL, {
@@ -1796,12 +2163,14 @@
             })
             .catch(e => {
                 console.error("Error envío:", e);
-                alert("Error al enviar puntuación.");
+                validationEl.textContent = t.sendError;
+                validationEl.classList.remove('hidden');
                 btn.textContent = originalText;
                 btn.disabled = false;
             });
         } else {
-            alert("Por favor, rellena nombre y apellido");
+            validationEl.textContent = t.validationMsg;
+            validationEl.classList.remove('hidden');
         }
     };
 
@@ -1831,6 +2200,7 @@
 
     /* --- INIT --- */
     document.addEventListener('DOMContentLoaded', () => { 
+        applyLanguage('es');
         loadHallOfFame(); 
         updateSpeakerIcon();
         if (window.speechSynthesis) {

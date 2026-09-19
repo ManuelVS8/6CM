@@ -228,6 +228,7 @@
     <div class="lang-pill">
         <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
         <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+        <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
     </div>
 
     <!-- ===== PANTALLA INICIO ===== -->
@@ -408,6 +409,15 @@ const matchData = {
         { id: 5, term: 'Natural - mineral', def: 'Iron, granite, copper…' },
         { id: 6, term: 'Plastic', def: 'Artificial material obtained from petroleum' },
         { id: 7, term: 'Bronze', def: 'Artificial material made by melting copper and tin' }
+    ],
+    ar: [
+        { id: 1, term: 'مواد من أصل طبيعي', def: 'نجدها في الطبيعة' },
+        { id: 2, term: 'مواد من أصل اصطناعي', def: 'يصنعها الإنسان' },
+        { id: 3, term: 'طبيعي - حيواني', def: 'الصوف، والجلد، والحرير…' },
+        { id: 4, term: 'طبيعي - نباتي', def: 'القطن، والخشب، والفلين…' },
+        { id: 5, term: 'طبيعي - معدني', def: 'الحديد، والجرانيت، والنحاس…' },
+        { id: 6, term: 'البلاستيك', def: 'مادة اصطناعية نحصل عليها من النفط' },
+        { id: 7, term: 'البرونز', def: 'مادة اصطناعية ناتجة عن صهر النحاس والقصدير' }
     ]
 };
 
@@ -461,7 +471,9 @@ const i18n = {
         msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
         msg80: 'Casi lo logras. ¡Sigue practicando!',
         msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
+        msg0: 'Vaya desastre... ¿Seguro que has estudiado?',
+        game2Title: 'Classify <span class="highlight-keyword">natural</span> (animal, plant, mineral) and <span class="highlight-keyword">artificial</span> materials',
+        listenTitle: 'Listen'
     },
     en: {
         startTitle: 'Origin of materials',
@@ -509,7 +521,59 @@ const i18n = {
         msgPerfect: 'Fan-tas-tic! Perfect score!',
         msg80: 'Almost there. Keep practising!',
         msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
+        msg0: 'What a disaster... Did you really study?',
+        game2Title: 'Classify <span class="highlight-keyword">natural</span> (animal, plant, mineral) and <span class="highlight-keyword">artificial</span> materials',
+        listenTitle: 'Listen'
+    },
+    ar: {
+        startTitle: 'أصل المواد',
+        startSubtitle: 'نسمّي المواد الأنواع المختلفة للمادة. تعرّف عليها',
+        startAdvice: 'يمكن أن تكون المواد ذات <span class="highlight-keyword">أصل طبيعي</span> إذا وجدناها في الطبيعة (أصل <span class="highlight-keyword">حيواني</span>، أو <span class="highlight-keyword">نباتي</span>، أو <span class="highlight-keyword">معدني</span>)، أو ذات <span class="highlight-keyword">أصل اصطناعي</span> إذا صنعها الإنسان من مواد طبيعية. سنتعلّم كيف نميّز بينها.<br><strong style="display:block;margin-top:.5rem;text-align:center;">بالتوفيق!</strong>',
+        startBtn: 'ابدأ',
+        summaryTitle: 'أصل المواد',
+        continueBtn: 'متابعة',
+        hofTitle: 'أفضل النتائج',
+        hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+        game1Title: 'أصول المواد',
+        summaryContent: `
+            <div class="summary-block block-blue">
+                <div class="summary-block-title">الأصل الطبيعي</div>
+                <p class="intro">نجدها مباشرة في الطبيعة. ويمكن أن تكون:</p>
+                <ul class="summary-list">
+                    <li><span class="keyword">أصل نباتي:</span> الخشب، والقطن، والفلين…</li>
+                    <li><span class="keyword">أصل حيواني:</span> الصوف، والجلد، والحرير…</li>
+                    <li><span class="keyword">أصل معدني:</span> الحديد، والجرانيت، والذهب…</li>
+                </ul>
+            </div>
+            <div class="summary-block block-orange">
+                <div class="summary-block-title">الأصل الاصطناعي</div>
+                <p class="intro">يصنعها الإنسان من مواد طبيعية. ومن أمثلتها:</p>
+                <ul class="summary-list">
+                    <li><span class="keyword">البلاستيك:</span> يأتي من النفط.</li>
+                    <li><span class="keyword">الزجاج:</span> يُحصل عليه بصهر الرمل.</li>
+                    <li><span class="keyword">البرونز:</span> سبيكة من النحاس والقصدير.</li>
+                    <li><span class="keyword">الورق:</span> يُحصل عليه من الخشب.</li>
+                </ul>
+            </div>
+        `,
+        checkBtn: 'تحقّق',
+        finalTitle: 'أصل المواد',
+        scoreLabel: 'النتيجة:',
+        timeLabel: 'الوقت:',
+        backBtn: 'العودة إلى القائمة',
+        modalTitle: 'انتهت اللعبة!',
+        modalTimeLabel: 'وقتك:',
+        modalSave: 'حفظ',
+        modalCancel: 'إلغاء',
+        namePlaceholder: 'الاسم',
+        surnamePlaceholder: 'اللقب',
+        validationMsg: 'يرجى كتابة الاسم واللقب',
+        msgPerfect: 'رائع! نتيجة كاملة!',
+        msg80: 'اقتربتَ من الهدف. واصل التدريب!',
+        msg50: 'لم تكتمل بعد؛ يمكنك تحسين نتيجتك',
+        msg0: 'يا للفوضى... هل ذاكرتَ فعلاً؟',
+        game2Title: 'صنّف المواد <span class="highlight-keyword">الطبيعية</span> (حيوانية، نباتية، معدنية) و<span class="highlight-keyword">الاصطناعية</span>',
+        listenTitle: 'استماع'
     }
 };
 
@@ -543,7 +607,9 @@ let game2ActiveAnswer = null; // { groupKey, subgroup } — solo la última list
 function getBestVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
-    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
+    const prefer = lang === 'es' ? ['Google español','Natural','Microsoft']
+        : lang === 'ar' ? ['Google','Natural','Microsoft']
+        : ['Google UK','Natural','Microsoft'];
     for (let p of prefer) {
         for (let v of voices) {
             if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
@@ -557,7 +623,7 @@ function speakText(text, lang) {
     if (isMuted) return;
     try {
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
+        u.lang = lang === 'es' ? 'es-ES' : lang === 'ar' ? 'ar-SA' : 'en-GB';
         u.voice = getBestVoice(lang);
         u.rate = 0.8;
         window.speechSynthesis.speak(u);
@@ -634,6 +700,9 @@ function applyLanguage(lang) {
     document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
     document.getElementById('playerName').placeholder = t.namePlaceholder;
     document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+    document.getElementById('game2Title').innerHTML = t.game2Title;
+    const btnW2 = document.getElementById('btnPlayMaterial');
+    if (btnW2) btnW2.title = t.listenTitle;
     // game2Screen (imagen con listas) queda siempre en inglés y no se traduce aquí.
 
     if (currentScreen === 'game1') {

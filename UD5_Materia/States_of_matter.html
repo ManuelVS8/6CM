@@ -84,6 +84,23 @@
         .mute-btn{ position:absolute; top:.8rem; right:1rem; background:var(--orange); color:#fff; border:2px solid #fff; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; z-index:20; }
         .mute-btn:hover{ background:var(--orange-700); }
 
+        /* Selector de idioma */
+        .lang-pill { position:absolute; top:.8rem; right:4.4rem; display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; z-index:20; }
+        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; background:transparent;
+            transition:background .2s, opacity .2s, transform .15s; }
+        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang) { opacity:.5; }
+        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
+        @media (max-width:480px) {
+            .mute-btn { right:.6rem; width:34px; height:34px; }
+            .lang-pill { right:3.2rem; padding:2px; gap:2px; }
+            .lang-pill button { width:28px; height:28px; font-size:1rem; }
+        }
+        .modal-validation-msg { color:var(--red); font-size:.9rem; margin:-4px 0 6px; min-height:1.1em; }
+        .modal-validation-msg.hidden { display:none; }
+
         /* --- JUEGO 1: POLYGON --- */
         .board{ display:grid; grid-template-columns:1fr; gap:.8rem; align-items:start; }
         
@@ -331,18 +348,22 @@
         <svg id="svgOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         <svg id="svgOff" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
     </button>
+    <div class="lang-pill">
+        <button class="lang-flag-btn active-lang" data-lang="en" title="English">🇬🇧</button>
+        <button class="lang-flag-btn" data-lang="ar" title="العربية">🇲🇦</button>
+    </div>
 
     <!-- INICIO -->
     <section class="screen active" id="startScreen" translate="no">
         <header>
-            <h1>Changes of states in matter</h1>
-            <div class="subtitle">Identify the changes of matter and states.</div>
+            <h1 id="startTitle">Changes of states in matter</h1>
+            <div class="subtitle" id="startSubtitle">Identify the changes of matter and states.</div>
         </header>
 
         <div class="start-content">
             <div class="advice-box">
-                <span class="advice-text">Listen to the audio and identify the states of matter: <span class="highlight-keyword">solid</span>, <span class="highlight-keyword">liquid</span> and <span class="highlight-keyword">gas</span>. Also, point the changes of state: <span class="highlight-keyword">fusion</span>, <span class="highlight-keyword">evaporation</span>, <span class="highlight-keyword">condensation</span> and <span class="highlight-keyword">solidification</span>.</span>
-                <strong style="display:block; margin-top:0.5rem; text-align:center;">Good luck!</strong>
+                <span class="advice-text" id="startAdvice">Listen to the audio and identify the states of matter: <span class="highlight-keyword">solid</span>, <span class="highlight-keyword">liquid</span> and <span class="highlight-keyword">gas</span>. Also, point the changes of state: <span class="highlight-keyword">fusion</span>, <span class="highlight-keyword">evaporation</span>, <span class="highlight-keyword">condensation</span> and <span class="highlight-keyword">solidification</span>.</span>
+                <strong style="display:block; margin-top:0.5rem; text-align:center;" id="startGoodLuck">Good luck!</strong>
             </div>
             
             <button class="btn btn-primary" id="playBtn">Play</button>
@@ -350,9 +371,9 @@
             <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
             
             <div class="hall-of-fame" id="hallOfFame">
-              <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
+              <div class="hall-of-fame-title">🏆 <span id="hofTitle">Best scores</span> 🏆</div>
               <table class="hall-of-fame-table">
-                  <thead><tr><th>Posición</th><th>Nombre</th><th>Puntos</th><th>Tiempo</th></tr></thead>
+                  <thead><tr><th id="hofPos">Position</th><th id="hofName">Name</th><th id="hofPoints">Points</th><th id="hofTime">Time</th></tr></thead>
                   <tbody id="hofTableBody"></tbody>
               </table>
             </div>
@@ -361,7 +382,7 @@
 
     <!-- JUEGO 1 -->
     <section class="screen" id="gameScreen1" translate="no">
-        <header><h1>Changes of state in matter</h1></header>
+        <header><h1 id="game1Title">Changes of state in matter</h1></header>
         <div class="game-info">
             <div class="timer" id="timerGame1">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
@@ -387,7 +408,7 @@
 
     <!-- JUEGO 2 -->
     <section class="screen" id="gameScreen2" translate="no">
-        <header><h1>Changes of state in matter. Test</h1></header>
+        <header><h1 id="game2Title">Changes of state in matter. Test</h1></header>
         <div class="game-info">
             <div class="timer" id="timerGame2">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
@@ -398,7 +419,7 @@
 
     <!-- JUEGO 3 -->
     <section class="screen" id="gameScreen3" translate="no">
-        <header><h1>Properties of the states of matter</h1></header>
+        <header><h1 id="game3Title">Properties of the states of matter</h1></header>
         <div class="game-info">
             <div class="timer" id="timerGame3">00:00.0</div>
             <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
@@ -409,12 +430,12 @@
 
     <!-- FINAL -->
     <section class="screen" id="finalScreen" translate="no">
-        <header><h1 class="final-title">Changes of state in matter</h1></header>
+        <header><h1 class="final-title" id="finalTitle">Changes of state in matter</h1></header>
         <div class="results">
             <div id="trophyBox">🏆</div>
-            <div class="score-title">Score:</div>
+            <div class="score-title" id="scoreLabel">Score:</div>
             <div class="big-score" id="finalScore">0</div>
-            <div class="final-time">Time: <span id="finalTime">00:00.0</span></div>
+            <div class="final-time" id="timeLabelWrap">Time: <span id="finalTime">00:00.0</span></div>
             <div id="finalMsg" class="subtitle"></div>
             <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);">Back to menu</button>
             <span class="credit">Created by Manuel J. Ventura</span>
@@ -425,13 +446,14 @@
 
 <div id="submitModal" class="modal-overlay">
     <div class="modal-content">
-        <h3>Game Over!</h3>
-        <p>Your time: <span id="modalTime">00:00.0</span></p>
+        <h3 id="modalTitle">Game Over!</h3>
+        <p id="modalTimeLabel">Your time: <span id="modalTime">00:00.0</span></p>
         <input type="text" id="playerName" class="modal-input" placeholder="Name" maxlength="15">
         <input type="text" id="playerSurname" class="modal-input" placeholder="Surname" maxlength="20">
+        <p id="modalValidationMsg" class="modal-validation-msg hidden"></p>
         <div style="display: flex; gap: 10px; justify-content: center;">
-            <button id="submitScoreBtn" class="btn btn-primary">Guardar</button>
-            <button id="discardScoreBtn" class="btn" style="background:#e6f2ff; color:var(--blue-700);">Cancelar</button>
+            <button id="submitScoreBtn" class="btn btn-primary">Save</button>
+            <button id="discardScoreBtn" class="btn" style="background:#e6f2ff; color:var(--blue-700);">Cancel</button>
         </div>
     </div>
 </div>
@@ -453,6 +475,116 @@
     let totalHits = 0;
     let totalAttempts = 0;
     const TOTAL_INTERACTIONS = 17; // 7 Game1 + 4 Game2 + 6 Game3
+
+    let currentLang = 'en';
+
+    const i18n = {
+        en: {
+            startTitle: 'Changes of states in matter',
+            startSubtitle: 'Identify the changes of matter and states.',
+            startAdvice: 'Listen to the audio and identify the states of matter: <span class="highlight-keyword">solid</span>, <span class="highlight-keyword">liquid</span> and <span class="highlight-keyword">gas</span>. Also, point the changes of state: <span class="highlight-keyword">fusion</span>, <span class="highlight-keyword">evaporation</span>, <span class="highlight-keyword">condensation</span> and <span class="highlight-keyword">solidification</span>.',
+            startGoodLuck: 'Good luck!',
+            playBtn: 'Play',
+            hofTitle: 'Best scores',
+            hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
+            hofLoading: 'Loading data...',
+            hofEmpty: 'Be the first to save your score!',
+            hofConnError: 'Connection error.',
+            game1Title: 'Changes of state in matter',
+            listenTitle: 'Play audio',
+            game2Title: 'Changes of state in matter. Test',
+            game3Title: 'Properties of the states of matter',
+            finalTitle: 'Changes of state in matter',
+            scoreLabel: 'Score:',
+            timeLabelPrefix: 'Time:',
+            backBtn: 'Back to menu',
+            msgPerfect: 'Well done, full marks!',
+            msgGood: 'Good job! Keep practising!',
+            modalTitle: 'Game Over!',
+            modalTimeLabel: 'Your time:',
+            namePlaceholder: 'Name',
+            surnamePlaceholder: 'Surname',
+            modalSave: 'Save',
+            modalSending: 'Sending...',
+            modalCancel: 'Cancel',
+            validationMsg: 'Please fill in name and surname',
+            sendError: 'Error sending score.'
+        },
+        ar: {
+            startTitle: 'تغيّرات حالات المادة',
+            startSubtitle: 'حدّد تغيّرات المادة وحالاتها.',
+            startAdvice: 'استمع إلى الصوت وحدّد حالات المادة: <span class="highlight-keyword">الصلبة</span>، و<span class="highlight-keyword">السائلة</span>، و<span class="highlight-keyword">الغازية</span>. كما حدّد تغيّرات الحالة: <span class="highlight-keyword">الانصهار</span>، و<span class="highlight-keyword">التبخّر</span>، و<span class="highlight-keyword">التكثّف</span>، و<span class="highlight-keyword">التجمّد</span>.',
+            startGoodLuck: 'بالتوفيق!',
+            playBtn: 'العب',
+            hofTitle: 'أفضل النتائج',
+            hofPos: 'الترتيب', hofName: 'الاسم', hofPoints: 'النقاط', hofTime: 'الوقت',
+            hofLoading: 'جارٍ تحميل البيانات...',
+            hofEmpty: 'كن أول من يحفظ نتيجته!',
+            hofConnError: 'خطأ في الاتصال.',
+            game1Title: 'تغيّرات حالة المادة',
+            listenTitle: 'تشغيل الصوت',
+            game2Title: 'تغيّرات حالة المادة. اختبار',
+            game3Title: 'خصائص حالات المادة',
+            finalTitle: 'تغيّرات حالة المادة',
+            scoreLabel: 'النتيجة:',
+            timeLabelPrefix: 'الوقت:',
+            backBtn: 'العودة إلى القائمة',
+            msgPerfect: 'أحسنت! نتيجة كاملة!',
+            msgGood: 'أحسنت! واصل التدريب!',
+            modalTitle: 'انتهت اللعبة!',
+            modalTimeLabel: 'وقتك:',
+            namePlaceholder: 'الاسم',
+            surnamePlaceholder: 'اللقب',
+            modalSave: 'حفظ',
+            modalSending: 'جارٍ الإرسال...',
+            modalCancel: 'إلغاء',
+            validationMsg: 'يرجى كتابة الاسم واللقب',
+            sendError: 'حدث خطأ أثناء الإرسال.'
+        }
+    };
+
+    function applyLanguage(lang) {
+        currentLang = lang;
+        const t = i18n[lang];
+        document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+
+        document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+            btn.classList.toggle('active-lang', btn.dataset.lang === lang);
+        });
+
+        document.getElementById('startTitle').innerHTML = t.startTitle;
+        document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
+        document.getElementById('startAdvice').innerHTML = t.startAdvice;
+        document.getElementById('startGoodLuck').innerHTML = t.startGoodLuck;
+        document.getElementById('playBtn').innerHTML = t.playBtn;
+        document.getElementById('hofTitle').innerHTML = t.hofTitle;
+        document.getElementById('hofPos').innerHTML = t.hofPos;
+        document.getElementById('hofName').innerHTML = t.hofName;
+        document.getElementById('hofPoints').innerHTML = t.hofPoints;
+        document.getElementById('hofTime').innerHTML = t.hofTime;
+        document.getElementById('game1Title').innerHTML = t.game1Title;
+        const listenBtn = document.getElementById('playWordBtn1');
+        if (listenBtn) listenBtn.title = t.listenTitle;
+        document.getElementById('game2Title').innerHTML = t.game2Title;
+        document.getElementById('game3Title').innerHTML = t.game3Title;
+        document.getElementById('finalTitle').innerHTML = t.finalTitle;
+        document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
+        document.getElementById('backToMenuBtn').innerHTML = t.backBtn;
+        document.getElementById('modalTitle').innerHTML = t.modalTitle;
+        document.getElementById('playerName').placeholder = t.namePlaceholder;
+        document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
+        document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
+        document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
+
+        const finalTimeSpan = document.getElementById('finalTime').outerHTML;
+        document.getElementById('timeLabelWrap').innerHTML = t.timeLabelPrefix + ' ' + finalTimeSpan;
+        const modalTimeSpan = document.getElementById('modalTime').outerHTML;
+        document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' ' + modalTimeSpan;
+    }
+
+    document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+        btn.addEventListener('click', () => { playSound('tap'); applyLanguage(btn.dataset.lang); });
+    });
 
     /* --- AUDIOS --- */
     const audioUrls = {
@@ -783,12 +915,12 @@
         const msg = document.getElementById('finalMsg');
         if (finalScoreVal === 100) {
             trophyBox.style.display = 'block';
-            msg.textContent = 'Well done, full marks!';
+            msg.textContent = i18n[currentLang].msgPerfect;
             playSound('victory');
             createConfetti();
         } else {
             trophyBox.style.display = 'none';
-            msg.textContent = 'Good job! Keep practising!';
+            msg.textContent = i18n[currentLang].msgGood;
             playSound('completed');
         }
         showScreen('finalScreen');
@@ -800,8 +932,9 @@
     function loadHallOfFame() {
         if (isHofLoading) return;
         isHofLoading = true;
+        const t = i18n[currentLang];
         const tbody = document.getElementById('hofTableBody');
-        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofLoading}</td></tr>`;
         fetch(`${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`)
             .then(r => r.json())
             .then(data => {
@@ -812,7 +945,7 @@
                     });
                     const validData = processedData.filter(row => row.Puntuación !== null && !isNaN(parseFloat(row.Puntuación)));
                     if (validData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                        tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-loading">${t.hofEmpty}</td></tr>`;
                     } else {
                         validData.sort((a, b) => {
                             const scoreA = parseFloat(a.Puntuación) || 0; const scoreB = parseFloat(b.Puntuación) || 0;
@@ -828,9 +961,9 @@
                             tbody.appendChild(tr);
                         });
                     }
-                } else { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; }
+                } else { tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnError}</td></tr>`; }
             })
-            .catch(e => { tbody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>'; })
+            .catch(e => { tbody.innerHTML = `<tr><td colspan="4" class="hall-of-fame-error">${t.hofConnError}</td></tr>`; })
             .finally(() => { isHofLoading = false; });
     }
 
@@ -839,23 +972,38 @@
         document.getElementById('playerName').value = '';
         document.getElementById('playerSurname').value = '';
         document.getElementById('submitModal').style.display = 'flex';
+        const validationEl = document.getElementById('modalValidationMsg');
+        validationEl.classList.add('hidden');
+        validationEl.textContent = '';
         document.getElementById('playerName').focus();
     }
 
     function handleSubmitScore() {
+        const t = i18n[currentLang];
         const btn = document.getElementById('submitScoreBtn');
         const name = document.getElementById('playerName').value.trim();
         const surname = document.getElementById('playerSurname').value.trim();
+        const validationEl = document.getElementById('modalValidationMsg');
         if(name && surname) {
+            validationEl.classList.add('hidden');
+            validationEl.textContent = '';
             playSound('tap');
-            btn.textContent = "Enviando..."; btn.disabled = true;
+            const originalText = btn.textContent;
+            btn.textContent = t.modalSending; btn.disabled = true;
             fetch(APP_SCRIPT_URL, {
                 method: 'POST', mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ sheet: SHEET_NAME, action: 'write', data: { score: finalScoreVal, time: finalTimeVal, name: name, surname: surname } })
-            }).then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = "Guardar"; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
-            .catch(e => { alert("Error al enviar."); btn.textContent = "Guardar"; btn.disabled = false; });
-        } else { alert("Por favor, rellena nombre y apellido"); }
+            }).then(() => { document.getElementById('submitModal').style.display = 'none'; btn.textContent = originalText; btn.disabled = false; setTimeout(loadHallOfFame, 1500); })
+            .catch(e => {
+                validationEl.textContent = t.sendError;
+                validationEl.classList.remove('hidden');
+                btn.textContent = originalText; btn.disabled = false;
+            });
+        } else {
+            validationEl.textContent = t.validationMsg;
+            validationEl.classList.remove('hidden');
+        }
     }
 
     document.getElementById('submitScoreBtn').onclick = handleSubmitScore;
@@ -871,7 +1019,7 @@
     document.getElementById('playBtn').onclick = startGame;
     document.getElementById('backToMenuBtn').onclick = () => { playSound('tap'); location.reload(); };
     document.getElementById('muteBtn').onclick = toggleSound;
-    document.addEventListener('DOMContentLoaded', () => { loadHallOfFame(); });
+    document.addEventListener('DOMContentLoaded', () => { applyLanguage('en'); loadHallOfFame(); });
 
 </script>
 </body>
